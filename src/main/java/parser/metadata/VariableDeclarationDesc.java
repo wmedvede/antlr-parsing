@@ -21,17 +21,22 @@ public class VariableDeclarationDesc extends ElementDescriptor {
         super(ElementType.VARIABLE);
     }
 
-    public VariableDeclarationDesc(String text, int start, int stop, int line, int position,  String identifier) {
+    public VariableDeclarationDesc(String text, int start, int stop, int line, int position,  String identifier, VariableInitializerDesc variableInitializer) {
         super(ElementType.VARIABLE, text, start, stop, line, position);
         this.identifier = identifier;
+        this.variableInitializer = variableInitializer;
     }
 
     public VariableDeclarationDesc(String text, int start, int stop, int line, int position) {
-        this(text, start, stop, line, position, null);
+        this(text, start, stop, line, position, null, null);
     }
 
     public VariableDeclarationDesc(String text, int start, int stop, String identifier) {
-        this(text, start, stop, -1, -1, identifier);
+        this(text, start, stop, -1, -1, identifier, null);
+    }
+
+    public VariableDeclarationDesc(String text, int start, int stop, String identifier, VariableInitializerDesc variableInitializer) {
+        this(text, start, stop, -1, -1, identifier, variableInitializer);
     }
 
     public String getIdentifier() {

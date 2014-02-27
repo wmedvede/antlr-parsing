@@ -70,7 +70,7 @@ public class ParserUtil {
                 stringBuffer.length() < elementDescriptor.getStart()
         */
 
-        return stringBuffer.substring(elementDescriptor.getStart(), elementDescriptor.getStop());
+        return stringBuffer.substring(elementDescriptor.getStart(), elementDescriptor.getStop()+1);
 
     }
 

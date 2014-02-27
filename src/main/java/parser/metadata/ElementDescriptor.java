@@ -26,11 +26,16 @@ public class ElementDescriptor {
 
     private String text;
 
-    public ElementDescriptor() {
-    }
-
     public ElementDescriptor(ElementType elementType) {
         this.elementType = elementType;
+    }
+
+    public ElementDescriptor(ElementType elementType, String text, int start, int line, int position) {
+        this.elementType = elementType;
+        this.text = text;
+        this.start = start;
+        this.line = line;
+        this.position = position;
     }
 
     public ElementDescriptor(ElementType elementType, String text, int start, int stop) {

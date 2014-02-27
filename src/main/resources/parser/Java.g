@@ -287,78 +287,19 @@ grammar Java;
 options {
     backtrack=true;
     memoize=true;
+    superClass=JavaParserBase;
 }
-
 
 @parser::header {
     package parser;
-
-    import java.util.Iterator;
-    import java.util.Queue;
-    import java.util.LinkedList;
-    import java.util.Stack;
-    import java.util.ArrayList;
-    import java.util.List;
-
     import util.ParserUtil;
     import parser.metadata.*;
     import parser.metadata.ElementDescriptor.ElementType;
-
-
-
-
-    /*
-    import org.drools.compiler.rule.builder.dialect.java.parser.JavaLocalDeclarationDescr;
-    import org.drools.compiler.rule.builder.dialect.java.parser.JavaRootBlockDescr;
-    import org.drools.compiler.rule.builder.dialect.java.parser.JavaContainerBlockDescr;
-    import org.drools.compiler.rule.builder.dialect.java.parser.JavaBlockDescr;
-    */
-
 }
 
 @parser::members {
 
-    Stack<ElementDescriptor> context = new Stack<ElementDescriptor>();
-
-    List<FieldDeclarationDesc> fields = new ArrayList<FieldDeclarationDesc>();
-
-    TypeDesc currentTypeDesc;
-
-    public List<FieldDeclarationDesc> getFields() {
-        return fields;
-    }
-
-    private void log(String message) {
-        //TODO setup log stuff
-        System.out.println(message + " : " + new java.util.Date());
-    }
-
-    private boolean isFieldBeingDefined() {
-        return isBeingDefined(ElementType.FIELD);
-    }
-
-    private boolean isBeingDefined(ElementType elementType) {
-        return !context.empty() && context.peek().isElementType(ElementType.FIELD);
-    }
-
-    private int start(CommonToken token) {
-        return ParserUtil.getStartIndex(token);
-    }
-
-    private int stop(CommonToken token) {
-        return ParserUtil.getStopIndex(token);
-    }
-
-    private int line(CommonToken token) {
-        return ParserUtil.getLine(token);
-    }
-
-    private int position(CommonToken token) {
-        return ParserUtil.getPositionInLine(token);
-    }
-
 }
-
 
 @lexer::header {
     package parser;
@@ -424,24 +365,24 @@ classOrInterfaceDeclaration
 
 modifiers
     @init {
-        FieldDeclarationDesc fieldDesc = null;
-        if ( isFieldBeingDefined() ) {
-            fieldDesc = (FieldDeclarationDesc)context.peek();
+        HasModifiers hasModifiers = null;
+        if (!isBacktracking()) {
+            hasModifiers = peekHasModifiers();
         }
     }
     :
     (    annotation
-    |   s='public'          { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='protected'       { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='private'         { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='static'          { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='abstract'        { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='final'           { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='native'          { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='synchronized'    { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='transient'       { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='volatile'        { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
-    |   s='strictfp'        { if (fieldDesc != null) fieldDesc.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $text)); }
+    |   s='public'          { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='protected'       { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='private'         { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='static'          { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='abstract'        { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='final'           { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='native'          { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='synchronized'    { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='transient'       { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='volatile'        { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
+    |   s='strictfp'        { if (hasModifiers != null) hasModifiers.addModifier(new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text)); }
     )*
     ;
 
@@ -591,7 +532,24 @@ memberDecl
     ;
 
 
-methodDeclaration 
+methodDeclaration
+    @init {
+        MethodDeclarationDesc method = null;
+        if (!isBacktracking()) {
+            log("Start method declaration.");
+            method = new MethodDeclarationDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(method);
+        }
+    }
+    @after {
+        method = popMethod();
+        if (method != null) {
+            method.setText($text);
+            method.setStop(stop((CommonToken)$stop));
+            methods.add(method);
+            log("End of method declaration. : " + method.getName());
+        }
+    }
     :
         /* For constructor, return type is null, name is 'init' */
          modifiers
@@ -613,9 +571,9 @@ methodDeclaration
         (type
         |   'void'
         )
-        IDENTIFIER
+        IDENTIFIER { method.setName($IDENTIFIER.text); }
         formalParameters
-        ('[' ']'
+        ('[' ']'   { method.addDimension(); }
         )*
         ('throws' qualifiedNameList
         )?            
@@ -629,7 +587,7 @@ methodDeclaration
 fieldDeclaration
     @init {
         FieldDeclarationDesc field = null;
-        if (state.backtracking == 0) {
+        if (!isBacktracking()) {
             log("Start field declaration.");
             field = new FieldDeclarationDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
             context.push(field);
@@ -637,9 +595,9 @@ fieldDeclaration
     }
     @after {
         //this can also be done in the finally block for the rule.
-
-        if (!context.empty() && context.peek().isElementType(ElementType.FIELD)) {
-            field = (FieldDeclarationDesc)context.pop();
+        field = popField();
+        if (field != null) {
+            field.setText($text);
             field.setStop(stop((CommonToken)$stop));
             fields.add(field);
             log("End of field declaration.");
@@ -661,11 +619,13 @@ variableDeclarator returns [ VariableDeclarationDesc varDec ]
     }
     @after {
         $varDec.setStop(stop((CommonToken)$stop));
+        //$varDec.setText(variableInitializer.text);
+        //$varDec.setInitializerExpr(variableInitializer.text);
     }
     :   i=IDENTIFIER { $varDec.setIdentifier($i.text); }
         ('[' ']' { $varDec.addDimension(); }
         )*
-        ('=' variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDesc( $variableInitializer.text, start(((CommonToken)$variableInitializer.start)), stop((CommonToken)$variableInitializer.stop), line((CommonToken)$variableInitializer.start), position((CommonToken)$variableInitializer.start), $variableInitializer.text ) ); }
+        ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDesc( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }
         )?
     ;
 
@@ -710,21 +670,29 @@ interfaceFieldDeclaration
 
 
 type
+    scope {
+        List<String> symbols;
+    }
+    @init {
+        if (!isBacktracking()) {
+            $type::symbols = new ArrayList<String>();
+        }
+    }
     @after {
         currentTypeDesc = null;
     }
     :   classOrInterfaceType
-        ('[' ']' { if (currentTypeDesc != null) currentTypeDesc.addDimension(); }
+        ('[' ']' { if (currentTypeDesc != null) currentTypeDesc.addDimension(); $type::symbols.add("[]"); }
         )*
     |   primitiveType
-        ('[' ']' { if (currentTypeDesc != null) currentTypeDesc.addDimension(); }
+        ('[' ']' { if (currentTypeDesc != null) currentTypeDesc.addDimension(); $type::symbols.add("[]"); }
         )*
     ;
 
 
 classOrInterfaceType
     @after {
-        if ( isFieldBeingDefined() ) {
+        if ( isFieldOnTop() ) {
             currentTypeDesc = new ClassTypeDesc($text, start((CommonToken)$start), stop((CommonToken)$stop), line((CommonToken)$start), position((CommonToken)$start), $text);
             ((FieldDeclarationDesc)context.peek()).setType(currentTypeDesc);
         }
@@ -740,7 +708,7 @@ classOrInterfaceType
 
 primitiveType
     @after {
-        if ( isFieldBeingDefined() ) {
+        if ( isFieldOnTop() ) {
             currentTypeDesc = new PrimitiveTypeDesc($text, start((CommonToken)$start), stop((CommonToken)$stop), line((CommonToken)$start), position((CommonToken)$start), $text);
             ((FieldDeclarationDesc)context.peek()).setType(currentTypeDesc);
         }

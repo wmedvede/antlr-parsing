@@ -5,9 +5,6 @@ import org.junit.Before;
 import util.ParserUtil;
 
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-
 
 public class JavaParserBaseTest {
 
