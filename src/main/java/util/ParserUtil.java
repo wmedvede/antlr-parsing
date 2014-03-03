@@ -1,5 +1,6 @@
 package util;
 
+import org.antlr.runtime.Token;
 import org.antlr.runtime.CommonToken;
 import parser.JavaParser;
 import parser.metadata.ElementDescriptor;
@@ -42,23 +43,6 @@ public class ParserUtil {
         //String value = "[token: " + token + ", startIndex: " + startToken.getStartIndex() + ", stopIndex: " + endToken.getStopIndex() + "]";
         //System.out.println(value);
         return "";//value;
-    }
-
-    public static int getStartIndex(CommonToken token) {
-        return token != null ? token.getStartIndex() : -1;
-    }
-
-    public static int getStopIndex(CommonToken token) {
-        return token != null ? token.getStopIndex() : -1;
-    }
-
-    public static int getLine(CommonToken token) {
-        return token != null ? token.getLine() : -1;
-    }
-
-    public static int getPositionInLine(CommonToken token) {
-        return token != null ? token.getCharPositionInLine() : -1;
-
     }
 
     public static String readElement(StringBuffer stringBuffer, ElementDescriptor elementDescriptor) {

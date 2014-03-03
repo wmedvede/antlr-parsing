@@ -11,7 +11,13 @@ public class ElementDescriptor {
         METHOD,
         CLASS,
         PRIMITIVE_TYPE,
-        CLASS_TYPE
+        CLASS_OR_INTERFACE_TYPE,
+        IDENTIFIER_WITH_TYPE_ARGUMENTS,
+        TYPE_ARGUMENT,
+        TYPE,
+        NORMAL_PARAMETER,
+        ELLIPSIS_PARAMETER,
+        TEXT_TOKEN
     }
 
     private ElementType elementType;

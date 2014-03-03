@@ -4,7 +4,7 @@ package parser.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDeclarationDesc extends AnnotationsContainerDesc {
+public class FieldDeclarationDesc extends AnnotationsContainerDesc implements HasType {
 
     private List<VariableDeclarationDesc> variableDeclarations = new ArrayList<VariableDeclarationDesc>();
 

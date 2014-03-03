@@ -65,10 +65,13 @@ public class FieldParsing1Test extends JavaParserBaseTest {
 
             FieldDeclarationDesc fieldDeclaration = new FieldDeclarationDesc();
             VariableDeclarationDesc var;
+            TypeDesc type;
+
 
             //field1
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "String"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field1"));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -76,7 +79,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "String"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field2"));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -85,7 +89,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "final"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "Integer"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("Integer", -1, -1));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "FIELD3", new VariableInitializerDesc(null, -1, -1, "new Integer(\"3\")")));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -93,7 +98,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //"transient boolean field4;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "transient"));
-            fieldDeclaration.setType(new PrimitiveTypeDesc(null, -1, -1, "boolean"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "boolean"));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field4"));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -101,7 +107,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //"protected   List<String>   field5;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "List<String>"));
+            fieldDeclaration.setType(new TypeDesc(null, -1,-1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<String>", -1, -1));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field5"));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -110,7 +117,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "List<List<String>>"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<List<String>>", -1, -1));
             //fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field6", new VariableInitializerDesc(null, -1, -1, "new ArrayList<List<String>>()")));
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field6", new VariableInitializerDesc(null, -1, -1, "null")));
             fieldDeclarations.add(fieldDeclaration);
@@ -119,7 +127,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //"public    String[]      field7    ;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "String"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
             fieldDeclaration.getType().addDimension();
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field7", null));
             fieldDeclarations.add(fieldDeclaration);
@@ -129,7 +138,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "java.lang.String"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("java.lang.String", -1, -1));
             var = new VariableDeclarationDesc(null, -1, -1, "field8", null);
             var.addDimension();
             fieldDeclaration.addVariableDeclaration(var);
@@ -140,7 +150,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "private"));
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "String"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
             var = new VariableDeclarationDesc(null, -1, -1, "field9", null);
             var.addDimension();
             var.addDimension();
@@ -152,7 +163,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             // "protected List<String>[] field10 = null;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "List<String>"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<String>", -1, -1));
             fieldDeclaration.getType().addDimension();
             var = new VariableDeclarationDesc(null, -1, -1, "field10", new VariableInitializerDesc(null, -1, -1, "null"));
             fieldDeclaration.addVariableDeclaration(var);
@@ -162,7 +174,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             // "protected int field11    =   11   ;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new PrimitiveTypeDesc(null, -1, -1, "int"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "int"));
             var = new VariableDeclarationDesc(null, -1, -1, "field11", new VariableInitializerDesc(null, -1, -1, "11"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
@@ -171,7 +184,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //"protected char field12 = 12,    field13  =  13 ;"
             fieldDeclaration = new FieldDeclarationDesc();
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new PrimitiveTypeDesc(null, -1, -1, "char"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "char"));
             var = new VariableDeclarationDesc(null, -1, -1, "field12", new VariableInitializerDesc(null, -1, -1, "12"));
             fieldDeclaration.addVariableDeclaration(var);
             var = new VariableDeclarationDesc(null, -1, -1, "field13", new VariableInitializerDesc(null, -1, -1, "13"));
@@ -183,7 +197,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //"Boolean field14 =   false, field15=true, field16 = !true ;"
 
             fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.setType(new ClassTypeDesc(null, -1, -1, "Boolean"));
+            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("Boolean", -1, -1));
             var = new VariableDeclarationDesc(null, -1, -1, "field14", new VariableInitializerDesc(null, -1, -1, "false"));
             fieldDeclaration.addVariableDeclaration(var);
             var = new VariableDeclarationDesc(null, -1, -1, "field15", new VariableInitializerDesc(null, -1, -1, "true"));
@@ -197,6 +212,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             for (int i = 0; i < fieldDeclarations.size(); i++) {
                 assertEqualsFieldDeclaration(buffer, fieldDeclarations.get(i), fields.get(i));
             }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
