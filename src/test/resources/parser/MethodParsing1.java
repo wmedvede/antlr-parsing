@@ -3,22 +3,66 @@
 package parser;
 
 import java.util.AbstractList;
+import java.util.List;
 
 public class MethodParsing1 {
 
-    private String name;
+    public class MethodParsing1Inner1 {
 
-    private String surname;
+        //buy now we are skipping inner clases
+        private int a;
 
-    public String getName() { return name; }
+        public int getA() {
+            return a;
+        }
 
-    public void setName(String name) { this.name = name; }
+        public void setA(int a) {
+            this.a = a;
+        }
+    };
 
-    public String getSurname() { return surname; }
+    private String field1;
 
-    public void setSurname(String surname) { this.surname = surname; }
+    public String getField1() { return field1; }
 
-    public java.util.List<String> getList() { return null; }
+    public void setField1(String field1) { this.field1 = field1; }
 
-    public java.util.AbstractList<String> getNamesList(final int param1, java.lang.Integer param2, java.util.List<java.lang.Integer> param3) { return null; }
+    private int method1() { return -1; }
+
+    private void method2() {}
+
+    public static java.lang.String method3() { return null; }
+
+    public static final Integer method4() { return null; }
+
+    public void method5(java.lang.Integer param1, int param2) {}
+
+    java.util.List<java.lang.String> method6() { return null;    }
+
+    protected   java.util.AbstractList<String>    method7  ( final int   param1 ,  java.lang.Integer   param2  ,   java.util.List<java.lang.Integer>      param3      ) {    return  null  ;    }
+
+    int method8  ( final int   param1 ,  java.lang.Integer   param2   ) [  ]   [    ] { return null; }
+
+    int method9 ( final Object ...  param1) { return -1;}
+
+    private java.util.AbstractList<Object> method10  (  final java.lang.String param1,  int param2 , List<java.util.List<String>>...param3) { return null; }
+
+    //type bounds not yet recognized
+    //public static <T extends Foo & Bar> T getFooBar()
+
+
+    public class MethodParsing1Inner2 {
+
+        //buy now we are skipping inner clases
+        private int a;
+
+        public int getA() {
+            return a;
+        }
+
+        public void setA(int a) {
+            this.a = a;
+        }
+    };
+
 }

@@ -1,15 +1,18 @@
 package parser.metadata;
 
 
-public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceType, HasPrimitiveType {
+import java.util.ArrayList;
+import java.util.List;
 
-    private int dimensions = 0;
+public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceType, HasPrimitiveType, HasDimensions {
 
     private String name;
 
     private ClassOrInterfaceTypeDesc classOrInterfaceType;
 
     private PrimitiveTypeDesc primitiveType;
+
+    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
 
     public TypeDesc() {
         super(ElementType.TYPE);
@@ -21,18 +24,6 @@ public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceTy
 
     public TypeDesc(String text, int start, int stop, int line, int position) {
         super(ElementType.TYPE, text, start, stop, line, position);
-    }
-
-    public int getDimensions() {
-        return dimensions;
-    }
-
-    public void setDimensions(int dimensions) {
-        this.dimensions = dimensions;
-    }
-
-    public void addDimension() {
-        dimensions++;
     }
 
     public String getName() {
@@ -65,5 +56,15 @@ public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceTy
 
     public void setPrimitiveType(PrimitiveTypeDesc primitiveType) {
         this.primitiveType = primitiveType;
+    }
+
+    @Override
+    public int getDimensionsCount() {
+        return dimensions.size();
+    }
+
+    @Override
+    public void addDimension(DimensionDesc dimensionDesc) {
+        dimensions.add(dimensionDesc);
     }
 }

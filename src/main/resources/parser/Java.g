@@ -358,7 +358,7 @@ typeDeclaration
     ;
 
 classOrInterfaceDeclaration 
-    :    { setDeclaringMainClass(true); } classDeclaration { setDeclaringMainClass(false); }
+    :    { if (!isBacktracking()) increaseClassLevel(); } classDeclaration { decreaseClassLevel(); }
     |   interfaceDeclaration
     ;
 
@@ -366,23 +366,23 @@ classOrInterfaceDeclaration
 modifiers
     :
     (    annotation
-    |   s='public'          { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='protected'       { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='private'         { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='static'          { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='abstract'        { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='final'           { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='native'          { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='synchronized'    { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='transient'       { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='volatile'        { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='strictfp'        { applyModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );   }
+    |   s='public'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='protected'       { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='private'         { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='static'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='abstract'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='final'           { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='native'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='synchronized'    { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='transient'       { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='volatile'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='strictfp'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );   }
     )*
     ;
 
 
 variableModifiers 
-    :   (   s= 'final'      { applyModifier( new ModifierDesc($s.text, -1, -1, line($s), position($s), $s.text) ); }
+    :   (   s= 'final'      { processModifier( new ModifierDesc($s.text, -1, -1, line($s), position($s), $s.text) ); }
         |   annotation
         )*
     ;
@@ -521,7 +521,7 @@ classBodyDeclaration
 memberDecl
     :    fieldDeclaration
     |    methodDeclaration
-    |    classDeclaration
+    |    { if (!isBacktracking()) increaseClassLevel(); } classDeclaration { decreaseClassLevel(); }
     |    interfaceDeclaration
     ;
 
@@ -540,7 +540,7 @@ methodDeclaration
         method = popMethod();
         if (method != null) {
             updateOnAfter(method, $text, (CommonToken)$stop);
-            methods.add(method);
+            processMethod(method);
             log("End of method declaration. : " + method.getName());
         }
     }
@@ -567,7 +567,7 @@ methodDeclaration
         )
         IDENTIFIER { method.setName($IDENTIFIER.text); }
         formalParameters
-        ('[' ']'   { method.addDimension(); }
+        (p1='[' p2=']'   { method.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
         ('throws' qualifiedNameList
         )?            
@@ -592,7 +592,7 @@ fieldDeclaration
         field = popField();
         if (field != null) {
             updateOnAfter(field, $text, (CommonToken)$stop);
-            fields.add(field);
+            processField(field);
             log("End of field declaration.");
         } else {
             log("A FieldDeclarationDesc is expected");
@@ -616,7 +616,7 @@ variableDeclarator returns [ VariableDeclarationDesc varDec ]
         //$varDec.setInitializerExpr(variableInitializer.text);
     }
     :   i=IDENTIFIER { $varDec.setIdentifier($i.text); }
-        ('[' ']' { $varDec.addDimension(); }
+        (p1='[' p2=']' { $varDec.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
         ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDesc( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }
         )?
@@ -675,16 +675,16 @@ type
         type = popType();
         if (type != null) {
             updateOnAfter(type, $text, (CommonToken)$stop);
-            applyType(type);
+            processType(type);
         } else {
             //TODO warning, by construction current type is expected
         }
     }
     :   classOrInterfaceType
-        ('[' ']' { type.addDimension(); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     |   primitiveType
-        ('[' ']' { type.addDimension(); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     ;
 
@@ -790,10 +790,10 @@ qualifiedNameList
     ;
 
 formalParameters
-    :   p1='('  { updateMethodParenthesis(true, $p1.text, line($p1), position($p1)); }
+    :   p1='('  { setFormalParamsStart($p1.text, line($p1), position($p1)); }
         (formalParameterDecls
         )? 
-        p2= ')' { updateMethodParenthesis(false, $p2.text, line($p2), position($p2)); }
+        p2= ')' { setFormalParamsStop($p2.text, line($p2), position($p2)); }
     ;
 
 formalParameterDecls 
@@ -820,20 +820,38 @@ normalParameterDecl
          parameterDesc = popNormalParameter();
          if (parameterDesc != null) {
              updateOnAfter(parameterDesc, $text, (CommonToken)$stop);
-             applyParameter(parameterDesc);
+             processParameter(parameterDesc);
          } else {
              //TODO warning, by construction current parameterDesc is expected
          }
      }
     :   variableModifiers type IDENTIFIER { parameterDesc.setName($IDENTIFIER.text); }
-        ('[' ']' { parameterDesc.addDimension(); }
+        (p1='[' p2=']' { parameterDesc.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     ;
 
-ellipsisParameterDecl 
+ellipsisParameterDecl
+      @init {
+          EllipsisParameterDeclarationDesc ellipsisParamDesc = null;
+          if (!isBacktracking()) {
+              log("Start EllipsisParameterDeclarationDesc");
+              ellipsisParamDesc = new EllipsisParameterDeclarationDesc($text, start((CommonToken)$start), -1, line($start), position($start), null);
+              context.push(ellipsisParamDesc);
+          }
+      }
+     @after {
+         ellipsisParamDesc = popEllipsisParameter();
+         if (ellipsisParamDesc != null) {
+             updateOnAfter(ellipsisParamDesc, $text, (CommonToken)$stop);
+             processParameter(ellipsisParamDesc);
+         } else {
+             //TODO warning, by construction current ellipsis parameterDesc is expected
+         }
+     }
+
     :   variableModifiers
-        type  '...'
-        IDENTIFIER
+        type  e='...' { ellipsisParamDesc.setEllipsisToken(new TextTokenElementDescriptor($e.text, line($e), position($e))); }
+        IDENTIFIER { ellipsisParamDesc.setName($IDENTIFIER.text); }
     ;
 
 

@@ -3,8 +3,8 @@ package parser.metadata;
 
 public interface HasDimensions {
 
-    int getDimensions();
+    public int getDimensionsCount();
 
-    void addDimension();
+    public void addDimension(DimensionDesc dimensionDesc);
 
 }

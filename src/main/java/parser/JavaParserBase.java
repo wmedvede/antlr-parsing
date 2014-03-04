@@ -27,7 +27,7 @@ public class JavaParserBase extends Parser {
 
     protected boolean declaringMethodReturnType = false;
 
-    protected boolean declaringMainClass = false;
+    protected int classLevel = 0;
 
     public List<FieldDeclarationDesc> getFields() {
         return fields;
@@ -68,6 +68,10 @@ public class JavaParserBase extends Parser {
 
     protected boolean isNormalParameterOnTop() {
         return isOnTop(ElementType.NORMAL_PARAMETER);
+    }
+
+    protected boolean isEllipsisParameterOnTop() {
+        return isOnTop(ElementType.ELLIPSIS_PARAMETER);
     }
 
     protected boolean isOnTop(ElementType elementType) {
@@ -124,6 +128,14 @@ public class JavaParserBase extends Parser {
 
     protected NormalParameterDeclarationDesc peekNormalParameter() {
         return isNormalParameterOnTop() ? (NormalParameterDeclarationDesc)context.peek() : null;
+    }
+
+    protected EllipsisParameterDeclarationDesc popEllipsisParameter() {
+        return isEllipsisParameterOnTop() ? (EllipsisParameterDeclarationDesc)context.pop() : null;
+    }
+
+    protected EllipsisParameterDeclarationDesc peekEllipsisParameter() {
+        return isEllipsisParameterOnTop() ? (EllipsisParameterDeclarationDesc)context.peek() : null;
     }
 
     protected TypeArgumentDesc peekTypeArgument() {
@@ -184,16 +196,20 @@ public class JavaParserBase extends Parser {
     }
 
     public boolean isDeclaringMainClass() {
-        return declaringMainClass;
+        return classLevel == 1;
     }
 
-    public void setDeclaringMainClass(boolean declaringMainClass) {
-        this.declaringMainClass = declaringMainClass;
+    public int increaseClassLevel() {
+        return ++classLevel;
     }
 
-    protected void applyType(TypeDesc type) {
+    public int decreaseClassLevel() {
+        return --classLevel;
+    }
+
+    protected void processType(TypeDesc type) {
         //if we are processing a method declaration return type, or a method parameter, or a field type
-        if (declaringMainClass) {
+        if (isDeclaringMainClass()) {
             if (isTypeArgumentOnTop()) {
                 peekTypeArgument().setType(type);
             } else if (isFieldOnTop()) {
@@ -206,16 +222,16 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void applyModifier(ModifierDesc modifierDesc) {
-        if (declaringMainClass) {
+    protected void processModifier(ModifierDesc modifierDesc) {
+        if (isDeclaringMainClass()) {
             if ( isTypeArgumentOnTop() || isMethodOnTop() || isFieldOnTop() || isParameterOnTop() ) {
                 peekHasModifiers().addModifier(modifierDesc);
             }
         }
     }
 
-    protected void applyParameter(ParameterDeclarationDesc parameterDesc) {
-        if (declaringMainClass) {
+    protected void processParameter(ParameterDeclarationDesc parameterDesc) {
+        if (isDeclaringMainClass()) {
             MethodDeclarationDesc method = peekMethod();
             //TODO check if this control is enough
             if (method != null) {
@@ -224,15 +240,31 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void updateMethodParenthesis(boolean openParenthesis, String text, int line, int position) {
-        if (declaringMainClass) {
+    protected void processMethod(MethodDeclarationDesc methodDesc) {
+        if (isDeclaringMainClass()) {
+            methods.add(methodDesc);
+        }
+    }
+
+    protected void setFormalParamsStart(String text, int line, int position) {
+        if (isDeclaringMainClass()) {
             if ( isMethodOnTop() ) {
-                if (openParenthesis) {
-                    peekMethod().setOpenParenthesis(new TextTokenElementDescriptor(text, line, position ));
-                } else {
-                    peekMethod().setCloseParenthesis(new TextTokenElementDescriptor(text, line, position ));
-                }
+                peekMethod().setParamsStart(new TextTokenElementDescriptor(text, line, position));
             }
+        }
+    }
+
+    protected void setFormalParamsStop(String text, int line, int position) {
+        if (isDeclaringMainClass()) {
+            if ( isMethodOnTop() ) {
+                peekMethod().setParamsStop(new TextTokenElementDescriptor(text, line, position));
+            }
+        }
+    }
+
+    protected void processField(FieldDeclarationDesc fieldDesc) {
+        if (isDeclaringMainClass()) {
+            fields.add(fieldDesc);
         }
     }
 }

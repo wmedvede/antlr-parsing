@@ -3,6 +3,8 @@ package parser.metadata;
 
 public class EllipsisParameterDeclarationDesc extends ParameterDeclarationDesc {
 
+    TextTokenElementDescriptor ellipsisToken;
+
     public EllipsisParameterDeclarationDesc() {
         super(ElementType.ELLIPSIS_PARAMETER);
     }
@@ -17,5 +19,13 @@ public class EllipsisParameterDeclarationDesc extends ParameterDeclarationDesc {
 
     public EllipsisParameterDeclarationDesc(String text, int start, int stop, int line, int position, String name) {
         super(ElementType.ELLIPSIS_PARAMETER, text, start, stop, line, position, name);
+    }
+
+    public TextTokenElementDescriptor getEllipsisToken() {
+        return ellipsisToken;
+    }
+
+    public void setEllipsisToken(TextTokenElementDescriptor ellipsisToken) {
+        this.ellipsisToken = ellipsisToken;
     }
 }

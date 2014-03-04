@@ -23,6 +23,8 @@ public class JavaParserBaseTest {
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
         parser = initParser(inputStream);
         buffer = new StringBuffer(ParserUtil.readString(this.getClass().getResourceAsStream(fileName)));
+
+        parser.compilationUnit();
     }
 
     protected JavaParser initParser(InputStream inputStream) throws Exception {

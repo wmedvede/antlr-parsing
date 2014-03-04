@@ -8,6 +8,6 @@ public class TextTokenElementDescriptor extends ElementDescriptor {
     }
 
     public TextTokenElementDescriptor(String text, int line, int position) {
-        super(ElementType.TEXT_TOKEN, text, line, position);
+        super(ElementType.TEXT_TOKEN, text, -1, -1, line, position);
     }
 }

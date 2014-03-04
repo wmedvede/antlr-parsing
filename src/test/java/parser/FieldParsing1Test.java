@@ -39,9 +39,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldSentences.add("protected char field12 = 12,    field13  =  13 ;");
             fieldSentences.add("Boolean field14 =   false, field15=true, field16 = !true ;");
 
-            parser.compilationUnit();
             List<FieldDeclarationDesc> fields = parser.getFields();
-
             assertEquals(fieldSentences.size(), fields.size());
 
             //test field definition sentences
@@ -129,7 +127,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
             fieldDeclaration.setType(new TypeDesc(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
-            fieldDeclaration.getType().addDimension();
+            fieldDeclaration.getType().addDimension(new DimensionDesc());
             fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field7", null));
             fieldDeclarations.add(fieldDeclaration);
 
@@ -141,7 +139,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.setType(new TypeDesc(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("java.lang.String", -1, -1));
             var = new VariableDeclarationDesc(null, -1, -1, "field8", null);
-            var.addDimension();
+            var.addDimension(new DimensionDesc());
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
@@ -153,9 +151,9 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.setType(new TypeDesc(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
             var = new VariableDeclarationDesc(null, -1, -1, "field9", null);
-            var.addDimension();
-            var.addDimension();
-            var.addDimension();
+            var.addDimension(new DimensionDesc());
+            var.addDimension(new DimensionDesc());
+            var.addDimension(new DimensionDesc());
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
@@ -165,7 +163,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
             fieldDeclaration.setType(new TypeDesc(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<String>", -1, -1));
-            fieldDeclaration.getType().addDimension();
+            fieldDeclaration.getType().addDimension(new DimensionDesc());
             var = new VariableDeclarationDesc(null, -1, -1, "field10", new VariableInitializerDesc(null, -1, -1, "null"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
@@ -207,7 +205,6 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
-            parser.compilationUnit();
             List<FieldDeclarationDesc> fields = parser.getFields();
             for (int i = 0; i < fieldDeclarations.size(); i++) {
                 assertEqualsFieldDeclaration(buffer, fieldDeclarations.get(i), fields.get(i));

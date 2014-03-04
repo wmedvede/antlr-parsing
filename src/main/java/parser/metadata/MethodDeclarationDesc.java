@@ -7,15 +7,15 @@ public class MethodDeclarationDesc extends AnnotationsContainerDesc implements H
 
     private String name;
 
-    private int dimensions = 0;
+    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
 
     private TypeDesc type;
 
     private List<ParameterDeclarationDesc> parameters = new ArrayList<ParameterDeclarationDesc>();
 
-    private TextTokenElementDescriptor openParenthesis;
+    private TextTokenElementDescriptor paramsStart;
 
-    private TextTokenElementDescriptor closeParenthesis;
+    private TextTokenElementDescriptor paramsStop;
 
     public MethodDeclarationDesc() {
         super(ElementType.METHOD);
@@ -41,12 +41,16 @@ public class MethodDeclarationDesc extends AnnotationsContainerDesc implements H
         this.name = name;
     }
 
-    public int getDimensions() {
-        return dimensions;
+    public void setDimensions(List<DimensionDesc> dimensions) {
+        this.dimensions = dimensions;
     }
 
-    public void addDimension() {
-        dimensions++;
+    public int getDimensionsCount() {
+        return dimensions.size();
+    }
+
+    public void addDimension(DimensionDesc dimensionDesc) {
+        dimensions.add(dimensionDesc);
     }
 
     @Override
@@ -71,19 +75,19 @@ public class MethodDeclarationDesc extends AnnotationsContainerDesc implements H
         parameters.add(parameter);
     }
 
-    public TextTokenElementDescriptor getOpenParenthesis() {
-        return openParenthesis;
+    public TextTokenElementDescriptor getParamsStart() {
+        return paramsStart;
     }
 
-    public void setOpenParenthesis(TextTokenElementDescriptor openParenthesis) {
-        this.openParenthesis = openParenthesis;
+    public void setParamsStart(TextTokenElementDescriptor paramsStart) {
+        this.paramsStart = paramsStart;
     }
 
-    public TextTokenElementDescriptor getCloseParenthesis() {
-        return closeParenthesis;
+    public TextTokenElementDescriptor getParamsStop() {
+        return paramsStop;
     }
 
-    public void setCloseParenthesis(TextTokenElementDescriptor closeParenthesis) {
-        this.closeParenthesis = closeParenthesis;
+    public void setParamsStop(TextTokenElementDescriptor paramsStop) {
+        this.paramsStop = paramsStop;
     }
 }

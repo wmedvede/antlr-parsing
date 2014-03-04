@@ -1,8 +1,11 @@
 package parser.metadata;
 
-public class NormalParameterDeclarationDesc extends ParameterDeclarationDesc {
+import java.util.ArrayList;
+import java.util.List;
 
-    private int dimensions = 0;
+public class NormalParameterDeclarationDesc extends ParameterDeclarationDesc implements HasDimensions {
+
+    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
 
     public NormalParameterDeclarationDesc() {
         super(ElementType.NORMAL_PARAMETER);
@@ -20,12 +23,13 @@ public class NormalParameterDeclarationDesc extends ParameterDeclarationDesc {
         super(ElementType.NORMAL_PARAMETER, text, start, stop, line, position, name);
     }
 
-    public int getDimensions() {
-        return dimensions;
+    @Override
+    public int getDimensionsCount() {
+        return dimensions.size();
     }
 
-    public void addDimension() {
-        dimensions++;
+    @Override
+    public void addDimension(DimensionDesc dimensionDesc) {
+        dimensions.add(dimensionDesc);
     }
-
 }

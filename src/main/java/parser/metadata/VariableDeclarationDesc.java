@@ -1,7 +1,10 @@
 package parser.metadata;
 
 
-public class VariableDeclarationDesc extends ElementDescriptor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class VariableDeclarationDesc extends ElementDescriptor implements HasDimensions {
 
     private String identifier;
 
@@ -10,7 +13,7 @@ public class VariableDeclarationDesc extends ElementDescriptor {
      * e.g. 1 -> int a[]
      * e.g. 2 -> int a[][]
      */
-    private int dimensions = 0;
+    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
 
     /**
      * variableInitializer == null means that the variable wasn't initialized.
@@ -47,16 +50,14 @@ public class VariableDeclarationDesc extends ElementDescriptor {
         this.identifier = identifier;
     }
 
-    public int getDimensions() {
-        return dimensions;
+    @Override
+    public int getDimensionsCount() {
+        return dimensions.size();
     }
 
-    public void setDimensions(int dimensions) {
-        this.dimensions = dimensions;
-    }
-
-    public void addDimension() {
-        dimensions++;
+    @Override
+    public void addDimension(DimensionDesc dimensionDesc) {
+        dimensions.add(dimensionDesc);
     }
 
     public VariableInitializerDesc getVariableInitializer() {
