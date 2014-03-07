@@ -1,6 +1,6 @@
 package parser;
 
-import util.TestAnnotation;
+import parser.test.TestAnnotation;
 
 /**
  * Changes to this file can break JavaFileHandler1Test

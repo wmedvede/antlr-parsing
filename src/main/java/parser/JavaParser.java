@@ -1,7 +1,7 @@
-// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:15:43
+// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:38:00
 
     package parser;
-    import util.ParserUtil;
+    import parser.util.ParserUtil;
     import parser.descr.*;
     import parser.descr.ElementDescriptor.ElementType;
 

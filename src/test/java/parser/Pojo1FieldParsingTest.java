@@ -3,7 +3,7 @@ package parser;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import parser.descr.FieldDescr;
-import util.ParserUtil;
+import parser.util.ParserUtil;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
 package parser;
 
-import org.antlr.runtime.*;
 import org.junit.Before;
 import static org.junit.Assert.*;
-import util.ParserUtil;
+import parser.util.ParserUtil;
 
 import java.io.InputStream;
 

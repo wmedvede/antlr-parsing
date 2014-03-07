@@ -1,7 +1,7 @@
 package parser;
 
 import parser.descr.*;
-import util.ParserUtil;
+import parser.util.ParserUtil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -292,7 +292,7 @@ options {
 
 @parser::header {
     package parser;
-    import util.ParserUtil;
+    import parser.util.ParserUtil;
     import parser.descr.*;
     import parser.descr.ElementDescriptor.ElementType;
 }

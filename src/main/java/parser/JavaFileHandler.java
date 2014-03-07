@@ -1,7 +1,7 @@
 package parser;
 
 import parser.descr.*;
-import util.ParserUtil;
+import parser.util.ParserUtil;
 
 import java.io.InputStream;
 import java.util.ArrayList;

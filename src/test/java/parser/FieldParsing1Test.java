@@ -2,7 +2,7 @@ package parser;
 
 import org.junit.Test;
 import parser.descr.*;
-import util.ParserUtil;
+import parser.util.ParserUtil;
 
 import java.util.ArrayList;
 import java.util.List;
