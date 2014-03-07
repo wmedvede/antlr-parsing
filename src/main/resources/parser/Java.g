@@ -353,14 +353,13 @@ qualifiedImportName
     ;
 
 typeDeclaration 
-    :  { if(!isBacktracking()) System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA"); } classOrInterfaceDeclaration  {System.out.println("BBBBBBBBBBBBBBBBBBBBBBBB");}
+    :   classOrInterfaceDeclaration
     |   ';'
     ;
 
 classOrInterfaceDeclaration 
     :    {
             if (!isBacktracking()) {
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 increaseClassLevel();
                 if (isDeclaringMainClass()) {
                     ClassDescr classDescr = new ClassDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
