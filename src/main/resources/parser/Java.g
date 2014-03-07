@@ -353,12 +353,27 @@ qualifiedImportName
     ;
 
 typeDeclaration 
-    :   classOrInterfaceDeclaration
+    :  { if(!isBacktracking()) System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA"); } classOrInterfaceDeclaration  {System.out.println("BBBBBBBBBBBBBBBBBBBBBBBB");}
     |   ';'
     ;
 
 classOrInterfaceDeclaration 
-    :    { if (!isBacktracking()) increaseClassLevel(); } classDeclaration { decreaseClassLevel(); }
+    :    {
+            if (!isBacktracking()) {
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                increaseClassLevel();
+                if (isDeclaringMainClass()) {
+                    ClassDescr classDescr = new ClassDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+                    processClass(classDescr);
+                }
+            }
+         } classDeclaration {
+                if (isDeclaringMainClass()) {
+                    ClassDescr classDescr = popClass();
+                    updateOnAfter(classDescr, $text, (CommonToken)$stop);
+                }
+                decreaseClassLevel();
+        }
     |   interfaceDeclaration
     ;
 
@@ -430,7 +445,7 @@ classDeclaration
     ;
 
 normalClassDeclaration 
-    :   modifiers  'class' IDENTIFIER
+    :   modifiers 'class' IDENTIFIER
         (typeParameters
         )?
         ('extends' type

@@ -2,6 +2,7 @@ package parser;
 
 import org.antlr.runtime.*;
 import org.junit.Before;
+import static org.junit.Assert.*;
 import util.ParserUtil;
 
 import java.io.InputStream;
@@ -25,6 +26,11 @@ public class JavaParserBaseTest {
         buffer = new StringBuffer(ParserUtil.readString(this.getClass().getResourceAsStream(fileName)));
 
         parser.compilationUnit();
+    }
+
+    protected void assertClass() {
+        assertNotNull(parser.getFileDescr());
+        assertNotNull(parser.getFileDescr().getClassDescr());
     }
 
 }

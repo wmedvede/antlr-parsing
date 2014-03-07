@@ -1,7 +1,6 @@
 package parser;
 
 import org.junit.Before;
-import util.ParserUtil;
 
 import java.io.InputStream;
 
@@ -16,7 +15,7 @@ public class JavaCodeManagerBaseTest {
 
     String fileName;
 
-    JavaCodeManager codeManager;
+    JavaFileHandler codeManager;
 
     public JavaCodeManagerBaseTest(String fileName) {
         this.fileName = fileName;
@@ -25,7 +24,7 @@ public class JavaCodeManagerBaseTest {
     @Before
     public void preTest() throws Exception {
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-        codeManager = new JavaCodeManager(inputStream);
+        codeManager = new JavaFileHandler(inputStream);
     }
 
 }

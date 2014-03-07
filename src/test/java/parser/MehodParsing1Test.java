@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static parser.ParserAssert.assertEqualsMethodDeclaration;
 
 public class MehodParsing1Test extends JavaParserBaseTest {
@@ -35,7 +36,8 @@ public class MehodParsing1Test extends JavaParserBaseTest {
             methodSentences.add("int method9 ( final Object ...  param1) { return -1;}");
             methodSentences.add("private java.util.AbstractList<Object> method10  (  final java.lang.String param1,  int param2 , List<java.util.List<String>>...param3) { return null; }");
 
-            List<MethodDescr> methods  = parser.getMethods();
+            assertClass();
+            List<MethodDescr> methods  = parser.getFileDescr().getClassDescr().getMethods();
             int i = 0;
             for (String methodSentence : methodSentences) {
                 assertEquals(methodSentences.get(i), ParserUtil.readElement(buffer, methods.get(i)));
@@ -215,7 +217,9 @@ public class MehodParsing1Test extends JavaParserBaseTest {
             method.addParameter(ellipsisParam);
             methodDeclarations.add(method);
 
-            List<MethodDescr> methods = parser.getMethods();
+            assertClass();
+
+            List<MethodDescr> methods = parser.getFileDescr().getClassDescr().getMethods();
             assertEquals(methodDeclarations.size(), methods.size());
             for (int i = 0; i < methodDeclarations.size(); i++) {
                 assertEqualsMethodDeclaration(buffer, methodDeclarations.get(i), methods.get(i));

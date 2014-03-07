@@ -13,34 +13,32 @@ public class JavaParserBase extends Parser {
 
     public JavaParserBase(TokenStream input) {
         super(input);
+        initContext();
     }
 
     public JavaParserBase(TokenStream input, RecognizerSharedState state) {
         super(input, state);
+        initContext();
     }
 
-    protected ClassDescr classDesc = new ClassDescr();
+    protected FileDescr fileDescr = new FileDescr();
 
     protected Stack<ElementDescriptor> context = new Stack<ElementDescriptor>();
-
-    protected List<FieldDescr> fields = new ArrayList<FieldDescr>();
-
-    protected List<MethodDescr> methods = new ArrayList<MethodDescr>();
 
     protected boolean declaringMethodReturnType = false;
 
     protected int classLevel = 0;
 
-    public List<FieldDescr> getFields() {
-        return fields;
+    public FileDescr getFileDescr() {
+        return fileDescr;
     }
 
-    public List<MethodDescr> getMethods() {
-        return methods;
+    private ClassDescr getClassDesc() {
+        return fileDescr.getClassDescr();
     }
 
-    public ClassDescr getClassDesc() {
-        return classDesc;
+    protected void initContext() {
+        context.push(fileDescr);
     }
 
     protected void log(String message) {
@@ -82,6 +80,14 @@ public class JavaParserBase extends Parser {
 
     protected boolean isModifierListOnTop() {
         return isOnTop(ElementType.MODIFIER_LIST);
+    }
+
+    protected boolean isClassOnTop() {
+        return isOnTop(ElementType.CLASS);
+    }
+
+    protected boolean isFileOnTop() {
+        return isOnTop(ElementType.FILE);
     }
 
     protected boolean isOnTop(ElementType elementType) {
@@ -154,6 +160,22 @@ public class JavaParserBase extends Parser {
 
     protected ModifierListDescr peekModifierList() {
         return isModifierListOnTop() ? (ModifierListDescr)context.peek() : null;
+    }
+
+    protected ClassDescr popClass() {
+        return isClassOnTop() ? (ClassDescr) context.pop() : null;
+    }
+
+    protected ClassDescr peekClass() {
+        return isClassOnTop() ? (ClassDescr) context.peek() : null;
+    }
+
+    protected FileDescr popFile() {
+        return isFileOnTop() ? (FileDescr) context.pop() : null;
+    }
+
+    protected FileDescr peekFile() {
+        return isFileOnTop() ? (FileDescr) context.peek() : null;
     }
 
     protected TypeArgumentDescr peekTypeArgument() {
@@ -260,8 +282,7 @@ public class JavaParserBase extends Parser {
 
     protected void processMethod(MethodDescr methodDesc) {
         if (isDeclaringMainClass()) {
-            classDesc.addMember(methodDesc);
-            methods.add(methodDesc);
+            getClassDesc().addMember(methodDesc);
         }
     }
 
@@ -283,8 +304,14 @@ public class JavaParserBase extends Parser {
 
     protected void processField(FieldDescr fieldDesc) {
         if (isDeclaringMainClass()) {
-            classDesc.addMember(fieldDesc);
-            fields.add(fieldDesc);
+            getClassDesc().addMember(fieldDesc);
+        }
+    }
+
+    protected void processClass(ClassDescr classDescr) {
+        if (isDeclaringMainClass()) {
+            fileDescr.setClassDescr(classDescr);
+            context.push(classDescr);
         }
     }
 }

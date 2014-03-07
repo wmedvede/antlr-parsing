@@ -20,7 +20,8 @@ public class ElementDescriptor {
         TEXT_TOKEN,
         TYPE_ARGUMENT_LIST,
         MODIFIER_LIST,
-        SENTENCE
+        SENTENCE,
+        FILE
     }
 
     private ElementType elementType;

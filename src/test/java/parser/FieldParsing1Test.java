@@ -39,7 +39,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldSentences.add("protected char field12 = 12,    field13  =  13 ;");
             fieldSentences.add("Boolean field14 =   false, field15=true, field16 = !true ;");
 
-            List<FieldDescr> fields = parser.getFields();
+            assertClass();
+            List<FieldDescr> fields = parser.getFileDescr().getClassDescr().getFields();
             assertEquals(fieldSentences.size(), fields.size());
 
             //test field definition sentences
@@ -205,7 +206,8 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
-            List<FieldDescr> fields = parser.getFields();
+            assertClass();
+            List<FieldDescr> fields = parser.getFileDescr().getClassDescr().getFields();
             for (int i = 0; i < fieldDeclarations.size(); i++) {
                 assertEqualsFieldDeclaration(buffer, fieldDeclarations.get(i), fields.get(i));
             }

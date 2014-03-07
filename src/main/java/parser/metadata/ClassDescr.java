@@ -31,4 +31,21 @@ public class ClassDescr extends ElementDescriptor {
     public List<ElementDescriptor> getMembers() {
         return members;
     }
+
+    public List<MethodDescr> getMethods() {
+        List<MethodDescr> methods = new ArrayList<MethodDescr>();
+        for (ElementDescriptor member : members) {
+            if (ElementType.METHOD == member.getElementType()) methods.add((MethodDescr)member);
+        }
+        return methods;
+    }
+
+    public List<FieldDescr> getFields() {
+        List<FieldDescr> fields = new ArrayList<FieldDescr>();
+        for (ElementDescriptor member : members) {
+            if (ElementType.FIELD == member.getElementType()) fields.add((FieldDescr)member);
+        }
+        return fields;
+    }
+
 }

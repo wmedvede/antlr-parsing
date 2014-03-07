@@ -1,9 +1,6 @@
 package parser;
 
-import parser.metadata.ElementDescriptor;
-import parser.metadata.FieldDescr;
-import parser.metadata.MethodDescr;
-import parser.metadata.VariableDeclarationDescr;
+import parser.metadata.*;
 import util.ParserUtil;
 
 import java.io.InputStream;
@@ -12,11 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JavaCodeManager {
+public class JavaFileHandler {
 
     private StringBuilder source = null;
 
     private JavaParser parser;
+
+    private FileDescr fileDescr;
 
     private Map<ElementDescriptor, ElementDescriptor> deletedElements = new HashMap<ElementDescriptor, ElementDescriptor>();
 
@@ -24,32 +23,36 @@ public class JavaCodeManager {
 
     private List<ElementDescriptor> allElements = new ArrayList<ElementDescriptor>();
 
-    public JavaCodeManager(InputStream inputStream) throws Exception {
+    public JavaFileHandler(InputStream inputStream) throws Exception {
         //TODO implement better exceptions handling
         source = new StringBuilder(ParserUtil.readString(inputStream));
         parseSource();
     }
 
     public void deleteField(String name) throws Exception {
-        for (FieldDescr field : parser.fields) {
-            int deletedDeclarations = 0;
-            for (VariableDeclarationDescr var : field.getVariableDeclarations()) {
-                if (var.getIdentifier().equals(name)) {
-                    deleteElement(var);
+        if (fileDescr.getClassDescr() != null) {
+            for (FieldDescr field : fileDescr.getClassDescr().getFields()) {
+                int deletedDeclarations = 0;
+                for (VariableDeclarationDescr var : field.getVariableDeclarations()) {
+                    if (var.getIdentifier().equals(name)) {
+                        deleteElement(var);
+                    }
+                    if (deletedElements.containsKey(var)) {
+                        deletedDeclarations++;
+                    }
                 }
-                if (deletedElements.containsKey(var)) {
-                    deletedDeclarations++;
-                }
+                if (deletedDeclarations == field.getVariableDeclarations().size()) deleteElement(field);
             }
-            if (deletedDeclarations == field.getVariableDeclarations().size()) deleteElement(field);
         }
     }
 
     public void deleteMethod(String name) throws Exception {
         //TODO implement overloading, constructors deletion, etc.
-        for (MethodDescr method : parser.methods) {
-            if (name.equals(method.getName())) {
-                deleteElement(method);
+        if (fileDescr.getClassDescr() != null) {
+            for (MethodDescr method : fileDescr.getClassDescr().getMethods()) {
+                if (name.equals(method.getName())) {
+                    deleteElement(method);
+                }
             }
         }
     }
@@ -107,9 +110,12 @@ public class JavaCodeManager {
     private void parseSource() throws Exception {
         parser = ParserUtil.initParser(source.toString());
         parser.compilationUnit();
-        for (ElementDescriptor member : parser.getClassDesc().getMembers()) {
-            originalElements.put(member, member);
-            allElements.add(member);
+        fileDescr = parser.getFileDescr();
+        if (fileDescr.getClassDescr() != null) {
+            for (ElementDescriptor member : fileDescr.getClassDescr().getMembers()) {
+                originalElements.put(member, member);
+                allElements.add(member);
+            }
         }
     }
 

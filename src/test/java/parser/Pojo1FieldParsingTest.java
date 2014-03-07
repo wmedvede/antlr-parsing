@@ -16,8 +16,9 @@ public class Pojo1FieldParsingTest extends JavaParserBaseTest {
     @Test
     public void testFieldsReading1() {
         try {
-            parser.compilationUnit();
-            List<FieldDescr> fields = parser.getFields();
+
+            assertClass();
+            List<FieldDescr> fields = parser.getFileDescr().getClassDescr().getFields();
 
             assertEquals(3, fields.size());
             String[] fieldSentences = new String[3];
