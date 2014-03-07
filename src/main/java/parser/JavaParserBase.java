@@ -19,22 +19,28 @@ public class JavaParserBase extends Parser {
         super(input, state);
     }
 
+    protected ClassDescr classDesc = new ClassDescr();
+
     protected Stack<ElementDescriptor> context = new Stack<ElementDescriptor>();
 
-    protected List<FieldDeclarationDesc> fields = new ArrayList<FieldDeclarationDesc>();
+    protected List<FieldDescr> fields = new ArrayList<FieldDescr>();
 
-    protected List<MethodDeclarationDesc> methods = new ArrayList<MethodDeclarationDesc>();
+    protected List<MethodDescr> methods = new ArrayList<MethodDescr>();
 
     protected boolean declaringMethodReturnType = false;
 
     protected int classLevel = 0;
 
-    public List<FieldDeclarationDesc> getFields() {
+    public List<FieldDescr> getFields() {
         return fields;
     }
 
-    public List<MethodDeclarationDesc> getMethods() {
+    public List<MethodDescr> getMethods() {
         return methods;
+    }
+
+    public ClassDescr getClassDesc() {
+        return classDesc;
     }
 
     protected void log(String message) {
@@ -74,72 +80,84 @@ public class JavaParserBase extends Parser {
         return isOnTop(ElementType.ELLIPSIS_PARAMETER);
     }
 
+    protected boolean isModifierListOnTop() {
+        return isOnTop(ElementType.MODIFIER_LIST);
+    }
+
     protected boolean isOnTop(ElementType elementType) {
         return !context.empty() && context.peek().isElementType(elementType);
     }
 
-    protected MethodDeclarationDesc popMethod() {
-        return isMethodOnTop() ? (MethodDeclarationDesc)context.pop() : null;
+    protected MethodDescr popMethod() {
+        return isMethodOnTop() ? (MethodDescr)context.pop() : null;
     }
 
-    protected MethodDeclarationDesc peekMethod() {
-        return isMethodOnTop() ? (MethodDeclarationDesc)context.peek() : null;
+    protected MethodDescr peekMethod() {
+        return isMethodOnTop() ? (MethodDescr)context.peek() : null;
     }
 
-    protected FieldDeclarationDesc popField() {
-        return isFieldOnTop() ? (FieldDeclarationDesc)context.pop() : null;
+    protected FieldDescr popField() {
+        return isFieldOnTop() ? (FieldDescr)context.pop() : null;
     }
 
-    protected FieldDeclarationDesc peekField() {
-        return isFieldOnTop() ? (FieldDeclarationDesc)context.peek() : null;
+    protected FieldDescr peekField() {
+        return isFieldOnTop() ? (FieldDescr)context.peek() : null;
     }
 
-    protected TypeDesc popType() {
-        return isTypeOnTop() ? (TypeDesc)context.pop() : null;
+    protected TypeDescr popType() {
+        return isTypeOnTop() ? (TypeDescr)context.pop() : null;
     }
 
-    protected TypeDesc peekType() {
-        return isTypeOnTop() ? (TypeDesc)context.peek() : null;
+    protected TypeDescr peekType() {
+        return isTypeOnTop() ? (TypeDescr)context.peek() : null;
     }
 
-    protected ClassOrInterfaceTypeDesc popClassOrInterfaceType() {
-        return isClassOrInterfaceTypeOnTop() ? (ClassOrInterfaceTypeDesc)context.pop() : null;
+    protected ClassOrInterfaceTypeDescr popClassOrInterfaceType() {
+        return isClassOrInterfaceTypeOnTop() ? (ClassOrInterfaceTypeDescr)context.pop() : null;
     }
 
-    protected ClassOrInterfaceTypeDesc peekClassOrInterfaceType() {
-        return isClassOrInterfaceTypeOnTop() ? (ClassOrInterfaceTypeDesc)context.peek() : null;
+    protected ClassOrInterfaceTypeDescr peekClassOrInterfaceType() {
+        return isClassOrInterfaceTypeOnTop() ? (ClassOrInterfaceTypeDescr)context.peek() : null;
     }
 
-    protected TypeArgumentDesc popTypeArgument() {
-        return isTypeArgumentOnTop() ? (TypeArgumentDesc)context.pop() : null;
+    protected TypeArgumentDescr popTypeArgument() {
+        return isTypeArgumentOnTop() ? (TypeArgumentDescr)context.pop() : null;
     }
 
-    protected ParameterDeclarationDesc popParameter() {
-        return isParameterOnTop() ? (ParameterDeclarationDesc)context.pop() : null;
+    protected ParameterDescr popParameter() {
+        return isParameterOnTop() ? (ParameterDescr)context.pop() : null;
     }
 
-    protected ParameterDeclarationDesc peekParameter() {
-        return isParameterOnTop() ? (ParameterDeclarationDesc)context.peek() : null;
+    protected ParameterDescr peekParameter() {
+        return isParameterOnTop() ? (ParameterDescr)context.peek() : null;
     }
 
-    protected NormalParameterDeclarationDesc popNormalParameter() {
-        return isNormalParameterOnTop() ? (NormalParameterDeclarationDesc)context.pop() : null;
+    protected NormalParameterDescr popNormalParameter() {
+        return isNormalParameterOnTop() ? (NormalParameterDescr)context.pop() : null;
     }
 
-    protected NormalParameterDeclarationDesc peekNormalParameter() {
-        return isNormalParameterOnTop() ? (NormalParameterDeclarationDesc)context.peek() : null;
+    protected NormalParameterDescr peekNormalParameter() {
+        return isNormalParameterOnTop() ? (NormalParameterDescr)context.peek() : null;
     }
 
-    protected EllipsisParameterDeclarationDesc popEllipsisParameter() {
-        return isEllipsisParameterOnTop() ? (EllipsisParameterDeclarationDesc)context.pop() : null;
+    protected EllipsisParameterDescr popEllipsisParameter() {
+        return isEllipsisParameterOnTop() ? (EllipsisParameterDescr)context.pop() : null;
     }
 
-    protected EllipsisParameterDeclarationDesc peekEllipsisParameter() {
-        return isEllipsisParameterOnTop() ? (EllipsisParameterDeclarationDesc)context.peek() : null;
+    protected EllipsisParameterDescr peekEllipsisParameter() {
+        return isEllipsisParameterOnTop() ? (EllipsisParameterDescr)context.peek() : null;
     }
 
-    protected TypeArgumentDesc peekTypeArgument() {
-        return isTypeArgumentOnTop() ? (TypeArgumentDesc)context.peek() : null;
+    protected ModifierListDescr popModifierList() {
+        return isModifierListOnTop() ? (ModifierListDescr)context.pop() : null;
+    }
+
+    protected ModifierListDescr peekModifierList() {
+        return isModifierListOnTop() ? (ModifierListDescr)context.peek() : null;
+    }
+
+    protected TypeArgumentDescr peekTypeArgument() {
+        return isTypeArgumentOnTop() ? (TypeArgumentDescr)context.peek() : null;
     }
 
     protected HasModifiers peekHasModifiers() {
@@ -207,7 +225,7 @@ public class JavaParserBase extends Parser {
         return --classLevel;
     }
 
-    protected void processType(TypeDesc type) {
+    protected void processType(TypeDescr type) {
         //if we are processing a method declaration return type, or a method parameter, or a field type
         if (isDeclaringMainClass()) {
             if (isTypeArgumentOnTop()) {
@@ -222,17 +240,17 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void processModifier(ModifierDesc modifierDesc) {
+    protected void processModifiers(ModifierListDescr modifiers) {
         if (isDeclaringMainClass()) {
             if ( isTypeArgumentOnTop() || isMethodOnTop() || isFieldOnTop() || isParameterOnTop() ) {
-                peekHasModifiers().addModifier(modifierDesc);
+                peekHasModifiers().setModifiers(modifiers);
             }
         }
     }
 
-    protected void processParameter(ParameterDeclarationDesc parameterDesc) {
+    protected void processParameter(ParameterDescr parameterDesc) {
         if (isDeclaringMainClass()) {
-            MethodDeclarationDesc method = peekMethod();
+            MethodDescr method = peekMethod();
             //TODO check if this control is enough
             if (method != null) {
                 method.addParameter(parameterDesc);
@@ -240,8 +258,9 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void processMethod(MethodDeclarationDesc methodDesc) {
+    protected void processMethod(MethodDescr methodDesc) {
         if (isDeclaringMainClass()) {
+            classDesc.addMember(methodDesc);
             methods.add(methodDesc);
         }
     }
@@ -249,7 +268,7 @@ public class JavaParserBase extends Parser {
     protected void setFormalParamsStart(String text, int line, int position) {
         if (isDeclaringMainClass()) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStart(new TextTokenElementDescriptor(text, line, position));
+                peekMethod().setParamsStart(new TextTokenElementDescr(text, line, position));
             }
         }
     }
@@ -257,13 +276,14 @@ public class JavaParserBase extends Parser {
     protected void setFormalParamsStop(String text, int line, int position) {
         if (isDeclaringMainClass()) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStop(new TextTokenElementDescriptor(text, line, position));
+                peekMethod().setParamsStop(new TextTokenElementDescr(text, line, position));
             }
         }
     }
 
-    protected void processField(FieldDeclarationDesc fieldDesc) {
+    protected void processField(FieldDescr fieldDesc) {
         if (isDeclaringMainClass()) {
+            classDesc.addMember(fieldDesc);
             fields.add(fieldDesc);
         }
     }

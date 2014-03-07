@@ -4,7 +4,7 @@ package parser.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariableDeclarationDesc extends ElementDescriptor implements HasDimensions {
+public class VariableDeclarationDescr extends ElementDescriptor implements HasDimensions {
 
     private String identifier;
 
@@ -13,32 +13,32 @@ public class VariableDeclarationDesc extends ElementDescriptor implements HasDim
      * e.g. 1 -> int a[]
      * e.g. 2 -> int a[][]
      */
-    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
+    private List<DimensionDescr> dimensions = new ArrayList<DimensionDescr>();
 
     /**
      * variableInitializer == null means that the variable wasn't initialized.
      */
-    private VariableInitializerDesc variableInitializer;
+    private VariableInitializerDescr variableInitializer;
 
-    public VariableDeclarationDesc() {
+    public VariableDeclarationDescr() {
         super(ElementType.VARIABLE);
     }
 
-    public VariableDeclarationDesc(String text, int start, int stop, int line, int position,  String identifier, VariableInitializerDesc variableInitializer) {
+    public VariableDeclarationDescr(String text, int start, int stop, int line, int position, String identifier, VariableInitializerDescr variableInitializer) {
         super(ElementType.VARIABLE, text, start, stop, line, position);
         this.identifier = identifier;
         this.variableInitializer = variableInitializer;
     }
 
-    public VariableDeclarationDesc(String text, int start, int stop, int line, int position) {
+    public VariableDeclarationDescr(String text, int start, int stop, int line, int position) {
         this(text, start, stop, line, position, null, null);
     }
 
-    public VariableDeclarationDesc(String text, int start, int stop, String identifier) {
+    public VariableDeclarationDescr(String text, int start, int stop, String identifier) {
         this(text, start, stop, -1, -1, identifier, null);
     }
 
-    public VariableDeclarationDesc(String text, int start, int stop, String identifier, VariableInitializerDesc variableInitializer) {
+    public VariableDeclarationDescr(String text, int start, int stop, String identifier, VariableInitializerDescr variableInitializer) {
         this(text, start, stop, -1, -1, identifier, variableInitializer);
     }
 
@@ -56,15 +56,15 @@ public class VariableDeclarationDesc extends ElementDescriptor implements HasDim
     }
 
     @Override
-    public void addDimension(DimensionDesc dimensionDesc) {
-        dimensions.add(dimensionDesc);
+    public void addDimension(DimensionDescr dimensionDescr) {
+        dimensions.add(dimensionDescr);
     }
 
-    public VariableInitializerDesc getVariableInitializer() {
+    public VariableInitializerDescr getVariableInitializer() {
         return variableInitializer;
     }
 
-    public void setVariableInitializer(VariableInitializerDesc variableInitializer) {
+    public void setVariableInitializer(VariableInitializerDescr variableInitializer) {
         this.variableInitializer = variableInitializer;
     }
 }

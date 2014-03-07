@@ -39,7 +39,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldSentences.add("protected char field12 = 12,    field13  =  13 ;");
             fieldSentences.add("Boolean field14 =   false, field15=true, field16 = !true ;");
 
-            List<FieldDeclarationDesc> fields = parser.getFields();
+            List<FieldDescr> fields = parser.getFields();
             assertEquals(fieldSentences.size(), fields.size());
 
             //test field definition sentences
@@ -59,134 +59,134 @@ public class FieldParsing1Test extends JavaParserBaseTest {
 
         try {
 
-            List<FieldDeclarationDesc> fieldDeclarations = new ArrayList<FieldDeclarationDesc>();
+            List<FieldDescr> fieldDeclarations = new ArrayList<FieldDescr>();
 
-            FieldDeclarationDesc fieldDeclaration = new FieldDeclarationDesc();
-            VariableDeclarationDesc var;
-            TypeDesc type;
+            FieldDescr fieldDeclaration = new FieldDescr();
+            VariableDeclarationDescr var;
+            TypeDescr type;
 
 
             //field1
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field1"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field1"));
             fieldDeclarations.add(fieldDeclaration);
 
             //field2
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field2"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field2"));
             fieldDeclarations.add(fieldDeclaration);
 
             //field3
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "final"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("Integer", -1, -1));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "FIELD3", new VariableInitializerDesc(null, -1, -1, "new Integer(\"3\")")));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "final"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("Integer", -1, -1));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "FIELD3", new VariableInitializerDescr(null, -1, -1, "new Integer(\"3\")")));
             fieldDeclarations.add(fieldDeclaration);
 
             //field4
             //"transient boolean field4;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "transient"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "boolean"));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field4"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "transient"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "boolean"));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field4"));
             fieldDeclarations.add(fieldDeclaration);
 
             //field5
             //"protected   List<String>   field5;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new TypeDesc(null, -1,-1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<String>", -1, -1));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field5"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
+            fieldDeclaration.setType(new TypeDescr(null, -1,-1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<String>", -1, -1));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field5"));
             fieldDeclarations.add(fieldDeclaration);
 
             //field6
             //"protected   static List<List<String>> field6 = new ArrayList<List<String>>();"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<List<String>>", -1, -1));
-            //fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field6", new VariableInitializerDesc(null, -1, -1, "new ArrayList<List<String>>()")));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field6", new VariableInitializerDesc(null, -1, -1, "null")));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<List<String>>", -1, -1));
+            //fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field6", new VariableInitializerDescr(null, -1, -1, "new ArrayList<List<String>>()")));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field6", new VariableInitializerDescr(null, -1, -1, "null")));
             fieldDeclarations.add(fieldDeclaration);
 
             //field7
             //"public    String[]      field7    ;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
-            fieldDeclaration.getType().addDimension(new DimensionDesc());
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDesc(null, -1, -1, "field7", null));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
+            fieldDeclaration.getType().addDimension(new DimensionDescr());
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field7", null));
             fieldDeclarations.add(fieldDeclaration);
 
             //field8
             //"public    static    java.lang.String   field8[];"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "public"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("java.lang.String", -1, -1));
-            var = new VariableDeclarationDesc(null, -1, -1, "field8", null);
-            var.addDimension(new DimensionDesc());
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("java.lang.String", -1, -1));
+            var = new VariableDeclarationDescr(null, -1, -1, "field8", null);
+            var.addDimension(new DimensionDescr());
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
             //field9
             //fieldSentences.add("private    static   String  field9 [][][];");
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "private"));
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "static"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("String", -1, -1));
-            var = new VariableDeclarationDesc(null, -1, -1, "field9", null);
-            var.addDimension(new DimensionDesc());
-            var.addDimension(new DimensionDesc());
-            var.addDimension(new DimensionDesc());
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "private"));
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
+            var = new VariableDeclarationDescr(null, -1, -1, "field9", null);
+            var.addDimension(new DimensionDescr());
+            var.addDimension(new DimensionDescr());
+            var.addDimension(new DimensionDescr());
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
             //field10
             // "protected List<String>[] field10 = null;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("List<String>", -1, -1));
-            fieldDeclaration.getType().addDimension(new DimensionDesc());
-            var = new VariableDeclarationDesc(null, -1, -1, "field10", new VariableInitializerDesc(null, -1, -1, "null"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<String>", -1, -1));
+            fieldDeclaration.getType().addDimension(new DimensionDescr());
+            var = new VariableDeclarationDescr(null, -1, -1, "field10", new VariableInitializerDescr(null, -1, -1, "null"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
             //field11
             // "protected int field11    =   11   ;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "int"));
-            var = new VariableDeclarationDesc(null, -1, -1, "field11", new VariableInitializerDesc(null, -1, -1, "11"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field11", new VariableInitializerDescr(null, -1, -1, "11"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
             //field 12, and 13
             //"protected char field12 = 12,    field13  =  13 ;"
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.addModifier(new ModifierDesc(null, -1, -1, "protected"));
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDesc(null, -1, -1, "char"));
-            var = new VariableDeclarationDesc(null, -1, -1, "field12", new VariableInitializerDesc(null, -1, -1, "12"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "char"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field12", new VariableInitializerDescr(null, -1, -1, "12"));
             fieldDeclaration.addVariableDeclaration(var);
-            var = new VariableDeclarationDesc(null, -1, -1, "field13", new VariableInitializerDesc(null, -1, -1, "13"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field13", new VariableInitializerDescr(null, -1, -1, "13"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
@@ -194,18 +194,18 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             //field 14, 15, 16
             //"Boolean field14 =   false, field15=true, field16 = !true ;"
 
-            fieldDeclaration = new FieldDeclarationDesc();
-            fieldDeclaration.setType(new TypeDesc(null, -1, -1));
-            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDesc("Boolean", -1, -1));
-            var = new VariableDeclarationDesc(null, -1, -1, "field14", new VariableInitializerDesc(null, -1, -1, "false"));
+            fieldDeclaration = new FieldDescr();
+            fieldDeclaration.setType(new TypeDescr(null, -1, -1));
+            fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("Boolean", -1, -1));
+            var = new VariableDeclarationDescr(null, -1, -1, "field14", new VariableInitializerDescr(null, -1, -1, "false"));
             fieldDeclaration.addVariableDeclaration(var);
-            var = new VariableDeclarationDesc(null, -1, -1, "field15", new VariableInitializerDesc(null, -1, -1, "true"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field15", new VariableInitializerDescr(null, -1, -1, "true"));
             fieldDeclaration.addVariableDeclaration(var);
-            var = new VariableDeclarationDesc(null, -1, -1, "field16", new VariableInitializerDesc(null, -1, -1, "!true"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field16", new VariableInitializerDescr(null, -1, -1, "!true"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
-            List<FieldDeclarationDesc> fields = parser.getFields();
+            List<FieldDescr> fields = parser.getFields();
             for (int i = 0; i < fieldDeclarations.size(); i++) {
                 assertEqualsFieldDeclaration(buffer, fieldDeclarations.get(i), fields.get(i));
             }

@@ -1,20 +1,20 @@
 package parser.metadata;
 
 
-public class VariableInitializerDesc extends ElementDescriptor {
+public class VariableInitializerDescr extends ElementDescriptor {
 
     private String initializerExpr;
 
-    public VariableInitializerDesc() {
+    public VariableInitializerDescr() {
         super(ElementType.VARIABLE_INITIALIZER);
     }
 
-    public VariableInitializerDesc(String text, int start, int stop, int line, int position, String initializerExpr) {
+    public VariableInitializerDescr(String text, int start, int stop, int line, int position, String initializerExpr) {
         super(ElementType.VARIABLE_INITIALIZER, text, start, stop, line, position);
         this.initializerExpr = initializerExpr;
     }
 
-    public VariableInitializerDesc(String text, int start, int stop, String initializerExpr) {
+    public VariableInitializerDescr(String text, int start, int stop, String initializerExpr) {
         this(text, start, stop, -1, -1, initializerExpr);
     }
 

@@ -1,19 +1,19 @@
 package parser.metadata;
 
 
-public class ModifierDesc extends ElementDescriptor {
+public class ModifierDescr extends ElementDescriptor {
 
     private String name;
 
-    public ModifierDesc() {
+    public ModifierDescr() {
         super(ElementType.MODIFIER);
     }
 
-    public ModifierDesc(String text, int start, int stop, String name) {
+    public ModifierDescr(String text, int start, int stop, String name) {
         this(text, start, stop, -1, -1, name);
     }
 
-    public ModifierDesc(String text, int start, int stop, int line, int position, String name) {
+    public ModifierDescr(String text, int start, int stop, int line, int position, String name) {
         super(ElementType.MODIFIER, text, start, stop, line, position);
         this.name = name;
     }

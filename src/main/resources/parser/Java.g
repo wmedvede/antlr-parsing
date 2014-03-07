@@ -364,25 +364,61 @@ classOrInterfaceDeclaration
 
 
 modifiers
+    @init {
+        ModifierListDescr modifiers = null;
+        if (!isBacktracking()) {
+            log("Start modifier list declaration.");
+            modifiers = new ModifierListDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(modifiers);
+        }
+    }
+    @after {
+        modifiers = popModifierList();
+        if (modifiers != null) {
+            updateOnAfter(modifiers, $text, (CommonToken)$stop);
+            processModifiers(modifiers);
+            log("End of modifier list declaration.");
+        } else {
+            log("A ModifierListDescr is expected");
+        }
+    }
     :
     (    annotation
-    |   s='public'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='protected'       { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='private'         { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='static'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='abstract'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='final'           { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='native'          { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='synchronized'    { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='transient'       { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='volatile'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='strictfp'        { processModifier( new ModifierDesc($s.text, -1, -1, $s.line, $s.pos, $s.text) );   }
+    |   s='public'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='protected'       { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='private'         { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='static'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='abstract'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='final'           { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='native'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='synchronized'    { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='transient'       { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='volatile'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='strictfp'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
     )*
     ;
 
 
-variableModifiers 
-    :   (   s= 'final'      { processModifier( new ModifierDesc($s.text, -1, -1, line($s), position($s), $s.text) ); }
+variableModifiers
+    @init {
+        ModifierListDescr modifiers = null;
+        if (!isBacktracking()) {
+            log("Start variable modifier list declaration.");
+            modifiers = new ModifierListDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(modifiers);
+        }
+    }
+    @after {
+        modifiers = popModifierList();
+        if (modifiers != null) {
+            updateOnAfter(modifiers, $text, (CommonToken)$stop);
+            processModifiers(modifiers);
+            log("End of variable modifiers list declaration.");
+        } else {
+            log("A ModifierListDescr is expected");
+        }
+    }
+    :   (   s= 'final'      { modifiers.add( new ModifierDescr($s.text, -1, -1, line($s), position($s), $s.text) ); }
         |   annotation
         )*
     ;
@@ -528,11 +564,11 @@ memberDecl
 
 methodDeclaration
     @init {
-        MethodDeclarationDesc method = null;
+        MethodDescr method = null;
         if (!isBacktracking()) {
             log("Start method declaration.");
             setDeclaringMethodReturnType(false);
-            method = new MethodDeclarationDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            method = new MethodDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
             context.push(method);
         }
     }
@@ -567,7 +603,7 @@ methodDeclaration
         )
         IDENTIFIER { method.setName($IDENTIFIER.text); }
         formalParameters
-        (p1='[' p2=']'   { method.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']'   { method.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
         ('throws' qualifiedNameList
         )?            
@@ -580,10 +616,10 @@ methodDeclaration
 
 fieldDeclaration
     @init {
-        FieldDeclarationDesc field = null;
+        FieldDescr field = null;
         if (!isBacktracking()) {
             log("Start field declaration.");
-            field = new FieldDeclarationDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            field = new FieldDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
             context.push(field);
         }
     }
@@ -595,7 +631,7 @@ fieldDeclaration
             processField(field);
             log("End of field declaration.");
         } else {
-            log("A FieldDeclarationDesc is expected");
+            log("A FieldDescr is expected");
         }
     }
     :   modifiers
@@ -606,9 +642,9 @@ fieldDeclaration
         ';'
     ;
 
-variableDeclarator returns [ VariableDeclarationDesc varDec ]
+variableDeclarator returns [ VariableDeclarationDescr varDec ]
     @init {
-        $varDec = new VariableDeclarationDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+        $varDec = new VariableDeclarationDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
     }
     @after {
         updateOnAfter($varDec, $text, (CommonToken)$stop);
@@ -616,9 +652,9 @@ variableDeclarator returns [ VariableDeclarationDesc varDec ]
         //$varDec.setInitializerExpr(variableInitializer.text);
     }
     :   i=IDENTIFIER { $varDec.setIdentifier($i.text); }
-        (p1='[' p2=']' { $varDec.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { $varDec.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
-        ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDesc( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }
+        ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDescr( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }
         )?
     ;
 
@@ -664,10 +700,10 @@ interfaceFieldDeclaration
 
 type
     @init {
-        TypeDesc type = null;
+        TypeDescr type = null;
         if (!isBacktracking()) {
             log("Start type declaration.");
-            type = new TypeDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            type = new TypeDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
             context.push(type);
         }
     }
@@ -681,45 +717,45 @@ type
         }
     }
     :   classOrInterfaceType
-        (p1='[' p2=']' { type.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     |   primitiveType
-        (p1='[' p2=']' { type.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     ;
 
 
 classOrInterfaceType
     @init {
-        ClassOrInterfaceTypeDesc classDesc = null;
-        IdentifierWithTypeArgumentsDesc idArguments = null;
+        ClassOrInterfaceTypeDescr classDescr = null;
+        IdentifierWithTypeArgumentsDescr idArguments = null;
         if (!isBacktracking()) {
             log("Start ClassOrInterfaceType declaration");
-            classDesc = new ClassOrInterfaceTypeDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
-            context.push(classDesc);
+            classDescr = new ClassOrInterfaceTypeDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(classDescr);
         }
     }
     @after {
-        classDesc = popClassOrInterfaceType();
-        if (classDesc != null) {
-            updateOnAfter(classDesc, $text, (CommonToken)$stop);
+        classDescr = popClassOrInterfaceType();
+        if (classDescr != null) {
+            updateOnAfter(classDescr, $text, (CommonToken)$stop);
             HasClassOrInterfaceType top = peekHasClassOrInterfaceType();
             if ( top != null) {
-                top.setClassOrInterfaceType(classDesc);
+                top.setClassOrInterfaceType(classDescr);
             }
         } else {
-            //TODO warning, by construction current classDesc is expected
+            //TODO warning, by construction current classDescr is expected
         }
     }
     :   id1=IDENTIFIER  {
-                            idArguments = new IdentifierWithTypeArgumentsDesc($id1.text, -1, line($id1), position($id1), $id1.text);
-                            classDesc.addIdentifierWithTypeArguments(idArguments);
+                            idArguments = new IdentifierWithTypeArgumentsDescr($id1.text, -1, line($id1), position($id1), $id1.text);
+                            classDescr.addIdentifierWithTypeArguments(idArguments);
                         }
         ( {context.push(idArguments);} typeArguments {if (context.size() > 0) context.pop();}
         )?
         ('.' id2=IDENTIFIER {
-                            idArguments = new IdentifierWithTypeArgumentsDesc($id2.text, -1, line($id2), position($id2), $id2.text);
-                            classDesc.addIdentifierWithTypeArguments(idArguments);
+                            idArguments = new IdentifierWithTypeArgumentsDescr($id2.text, -1, line($id2), position($id2), $id2.text);
+                            classDescr.addIdentifierWithTypeArguments(idArguments);
                         }
             ( {context.push(idArguments);} typeArguments {if (context.size() > 0) context.pop();}
             )?
@@ -730,7 +766,7 @@ primitiveType
     @after {
         HasPrimitiveType hasPrimitive = peekHasPrimitiveType();
         if (hasPrimitive != null) {
-            hasPrimitive.setPrimitiveType(new PrimitiveTypeDesc($text, start((CommonToken)$start), stop((CommonToken)$stop), line((CommonToken)$start), position((CommonToken)$start), $text));
+            hasPrimitive.setPrimitiveType(new PrimitiveTypeDescr($text, start((CommonToken)$start), stop((CommonToken)$stop), line((CommonToken)$start), position((CommonToken)$start), $text));
         }
     }
     :   'boolean'
@@ -753,23 +789,23 @@ typeArguments
 
 typeArgument
     @init {
-        TypeArgumentDesc typeArgumentDesc = null;
+        TypeArgumentDescr typeArgumentDescr = null;
         if (!isBacktracking()) {
-            log("Start TypeArgumentDesc declaration");
-            typeArgumentDesc = new TypeArgumentDesc($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
-            context.push(typeArgumentDesc);
+            log("Start TypeArgumentDescr declaration");
+            typeArgumentDescr = new TypeArgumentDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(typeArgumentDescr);
         }
     }
     @after {
-        typeArgumentDesc = popTypeArgument();
-        if (typeArgumentDesc != null) {
-            updateOnAfter(typeArgumentDesc, $text, (CommonToken)$stop);
+        typeArgumentDescr = popTypeArgument();
+        if (typeArgumentDescr != null) {
+            updateOnAfter(typeArgumentDescr, $text, (CommonToken)$stop);
             HasTypeArguments top = peekHasTypeArguments();
             if ( top != null) {
-                top.addArgument(typeArgumentDesc);
+                top.addArgument(typeArgumentDescr);
             }
         } else {
-            //TODO warning, by construction current typeArgumentDesc is expected
+            //TODO warning, by construction current typeArgumentDescr is expected
         }
     }
 
@@ -809,49 +845,49 @@ formalParameterDecls
 
 normalParameterDecl
      @init {
-         NormalParameterDeclarationDesc parameterDesc = null;
+         NormalParameterDescr param = null;
          if (!isBacktracking()) {
              log("Start NormalParameterDeclaration");
-             parameterDesc = new NormalParameterDeclarationDesc($text, start((CommonToken)$start), -1, line($start), position($start), null);
-             context.push(parameterDesc);
+             param = new NormalParameterDescr($text, start((CommonToken)$start), -1, line($start), position($start), null);
+             context.push(param);
          }
      }
      @after {
-         parameterDesc = popNormalParameter();
-         if (parameterDesc != null) {
-             updateOnAfter(parameterDesc, $text, (CommonToken)$stop);
-             processParameter(parameterDesc);
+         param = popNormalParameter();
+         if (param != null) {
+             updateOnAfter(param, $text, (CommonToken)$stop);
+             processParameter(param);
          } else {
-             //TODO warning, by construction current parameterDesc is expected
+             //TODO warning, by construction current param is expected
          }
      }
-    :   variableModifiers type IDENTIFIER { parameterDesc.setName($IDENTIFIER.text); }
-        (p1='[' p2=']' { parameterDesc.addDimension(new DimensionDesc($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+    :   variableModifiers type IDENTIFIER { param.setName($IDENTIFIER.text); }
+        (p1='[' p2=']' { param.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
     ;
 
 ellipsisParameterDecl
       @init {
-          EllipsisParameterDeclarationDesc ellipsisParamDesc = null;
+          EllipsisParameterDescr ellipsisParam = null;
           if (!isBacktracking()) {
               log("Start EllipsisParameterDeclarationDesc");
-              ellipsisParamDesc = new EllipsisParameterDeclarationDesc($text, start((CommonToken)$start), -1, line($start), position($start), null);
-              context.push(ellipsisParamDesc);
+              ellipsisParam = new EllipsisParameterDescr($text, start((CommonToken)$start), -1, line($start), position($start), null);
+              context.push(ellipsisParam);
           }
       }
      @after {
-         ellipsisParamDesc = popEllipsisParameter();
-         if (ellipsisParamDesc != null) {
-             updateOnAfter(ellipsisParamDesc, $text, (CommonToken)$stop);
-             processParameter(ellipsisParamDesc);
+         ellipsisParam = popEllipsisParameter();
+         if (ellipsisParam != null) {
+             updateOnAfter(ellipsisParam, $text, (CommonToken)$stop);
+             processParameter(ellipsisParam);
          } else {
              //TODO warning, by construction current ellipsis parameterDesc is expected
          }
      }
 
     :   variableModifiers
-        type  e='...' { ellipsisParamDesc.setEllipsisToken(new TextTokenElementDescriptor($e.text, line($e), position($e))); }
-        IDENTIFIER { ellipsisParamDesc.setName($IDENTIFIER.text); }
+        type  e='...' { ellipsisParam.setEllipsisToken(new TextTokenElementDescr($e.text, line($e), position($e))); }
+        IDENTIFIER { ellipsisParam.setName($IDENTIFIER.text); }
     ;
 
 

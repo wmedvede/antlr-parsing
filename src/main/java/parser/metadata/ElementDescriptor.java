@@ -17,7 +17,10 @@ public class ElementDescriptor {
         TYPE,
         NORMAL_PARAMETER,
         ELLIPSIS_PARAMETER,
-        TEXT_TOKEN
+        TEXT_TOKEN,
+        TYPE_ARGUMENT_LIST,
+        MODIFIER_LIST,
+        SENTENCE
     }
 
     private ElementType elementType;

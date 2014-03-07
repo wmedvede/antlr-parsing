@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface HasAnnotations {
 
-    List<AnnotationDeclarationDesc> getAnnotations();
+    List<AnnotationDescr> getAnnotations();
 
-    void addAnnotation(AnnotationDeclarationDesc annotationDesc);
+    void addAnnotation(AnnotationDescr annotationDescr);
 
 }

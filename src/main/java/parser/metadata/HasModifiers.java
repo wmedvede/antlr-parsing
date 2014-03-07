@@ -1,10 +1,10 @@
 package parser.metadata;
 
-import java.util.List;
-
 public interface HasModifiers {
 
-    List<ModifierDesc> getModifiers();
+    ModifierListDescr getModifiers();
 
-    void addModifier(ModifierDesc modifierDesc);
+    void setModifiers(ModifierListDescr modifiers);
+
+    void addModifier(ModifierDescr modifier);
 }

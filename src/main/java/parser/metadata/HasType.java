@@ -2,8 +2,8 @@ package parser.metadata;
 
 public interface HasType {
 
-    void setType(TypeDesc type);
+    void setType(TypeDescr type);
 
-    TypeDesc getType();
+    TypeDescr getType();
 
 }

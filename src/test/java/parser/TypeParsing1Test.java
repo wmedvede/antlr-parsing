@@ -1,9 +1,6 @@
 package parser;
 
 import org.junit.Test;
-import parser.metadata.FieldDeclarationDesc;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

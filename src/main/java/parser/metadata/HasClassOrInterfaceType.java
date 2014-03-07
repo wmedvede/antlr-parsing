@@ -3,7 +3,7 @@ package parser.metadata;
 
 public interface HasClassOrInterfaceType {
 
-    void setClassOrInterfaceType(ClassOrInterfaceTypeDesc classOrInterfaceType);
+    void setClassOrInterfaceType(ClassOrInterfaceTypeDescr classOrInterfaceType);
 
-    ClassOrInterfaceTypeDesc getClassOrInterfaceType();
+    ClassOrInterfaceTypeDescr getClassOrInterfaceType();
 }

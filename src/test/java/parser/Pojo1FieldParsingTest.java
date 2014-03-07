@@ -2,7 +2,7 @@ package parser;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import parser.metadata.FieldDeclarationDesc;
+import parser.metadata.FieldDescr;
 import util.ParserUtil;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class Pojo1FieldParsingTest extends JavaParserBaseTest {
     public void testFieldsReading1() {
         try {
             parser.compilationUnit();
-            List<FieldDeclarationDesc> fields = parser.getFields();
+            List<FieldDescr> fields = parser.getFields();
 
             assertEquals(3, fields.size());
             String[] fieldSentences = new String[3];

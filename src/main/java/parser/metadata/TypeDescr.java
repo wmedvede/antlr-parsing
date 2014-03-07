@@ -4,25 +4,25 @@ package parser.metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceType, HasPrimitiveType, HasDimensions {
+public class TypeDescr extends ElementDescriptor implements HasClassOrInterfaceType, HasPrimitiveType, HasDimensions {
 
     private String name;
 
-    private ClassOrInterfaceTypeDesc classOrInterfaceType;
+    private ClassOrInterfaceTypeDescr classOrInterfaceType;
 
-    private PrimitiveTypeDesc primitiveType;
+    private PrimitiveTypeDescr primitiveType;
 
-    private List<DimensionDesc> dimensions = new ArrayList<DimensionDesc>();
+    private List<DimensionDescr> dimensions = new ArrayList<DimensionDescr>();
 
-    public TypeDesc() {
+    public TypeDescr() {
         super(ElementType.TYPE);
     }
 
-    public TypeDesc(String text, int start, int stop) {
+    public TypeDescr(String text, int start, int stop) {
         this(text, start, stop, -1, -1);
     }
 
-    public TypeDesc(String text, int start, int stop, int line, int position) {
+    public TypeDescr(String text, int start, int stop, int line, int position) {
         super(ElementType.TYPE, text, start, stop, line, position);
     }
 
@@ -42,19 +42,19 @@ public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceTy
         return classOrInterfaceType != null;
     }
 
-    public ClassOrInterfaceTypeDesc getClassOrInterfaceType() {
+    public ClassOrInterfaceTypeDescr getClassOrInterfaceType() {
         return classOrInterfaceType;
     }
 
-    public void setClassOrInterfaceType(ClassOrInterfaceTypeDesc classOrInterfaceType) {
+    public void setClassOrInterfaceType(ClassOrInterfaceTypeDescr classOrInterfaceType) {
         this.classOrInterfaceType = classOrInterfaceType;
     }
 
-    public PrimitiveTypeDesc getPrimitiveType() {
+    public PrimitiveTypeDescr getPrimitiveType() {
         return primitiveType;
     }
 
-    public void setPrimitiveType(PrimitiveTypeDesc primitiveType) {
+    public void setPrimitiveType(PrimitiveTypeDescr primitiveType) {
         this.primitiveType = primitiveType;
     }
 
@@ -64,7 +64,7 @@ public class TypeDesc extends ElementDescriptor implements HasClassOrInterfaceTy
     }
 
     @Override
-    public void addDimension(DimensionDesc dimensionDesc) {
-        dimensions.add(dimensionDesc);
+    public void addDimension(DimensionDescr dimensionDescr) {
+        dimensions.add(dimensionDescr);
     }
 }
