@@ -1,6 +1,6 @@
 package parser;
 
-import parser.metadata.*;
+import parser.descr.*;
 import util.ParserUtil;
 
 import java.io.InputStream;

@@ -3,7 +3,7 @@ package util;
 import org.antlr.runtime.*;
 import parser.JavaLexer;
 import parser.JavaParser;
-import parser.metadata.ElementDescriptor;
+import parser.descr.ElementDescriptor;
 
 import java.io.*;
 import java.util.ArrayList;

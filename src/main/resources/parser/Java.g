@@ -293,8 +293,8 @@ options {
 @parser::header {
     package parser;
     import util.ParserUtil;
-    import parser.metadata.*;
-    import parser.metadata.ElementDescriptor.ElementType;
+    import parser.descr.*;
+    import parser.descr.ElementDescriptor.ElementType;
 }
 
 @parser::members {

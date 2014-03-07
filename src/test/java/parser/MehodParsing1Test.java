@@ -3,7 +3,7 @@ package parser;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import parser.metadata.*;
+import parser.descr.*;
 import util.ParserUtil;
 
 import java.util.ArrayList;

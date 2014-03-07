@@ -61,6 +61,21 @@ public class MethodParsing1 {
         }
 
         public void setA(int a) {
+
+            class MethodParsing1BlockClass {
+
+                //buy now we are skipping inner clases
+                private int a;
+
+                public int getA() {
+                    return a;
+                }
+
+                public void setA(int a) {
+                    this.a = a;
+                }
+            };
+
             this.a = a;
         }
     };

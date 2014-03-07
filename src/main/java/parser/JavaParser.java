@@ -1,9 +1,9 @@
-// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 11:51:30
+// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:01:28
 
     package parser;
     import util.ParserUtil;
-    import parser.metadata.*;
-    import parser.metadata.ElementDescriptor.ElementType;
+    import parser.descr.*;
+    import parser.descr.ElementDescriptor.ElementType;
 
 
 import org.antlr.runtime.*;

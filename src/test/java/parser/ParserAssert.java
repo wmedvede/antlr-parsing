@@ -1,6 +1,6 @@
 package parser;
 
-import parser.metadata.*;
+import parser.descr.*;
 import util.ParserUtil;
 
 import static org.junit.Assert.assertEquals;
