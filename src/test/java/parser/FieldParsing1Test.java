@@ -26,15 +26,11 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldSentences.add("public static final Integer FIELD3 = new Integer(\"3\")  ;");
             fieldSentences.add("transient boolean field4;");
             fieldSentences.add("protected   List<String>   field5;");
-            //complex initializations cannot be regonized yet
-            //fieldSentences.add("protected   static List<List<String>> field6 = new ArrayList<List<String>>();");
-            fieldSentences.add("protected   static List<List<String>> field6 = null;");
+            fieldSentences.add("protected   static List<List<String>> field6 = new ArrayList<List<String>>();");
             fieldSentences.add("public    String[]      field7    ;");
-            //fieldSentences.add("public    static    java.lang.String   field8[]  =  new String[] {\"value1\",  \"value2\" } ;");
-            fieldSentences.add("public    static    java.lang.String   field8[];");
+            fieldSentences.add("public    static    java.lang.String   field8[]  =  new String[] {\"value1\",  \"value2\" } ;");
             fieldSentences.add("private    static   String  field9 [][][];");
-            //fieldSentences.add("protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };");
-            fieldSentences.add("protected List<String>[] field10 = null;");
+            fieldSentences.add("protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };");
             fieldSentences.add("protected int field11    =   11   ;");
             fieldSentences.add("protected char field12 = 12,    field13  =  13 ;");
             fieldSentences.add("Boolean field14 =   false, field15=true, field16 = !true ;");
@@ -118,8 +114,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
             fieldDeclaration.setType(new TypeDescr(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<List<String>>", -1, -1));
-            //fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field6", new VariableInitializerDescr(null, -1, -1, "new ArrayList<List<String>>()")));
-            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field6", new VariableInitializerDescr(null, -1, -1, "null")));
+            fieldDeclaration.addVariableDeclaration(new VariableDeclarationDescr(null, -1, -1, "field6", new VariableInitializerDescr(null, -1, -1, "new ArrayList<List<String>>()")));
             fieldDeclarations.add(fieldDeclaration);
 
             //field7
@@ -133,13 +128,14 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclarations.add(fieldDeclaration);
 
             //field8
-            //"public    static    java.lang.String   field8[];"
+            //public    static    java.lang.String   field8[]  =  new String[] {"value1",  "value2" } ;
             fieldDeclaration = new FieldDescr();
             fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
             fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
             fieldDeclaration.setType(new TypeDescr(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("java.lang.String", -1, -1));
             var = new VariableDeclarationDescr(null, -1, -1, "field8", null);
+            var.setVariableInitializer(new VariableInitializerDescr(null, -1, -1, "new String[] {\"value1\",  \"value2\" }"));
             var.addDimension(new DimensionDescr());
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
@@ -159,13 +155,13 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             fieldDeclarations.add(fieldDeclaration);
 
             //field10
-            // "protected List<String>[] field10 = null;"
+            //protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };
             fieldDeclaration = new FieldDescr();
             fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
             fieldDeclaration.setType(new TypeDescr(null, -1, -1));
             fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<String>", -1, -1));
             fieldDeclaration.getType().addDimension(new DimensionDescr());
-            var = new VariableDeclarationDescr(null, -1, -1, "field10", new VariableInitializerDescr(null, -1, -1, "null"));
+            var = new VariableDeclarationDescr(null, -1, -1, "field10", new VariableInitializerDescr(null, -1, -1, "new  List[] {  new ArrayList<String>(), new ArrayList<String>() }"));
             fieldDeclaration.addVariableDeclaration(var);
             fieldDeclarations.add(fieldDeclaration);
 
@@ -211,8 +207,6 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             for (int i = 0; i < fieldDeclarations.size(); i++) {
                 assertEqualsFieldDeclaration(buffer, fieldDeclarations.get(i), fields.get(i));
             }
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -47,7 +47,7 @@ public class MethodParsing1 {
 
     private java.util.AbstractList<Object> method10  (  final java.lang.String param1,  int param2 , List<java.util.List<String>>...param3) { return null; }
 
-    //type bounds not yet recognized
+    //bound types are not yet recognized
     //public static <T extends Foo & Bar> T getFooBar()
 
 

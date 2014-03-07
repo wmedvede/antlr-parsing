@@ -18,22 +18,16 @@ public class FieldParsing1 {
 
     protected   List<String>   field5;
 
-        //protected   static List<List<String>> field6 = new ArrayList<List<String>>();
-
-        protected   static List<List<String>> field6 = null;
+        protected   static List<List<String>> field6 = new ArrayList<List<String>>();
 
 
     public    String[]      field7    ;
 
-    //public    static    java.lang.String   field8[]  =  new String[] {"value1",  "value2" } ;
-
-    public    static    java.lang.String   field8[];
+    public    static    java.lang.String   field8[]  =  new String[] {"value1",  "value2" } ;
 
         private    static   String  field9 [][][];
 
-     //protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };
-
-    protected List<String>[] field10 = null;
+    protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };
 
 protected int field11    =   11   ;
 

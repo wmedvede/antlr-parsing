@@ -2,13 +2,6 @@ package parser;
 
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: wmedvede
- * Date: 2/28/14
- * Time: 8:49 PM
- * To change this template use File | Settings | File Templates.
- */
 public class TypeParsing1 {
 
     private int a;

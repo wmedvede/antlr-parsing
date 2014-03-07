@@ -1,4 +1,4 @@
-// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:38:00
+// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:58:54
 
     package parser;
     import parser.util.ParserUtil;
