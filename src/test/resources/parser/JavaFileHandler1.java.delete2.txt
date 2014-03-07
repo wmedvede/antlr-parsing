@@ -4,6 +4,9 @@ import parser.test.TestAnnotation;
 
 /**
  * Changes to this file can break JavaFileHandler1Test and JavaFileHandler1.java.delete#N.txt files
+ * Important! IntelliJ is not the best editor to manipulate the expected result files JavaFileHandler1.deleteN.txt
+ * because it deletes some blank spaces for example for empty lines that starts with blank spaces.
+ * It's recommended to use vi to edit the expected result files.
  */
 public class JavaFileHandler1 {
 
@@ -23,20 +26,14 @@ public class JavaFileHandler1 {
 
     private java.lang.Boolean field11 = (10 > (15 -4))    , field12=false,  field13;
 
-    public String getField1() {
-        return field1;
-    }
+    
 
     /**
      * javadoc comment
      * @param field1
      */
-    public void setField1(String field1) {
-        this.field1 = field1;  /****** asfsd */
-    }//****hello
-    public String getField2() {
-        return field2;
-    }
+    //****hello
+    
     public void setField2(String field2) {
         this.field2 = field2;
     }

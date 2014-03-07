@@ -12,8 +12,6 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
 
     String fileContents[] = new String[4];
 
-
-
     public JavaFileHandler1Test() throws Exception {
         super("JavaFileHandler1.java");
 
@@ -36,29 +34,31 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
     public void testMethodRemoval() {
         try {
 
-
             fileHandler.deleteMethod("getField2");
-            System.out.print(fileHandler.build());
-
-            //Working on this assert now
-            //assertStrings(fileContents[0], fileHandler.build());
-            //assertEquals(fileContents[0], fileHandler.build());
-
+            assertStrings(fileContents[0], fileHandler.build());
 
             fileHandler.deleteMethod("setField1");
-            System.out.println(fileHandler.build());
+            assertStrings(fileContents[1], fileHandler.build());
+
+
+            fileHandler.deleteMethod("getField1");
+            assertStrings(fileContents[2], fileHandler.build());
+
+            fileHandler.deleteField("field12");
+            assertStrings(fileContents[3], fileHandler.build());
+
+            /*
+
+            TODO add more cases
+
+            assertEquals(fileContents[0], fileHandler.build());
+
 
             fileHandler.deleteMethod("getField1");
             System.out.println(fileHandler.build());
 
             fileHandler.deleteField("setField2");
             System.out.println(fileHandler.build());
-
-            fileHandler.deleteField("field1");
-            System.out.println(fileHandler.build());
-
-
-            /*
 
             fileHandler.deleteMethod("setField2");
             fileHandler.addField("\n\tprotected String surname = null;\n");
