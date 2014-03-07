@@ -369,7 +369,7 @@ classOrInterfaceDeclaration
          } classDeclaration {
                 if (isDeclaringMainClass()) {
                     ClassDescr classDescr = popClass();
-                    updateOnAfter(classDescr, $text, (CommonToken)$stop);
+                    updateOnAfter(classDescr, $classDeclaration.text, (CommonToken)$classDeclaration.start, (CommonToken)$classDeclaration.stop);
                 }
                 decreaseClassLevel();
         }

@@ -1,4 +1,4 @@
-// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:01:28
+// $ANTLR 3.5 src/main/resources/parser/Java.g 2014-03-07 12:15:43
 
     package parser;
     import util.ParserUtil;
@@ -850,6 +850,8 @@ public class JavaParser extends JavaParserBase {
 		retval.start = input.LT(1);
 		int classOrInterfaceDeclaration_StartIndex = input.index();
 
+		ParserRuleReturnScope classDeclaration1 =null;
+
 		try {
 			if ( state.backtracking>0 && alreadyParsedRule(input, 6) ) { return retval; }
 
@@ -1031,13 +1033,13 @@ public class JavaParser extends JavaParserBase {
 					            }
 					         }
 					pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration516);
-					classDeclaration();
+					classDeclaration1=classDeclaration();
 					state._fsp--;
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) {
 					                if (isDeclaringMainClass()) {
 					                    ClassDescr classDescr = popClass();
-					                    updateOnAfter(classDescr, input.toString(retval.start,input.LT(-1)), (CommonToken)(retval.stop));
+					                    updateOnAfter(classDescr, (classDeclaration1!=null?input.toString(classDeclaration1.start,classDeclaration1.stop):null), (CommonToken)(classDeclaration1!=null?(classDeclaration1.start):null), (CommonToken)(classDeclaration1!=null?(classDeclaration1.stop):null));
 					                }
 					                decreaseClassLevel();
 					        }
@@ -1381,14 +1383,19 @@ public class JavaParser extends JavaParserBase {
 	// $ANTLR end "variableModifiers"
 
 
+	public static class classDeclaration_return extends ParserRuleReturnScope {
+	};
+
 
 	// $ANTLR start "classDeclaration"
 	// src/main/resources/parser/Java.g:441:1: classDeclaration : ( normalClassDeclaration | enumDeclaration );
-	public final void classDeclaration() throws RecognitionException {
+	public final JavaParser.classDeclaration_return classDeclaration() throws RecognitionException {
+		JavaParser.classDeclaration_return retval = new JavaParser.classDeclaration_return();
+		retval.start = input.LT(1);
 		int classDeclaration_StartIndex = input.index();
 
 		try {
-			if ( state.backtracking>0 && alreadyParsedRule(input, 9) ) { return; }
+			if ( state.backtracking>0 && alreadyParsedRule(input, 9) ) { return retval; }
 
 			// src/main/resources/parser/Java.g:442:5: ( normalClassDeclaration | enumDeclaration )
 			int alt15=2;
@@ -1548,7 +1555,7 @@ public class JavaParser extends JavaParserBase {
 				}
 				break;
 			default:
-				if (state.backtracking>0) {state.failed=true; return;}
+				if (state.backtracking>0) {state.failed=true; return retval;}
 				NoViableAltException nvae =
 					new NoViableAltException("", 15, 0, input);
 				throw nvae;
@@ -1560,7 +1567,7 @@ public class JavaParser extends JavaParserBase {
 					pushFollow(FOLLOW_normalClassDeclaration_in_classDeclaration917);
 					normalClassDeclaration();
 					state._fsp--;
-					if (state.failed) return;
+					if (state.failed) return retval;
 					}
 					break;
 				case 2 :
@@ -1569,11 +1576,13 @@ public class JavaParser extends JavaParserBase {
 					pushFollow(FOLLOW_enumDeclaration_in_classDeclaration927);
 					enumDeclaration();
 					state._fsp--;
-					if (state.failed) return;
+					if (state.failed) return retval;
 					}
 					break;
 
 			}
+			retval.stop = input.LT(-1);
+
 		}
 		catch (RecognitionException re) {
 			reportError(re);
@@ -1584,6 +1593,7 @@ public class JavaParser extends JavaParserBase {
 			if ( state.backtracking>0 ) { memoize(input, 9, classDeclaration_StartIndex); }
 
 		}
+		return retval;
 	}
 	// $ANTLR end "classDeclaration"
 
@@ -3163,7 +3173,7 @@ public class JavaParser extends JavaParserBase {
 
 		Token p1=null;
 		Token p2=null;
-		Token IDENTIFIER1=null;
+		Token IDENTIFIER2=null;
 
 
 		        MethodDescr method = null;
@@ -3613,8 +3623,8 @@ public class JavaParser extends JavaParserBase {
 
 					}
 
-					IDENTIFIER1=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2229); if (state.failed) return retval;
-					if ( state.backtracking==0 ) { method.setName((IDENTIFIER1!=null?IDENTIFIER1.getText():null)); }
+					IDENTIFIER2=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2229); if (state.failed) return retval;
+					if ( state.backtracking==0 ) { method.setName((IDENTIFIER2!=null?IDENTIFIER2.getText():null)); }
 					pushFollow(FOLLOW_formalParameters_in_methodDeclaration2241);
 					formalParameters();
 					state._fsp--;
@@ -5510,7 +5520,7 @@ public class JavaParser extends JavaParserBase {
 
 		Token p1=null;
 		Token p2=null;
-		Token IDENTIFIER2=null;
+		Token IDENTIFIER3=null;
 
 
 		         NormalParameterDescr param = null;
@@ -5534,8 +5544,8 @@ public class JavaParser extends JavaParserBase {
 			type();
 			state._fsp--;
 			if (state.failed) return retval;
-			IDENTIFIER2=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3619); if (state.failed) return retval;
-			if ( state.backtracking==0 ) { param.setName((IDENTIFIER2!=null?IDENTIFIER2.getText():null)); }
+			IDENTIFIER3=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3619); if (state.failed) return retval;
+			if ( state.backtracking==0 ) { param.setName((IDENTIFIER3!=null?IDENTIFIER3.getText():null)); }
 			// src/main/resources/parser/Java.g:879:9: (p1= '[' p2= ']' )*
 			loop73:
 			while (true) {
@@ -5600,7 +5610,7 @@ public class JavaParser extends JavaParserBase {
 		int ellipsisParameterDecl_StartIndex = input.index();
 
 		Token e=null;
-		Token IDENTIFIER3=null;
+		Token IDENTIFIER4=null;
 
 
 		          EllipsisParameterDescr ellipsisParam = null;
@@ -5626,8 +5636,8 @@ public class JavaParser extends JavaParserBase {
 			if (state.failed) return retval;
 			e=(Token)match(input,ELLIPSIS,FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3707); if (state.failed) return retval;
 			if ( state.backtracking==0 ) { ellipsisParam.setEllipsisToken(new TextTokenElementDescr((e!=null?e.getText():null), line(e), position(e))); }
-			IDENTIFIER3=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3719); if (state.failed) return retval;
-			if ( state.backtracking==0 ) { ellipsisParam.setName((IDENTIFIER3!=null?IDENTIFIER3.getText():null)); }
+			IDENTIFIER4=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3719); if (state.failed) return retval;
+			if ( state.backtracking==0 ) { ellipsisParam.setName((IDENTIFIER4!=null?IDENTIFIER4.getText():null)); }
 			}
 
 			retval.stop = input.LT(-1);

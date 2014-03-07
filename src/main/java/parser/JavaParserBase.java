@@ -225,6 +225,14 @@ public class JavaParserBase extends Parser {
         element.setStop(stop(stop));
     }
 
+    protected void updateOnAfter(ElementDescriptor element, String text, CommonToken start, CommonToken stop) {
+        element.setText(text);
+        element.setStart(start(start));
+        element.setLine(line(start));
+        element.setPosition(position(start));
+        element.setStop(stop(stop));
+    }
+
     protected boolean isDeclaringMethodReturnType() {
         return declaringMethodReturnType;
     }
