@@ -21,7 +21,9 @@ public class ElementDescriptor {
         TYPE_ARGUMENT_LIST,
         MODIFIER_LIST,
         SENTENCE,
-        FILE
+        FILE,
+        QUALIFIED_NAME,
+        PACKAGE
     }
 
     private ElementType elementType;

@@ -9,6 +9,13 @@ import parser.descr.ElementDescriptor.ElementType;
 
 public class JavaParserBase extends Parser {
 
+    public static enum ParserMode {
+        PARSE_CLASS,
+        PARSE_METHOD,
+        PARSE_FIELD,
+        PARSE_ANNOTATION
+    }
+
     public JavaParserBase(TokenStream input) {
         super(input);
         initContext();
@@ -21,17 +28,39 @@ public class JavaParserBase extends Parser {
 
     protected FileDescr fileDescr = new FileDescr();
 
+    protected MethodDescr methodDescr;
+
+    protected FieldDescr fieldDescr;
+
     protected Stack<ElementDescriptor> context = new Stack<ElementDescriptor>();
 
     protected boolean declaringMethodReturnType = false;
 
     protected int classLevel = 0;
 
+    protected ParserMode mode = ParserMode.PARSE_CLASS;
+
     public FileDescr getFileDescr() {
         return fileDescr;
     }
 
-    private ClassDescr getClassDesc() {
+    public ParserMode getMode() {
+        return mode;
+    }
+
+    public MethodDescr getMethodDescr() {
+        return methodDescr;
+    }
+
+    public FieldDescr getFieldDescr() {
+        return fieldDescr;
+    }
+
+    public void setMode(ParserMode mode) {
+        this.mode = mode;
+    }
+
+    private ClassDescr getClassDescr() {
         return fileDescr.getClassDescr();
     }
 
@@ -86,6 +115,14 @@ public class JavaParserBase extends Parser {
 
     protected boolean isFileOnTop() {
         return isOnTop(ElementType.FILE);
+    }
+
+    protected boolean isQualifiedNameOnTop() {
+        return isOnTop(ElementType.QUALIFIED_NAME);
+    }
+
+    protected boolean isPackageOnTop() {
+        return isOnTop(ElementType.PACKAGE);
     }
 
     protected boolean isOnTop(ElementType elementType) {
@@ -176,6 +213,22 @@ public class JavaParserBase extends Parser {
         return isFileOnTop() ? (FileDescr) context.peek() : null;
     }
 
+    protected PackageDescr popPackage() {
+        return isPackageOnTop() ? (PackageDescr) context.pop() : null;
+    }
+
+    protected PackageDescr peekPackage() {
+        return isPackageOnTop() ? (PackageDescr) context.peek() : null;
+    }
+
+    protected QualifiedNameDescr popQualifiedName() {
+        return isQualifiedNameOnTop() ? (QualifiedNameDescr) context.pop() : null;
+    }
+
+    protected QualifiedNameDescr peekQualifiedName() {
+        return isQualifiedNameOnTop() ? (QualifiedNameDescr) context.peek() : null;
+    }
+
     protected TypeArgumentDescr peekTypeArgument() {
         return isTypeArgumentOnTop() ? (TypeArgumentDescr)context.peek() : null;
     }
@@ -242,7 +295,7 @@ public class JavaParserBase extends Parser {
     }
 
     public boolean isDeclaringMainClass() {
-        return classLevel == 1;
+        return classLevel == 1 && mode == ParserMode.PARSE_CLASS;
     }
 
     public int increaseClassLevel() {
@@ -255,7 +308,7 @@ public class JavaParserBase extends Parser {
 
     protected void processType(TypeDescr type) {
         //if we are processing a method declaration return type, or a method parameter, or a field type
-        if (isDeclaringMainClass()) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_FIELD || mode == ParserMode.PARSE_METHOD) {
             if (isTypeArgumentOnTop()) {
                 peekTypeArgument().setType(type);
             } else if (isFieldOnTop()) {
@@ -264,20 +317,22 @@ public class JavaParserBase extends Parser {
                 peekMethod().setType(type);
             } else if (isParameterOnTop()) {
                 peekParameter().setType(type);
+            } else if (isClassOnTop()) {
+                peekClass().setSuperClass(type);
             }
         }
     }
 
     protected void processModifiers(ModifierListDescr modifiers) {
-        if (isDeclaringMainClass()) {
-            if ( isTypeArgumentOnTop() || isMethodOnTop() || isFieldOnTop() || isParameterOnTop() ) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_FIELD || mode == ParserMode.PARSE_METHOD) {
+            if ( isTypeArgumentOnTop() || isMethodOnTop() || isFieldOnTop() || isParameterOnTop() || isClassOnTop() ) {
                 peekHasModifiers().setModifiers(modifiers);
             }
         }
     }
 
     protected void processParameter(ParameterDescr parameterDesc) {
-        if (isDeclaringMainClass()) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             MethodDescr method = peekMethod();
             //TODO check if this control is enough
             if (method != null) {
@@ -286,14 +341,16 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void processMethod(MethodDescr methodDesc) {
+    protected void processMethod(MethodDescr methodDescr) {
         if (isDeclaringMainClass()) {
-            getClassDesc().addMember(methodDesc);
+            getClassDescr().addMember(methodDescr);
+        } else if (mode == ParserMode.PARSE_METHOD) {
+            this.methodDescr = methodDescr;
         }
     }
 
     protected void setFormalParamsStart(String text, int line, int position) {
-        if (isDeclaringMainClass()) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
                 peekMethod().setParamsStart(new TextTokenElementDescr(text, line, position));
             }
@@ -301,16 +358,18 @@ public class JavaParserBase extends Parser {
     }
 
     protected void setFormalParamsStop(String text, int line, int position) {
-        if (isDeclaringMainClass()) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
                 peekMethod().setParamsStop(new TextTokenElementDescr(text, line, position));
             }
         }
     }
 
-    protected void processField(FieldDescr fieldDesc) {
+    protected void processField(FieldDescr fieldDescr) {
         if (isDeclaringMainClass()) {
-            getClassDesc().addMember(fieldDesc);
+            getClassDescr().addMember(fieldDescr);
+        } else if (mode == ParserMode.PARSE_FIELD) {
+            this.fieldDescr = fieldDescr;
         }
     }
 
@@ -319,5 +378,16 @@ public class JavaParserBase extends Parser {
             fileDescr.setClassDescr(classDescr);
             context.push(classDescr);
         }
+    }
+
+    protected void processQualifiedName(QualifiedNameDescr nameDescr) {
+        if (isPackageOnTop()) {
+            PackageDescr packageDescr = peekPackage();
+            packageDescr.setQualifiedName(nameDescr);
+        }
+    }
+
+    protected void processPackage(PackageDescr packageDescr) {
+        fileDescr.setPackageDescr(packageDescr);
     }
 }

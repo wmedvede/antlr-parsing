@@ -324,8 +324,26 @@ compilationUnit
         )*
     ;
 
-packageDeclaration 
-    :   'package' qualifiedName
+packageDeclaration
+    @init {
+        PackageDescr packageDescr = null;
+        if (!isBacktracking()) {
+            log("Start package declaration.");
+            packageDescr = new PackageDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push(packageDescr);
+        }
+    }
+    @after {
+        packageDescr = popPackage();
+        if (packageDescr != null) {
+            updateOnAfter(packageDescr, $text, (CommonToken)$stop);
+            processPackage(packageDescr);
+            log("End of package declaration.");
+        } else {
+            log("A PackageDescr is expected");
+        }
+    }
+    :   p='package' qualifiedName { packageDescr.setPackageToken(new TextTokenElementDescr($p.text, line($p), position($p))); }
         ';'
     ;
 
@@ -443,11 +461,25 @@ classDeclaration
     |   enumDeclaration
     ;
 
-normalClassDeclaration 
-    :   modifiers 'class' IDENTIFIER
+normalClassDeclaration
+    @init {
+        ClassDescr classDescr = null;
+        if (!isBacktracking()) {
+            if (isDeclaringMainClass()) {
+                classDescr = peekClass();
+            }
+        }
+    }
+
+    :   modifiers c='class' id=IDENTIFIER {
+                                        if (classDescr != null) {
+                                            classDescr.setName($id.text);
+                                            classDescr.setClassToken(new TextTokenElementDescr($c.text, line($c), position($c)));
+                                        }
+                                    }
         (typeParameters
         )?
-        ('extends' type
+        ( e='extends' type { if (classDescr != null) classDescr.setExtendsToken(new TextTokenElementDescr($e.text, line($e), position($e))); }
         )?
         ('implements' typeList
         )?            
@@ -921,9 +953,26 @@ explicitConstructorInvocation
         arguments ';'
     ;
 
-qualifiedName 
-    :   IDENTIFIER
-        ('.' IDENTIFIER
+qualifiedName
+     @init {
+         QualifiedNameDescr nameDescr = null;
+         if (!isBacktracking()) {
+             log("Start qualifiedName declaration");
+             nameDescr = new QualifiedNameDescr($text, start((CommonToken)$start), -1, line($start), position($start));
+             context.push(nameDescr);
+         }
+     }
+     @after {
+         nameDescr = popQualifiedName();
+         if (nameDescr != null) {
+             updateOnAfter(nameDescr, $text, (CommonToken)$stop);
+             processQualifiedName(nameDescr);
+         } else {
+             //TODO warning, by construction current qualifiedname param is expected
+         }
+     }
+    :   id1=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, line($id1), position($id1)) ); }
+        ('.' id2=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, line($id1), position($id1)) ); }
         )*
     ;
 

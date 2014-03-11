@@ -3,6 +3,8 @@ package parser.util;
 import org.antlr.runtime.*;
 import parser.JavaLexer;
 import parser.JavaParser;
+import parser.JavaParserBase;
+import parser.JavaParserBase.ParserMode;
 import parser.descr.ElementDescriptor;
 
 import java.io.*;
@@ -29,18 +31,24 @@ public class ParserUtil {
 
     public static JavaParser initParser(final InputStream inputStream) throws Exception {
         ANTLRInputStream antlrInputStream = new ANTLRInputStream(inputStream);
-        return initParser(antlrInputStream);
+        return initParser(antlrInputStream, ParserMode.PARSE_CLASS);
+    }
+
+    public static JavaParser initParser(final String expr, final ParserMode mode) {
+        final CharStream charStream = new ANTLRStringStream(expr);
+        return initParser(charStream, mode);
     }
 
     public static JavaParser initParser(final String expr) {
-        final CharStream charStream = new ANTLRStringStream(expr);
-        return initParser(charStream);
+        return initParser(expr, ParserMode.PARSE_CLASS);
     }
 
-    public static JavaParser initParser(final CharStream charStream) {
+    public static JavaParser initParser(final CharStream charStream, final ParserMode mode) {
         final JavaLexer lexer = new JavaLexer( charStream );
         final TokenStream tokenStream = new CommonTokenStream( lexer );
-        return new JavaParser( tokenStream );
+        final JavaParser parser = new JavaParser( tokenStream );
+        parser.setMode(mode);
+        return parser;
     }
 
 }

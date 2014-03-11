@@ -10,14 +10,14 @@ import static org.junit.Assert.assertEquals;
 
 public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
 
-    String fileContents[] = new String[4];
+    String fileContents[] = new String[6];
 
     public JavaFileHandler1Test() throws Exception {
         super("JavaFileHandler1.java");
 
         InputStream inputStream;
-        for (int i = 0; i < 4; i++) {
-            inputStream = this.getClass().getResourceAsStream("JavaFileHandler1.java.delete"+i+".txt");
+        for (int i = 0; i < fileContents.length; i++) {
+            inputStream = this.getClass().getResourceAsStream("JavaFileHandler1.java.result"+i+".txt");
             fileContents[i] = ParserUtil.readString(inputStream);
 
         }
@@ -27,25 +27,32 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
         for (int i = 0; i < a.length() && i < b.length(); i++) {
             assertEquals("character i: " + i + " expected: " + a.charAt(i) + " current: " + b.length(), a.charAt(i), b.charAt(i));
         }
-
     }
 
     @Test
     public void testMethodRemoval() {
         try {
 
-            fileHandler.deleteMethod("getField2");
-            assertStrings(fileContents[0], fileHandler.build());
+            fileHandler.deleteMethod("getField2", null);
+            assertStrings(fileContents[0], fileHandler.buildResult());
 
-            fileHandler.deleteMethod("setField1");
-            assertStrings(fileContents[1], fileHandler.build());
+            fileHandler.deleteMethod("setField1", null);
+            assertStrings(fileContents[1], fileHandler.buildResult());
 
 
-            fileHandler.deleteMethod("getField1");
-            assertStrings(fileContents[2], fileHandler.build());
+            fileHandler.deleteMethod("getField1", null);
+            assertStrings(fileContents[2], fileHandler.buildResult());
 
             fileHandler.deleteField("field12");
-            assertStrings(fileContents[3], fileHandler.build());
+            assertStrings(fileContents[3], fileHandler.buildResult());
+
+            fileHandler.createField("\n\n    public int field100 = 12;");
+            assertStrings(fileContents[4], fileHandler.buildResult());
+
+            fileHandler.createMethod("\n\n    public java.lang.String getAddress() { return null; }");
+            assertStrings(fileContents[5], fileHandler.buildResult());
+
+            //System.out.println(fileHandler.buildResult());
 
             /*
 
@@ -75,7 +82,7 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             fileHandler.addMember("\n\tpublic String getUserName() {\n\t\treturn surname;\n\t}\n");
             */
 
-            String result = fileHandler.build();
+            String result = fileHandler.buildResult();
             System.out.println(result);
 
 

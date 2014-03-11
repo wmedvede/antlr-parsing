@@ -4,9 +4,24 @@ package parser.descr;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassDescr extends ElementDescriptor {
+public class ClassDescr extends AnnotationsContainerDescr {
 
-    List<ElementDescriptor> members = new ArrayList<ElementDescriptor>();
+    private String name;
+
+    private List<ElementDescriptor> members = new ArrayList<ElementDescriptor>();
+
+    private TypeDescr superClass;
+
+    private TextTokenElementDescr classToken;
+
+    private TextTokenElementDescr extendsToken;
+
+    /*
+    //TODO add:
+    //Super class
+    //List of implemented interfaces
+    //Type annotations.
+    */
 
     public ClassDescr() {
         super(ElementType.CLASS);
@@ -48,4 +63,35 @@ public class ClassDescr extends ElementDescriptor {
         return fields;
     }
 
+    public TextTokenElementDescr getClassToken() {
+        return classToken;
+    }
+
+    public void setClassToken(TextTokenElementDescr classToken) {
+        this.classToken = classToken;
+    }
+
+    public TextTokenElementDescr getExtendsToken() {
+        return extendsToken;
+    }
+
+    public void setExtendsToken(TextTokenElementDescr extendsToken) {
+        this.extendsToken = extendsToken;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TypeDescr getSuperClass() {
+        return superClass;
+    }
+
+    public void setSuperClass(TypeDescr superClass) {
+        this.superClass = superClass;
+    }
 }

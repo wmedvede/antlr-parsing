@@ -5,7 +5,7 @@ package parser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldParsing1 {
+public class FieldParsing1 extends java.lang.Object {
 
 
     public String field1;
