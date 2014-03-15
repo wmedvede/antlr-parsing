@@ -21,7 +21,7 @@ public class JavaParserBaseTest {
     @Before
     public void preTest() throws Exception {
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-        parser = ParserUtil.initParser(inputStream);
+        parser = JavaParserFactory.newParser(inputStream);
         buffer = new StringBuffer(ParserUtil.readString(this.getClass().getResourceAsStream(fileName)));
 
         parser.compilationUnit();

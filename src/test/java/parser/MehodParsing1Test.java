@@ -66,7 +66,7 @@ public class MehodParsing1Test extends JavaParserBaseTest {
             JavaParser parser;
             int i = 0;
             for (String methodSentence : methodSentences) {
-                parser = ParserUtil.initParser(methodSentence, JavaParserBase.ParserMode.PARSE_METHOD);
+                parser = JavaParserFactory.newParser(methodSentence, JavaParserBase.ParserMode.PARSE_METHOD);
                 parser.methodDeclaration();
                 assertNotNull(parser.getMethodDescr());
                 assertEqualsMethodDeclaration(new StringBuffer(methodSentence), expectedMethods.get(i), parser.getMethodDescr());
@@ -175,6 +175,7 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         //"java.util.List<java.lang.String> method6() { return null;    }"
         method = new MethodDescr(null, -1, -1);
         method.setName("method6");
+        method.setModifiers(new ModifierListDescr());
         method.setType(new TypeDescr(null, -1, -1));
         method.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("java.util.List<java.lang.String>", -1, -1));
         expectedMethods.add(method);
@@ -206,6 +207,7 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         //"int method8  ( final int   param1 ,  java.lang.Integer   param2)[][] { return null; }"
         method = new MethodDescr(null, -1, -1);
         method.setName("method8");
+        method.setModifiers(new ModifierListDescr());
         method.setType(new TypeDescr(null, -1, -1));
         method.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
 
@@ -227,6 +229,7 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         //"int method9 ( final Object ...  param1) { return -1;}"
         method = new MethodDescr(null, -1, -1);
         method.setName("method9");
+        method.setModifiers(new ModifierListDescr());
         method.setType(new TypeDescr(null, -1, -1));
         method.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
 

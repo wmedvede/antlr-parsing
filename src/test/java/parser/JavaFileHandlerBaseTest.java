@@ -23,6 +23,7 @@ public class JavaFileHandlerBaseTest {
 
     @Before
     public void preTest() throws Exception {
+
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
         fileHandler = new JavaFileHandlerImpl(inputStream);
         inputStream.close();
@@ -38,6 +39,8 @@ public class JavaFileHandlerBaseTest {
         //if we invoke the build method without modifications
         //the generated file should be the same as originalFileContent.
         assertEquals(originalFileContent, fileHandler.buildResult());
+
+
     }
 
 }

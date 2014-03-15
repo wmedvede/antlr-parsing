@@ -1,6 +1,9 @@
 package parser.descr;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ElementDescriptor {
 
     public static enum ElementType {
@@ -8,6 +11,7 @@ public class ElementDescriptor {
         FIELD,
         VARIABLE,
         VARIABLE_INITIALIZER,
+        VARIABLE_STOP,
         METHOD,
         CLASS,
         PRIMITIVE_TYPE,
@@ -23,7 +27,8 @@ public class ElementDescriptor {
         SENTENCE,
         FILE,
         QUALIFIED_NAME,
-        PACKAGE
+        PACKAGE,
+        IDENTIFIER
     }
 
     private ElementType elementType;
@@ -37,6 +42,10 @@ public class ElementDescriptor {
     private int position;
 
     private String text;
+
+    private StringBuilder sourceBuffer = new StringBuilder();
+
+    protected ElementDescrList elements = new ElementDescrList();
 
     public ElementDescriptor(ElementType elementType) {
         this.elementType = elementType;
@@ -118,4 +127,15 @@ public class ElementDescriptor {
         return this.elementType == elementType;
     }
 
+    public ElementDescrList getElements2() {
+        return elements;
+    }
+
+    public StringBuilder getSourceBuffer() {
+        return sourceBuffer;
+    }
+
+    public void setSourceBuffer(StringBuilder sourceBuffer) {
+        this.sourceBuffer = sourceBuffer;
+    }
 }

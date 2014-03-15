@@ -8,11 +8,11 @@ import java.io.InputStream;
 import static org.junit.Assert.assertEquals;
 
 
-public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
+public class JavaFileHandler3Test extends JavaFileHandlerBaseTest {
 
     String fileContents[] = new String[6];
 
-    public JavaFileHandler1Test() throws Exception {
+    public JavaFileHandler3Test() throws Exception {
         super("JavaFileHandler1.java");
 
         InputStream inputStream;

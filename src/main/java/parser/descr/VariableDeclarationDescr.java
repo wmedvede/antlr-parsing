@@ -50,6 +50,15 @@ public class VariableDeclarationDescr extends ElementDescriptor implements HasDi
         this.identifier = identifier;
     }
 
+    public void setIdentifierDescr(IdentifierDescr identifier) {
+        getElements2().removeFirst(ElementType.IDENTIFIER);
+        getElements2().add(identifier);
+    }
+
+    public IdentifierDescr getIdentifierDescr() {
+        return (IdentifierDescr)getElements2().getFirst(ElementType.IDENTIFIER);
+    }
+
     @Override
     public int getDimensionsCount() {
         return dimensions.size();
@@ -61,10 +70,13 @@ public class VariableDeclarationDescr extends ElementDescriptor implements HasDi
     }
 
     public VariableInitializerDescr getVariableInitializer() {
-        return variableInitializer;
+        return (VariableInitializerDescr)getElements2().getFirst(ElementType.VARIABLE_INITIALIZER);
+        //return variableInitializer;
     }
 
     public void setVariableInitializer(VariableInitializerDescr variableInitializer) {
-        this.variableInitializer = variableInitializer;
+        getElements2().add(variableInitializer);
+        //this.variableInitializer = variableInitializer;
     }
+
 }

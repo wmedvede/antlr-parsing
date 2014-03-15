@@ -24,14 +24,23 @@ public class ModifierListDescr extends ElementDescriptor {
     }
 
     public void add(ModifierDescr modifierDescr) {
-        elements.add(modifierDescr);
+        //elements.add(modifierDescr);
+        getElements2().add(modifierDescr);
     }
 
     public List<ModifierDescr> getElements() {
-        return elements;
+        List<ModifierDescr> modifiers = new ArrayList<ModifierDescr>();
+        for (ElementDescriptor modifier :  getElements2().getElementsByType(ElementType.MODIFIER)) {
+            modifiers.add((ModifierDescr)modifier);
+        }
+        return modifiers;
+
+        //return elements;
     }
 
+    /*
     public void setElements(List<ModifierDescr> elements) {
         this.elements = elements;
     }
+    */
 }

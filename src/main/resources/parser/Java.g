@@ -299,6 +299,12 @@ options {
 
 @parser::members {
 
+    public JavaParser(TokenStream input, StringBuilder sourceBuffer, ParserMode mode) {
+        this(input, new RecognizerSharedState());
+        this.sourceBuffer = sourceBuffer;
+        this.mode = mode;
+        initContext();
+    }
 }
 
 @lexer::header {
@@ -416,17 +422,17 @@ modifiers
     }
     :
     (    annotation
-    |   s='public'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='protected'       { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='private'         { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='static'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='abstract'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='final'           { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='native'          { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='synchronized'    { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='transient'       { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='volatile'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
-    |   s='strictfp'        { modifiers.add( new ModifierDescr($s.text, -1, -1, $s.line, $s.pos, $s.text) );  }
+    |   s='public'          { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='protected'       { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='private'         { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='static'          { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='abstract'        { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='final'           { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='native'          { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='synchronized'    { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='transient'       { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='volatile'        { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
+    |   s='strictfp'        { modifiers.add( new ModifierDescr($s.text, start((CommonToken)$s), stop((CommonToken)$s), $s.line, $s.pos, $s.text) );  }
     )*
     ;
 
@@ -685,7 +691,7 @@ fieldDeclaration
         v1=variableDeclarator       { if (field != null) field.addVariableDeclaration($v1.varDec); }
         (',' v2=variableDeclarator  { if (field != null) field.addVariableDeclaration($v2.varDec); }
         )*
-        ';'
+        s=';' { if (field != null) field.setVariableDeclarationsStop(new TextTokenElementDescr($text, start((CommonToken)$s), stop((CommonToken)$s), line($s), position($s))); }
     ;
 
 variableDeclarator returns [ VariableDeclarationDescr varDec ]
@@ -697,7 +703,7 @@ variableDeclarator returns [ VariableDeclarationDescr varDec ]
         //$varDec.setText(variableInitializer.text);
         //$varDec.setInitializerExpr(variableInitializer.text);
     }
-    :   i=IDENTIFIER { $varDec.setIdentifier($i.text); }
+    :   i=IDENTIFIER { $varDec.setIdentifier($i.text); $varDec.setIdentifierDescr(new IdentifierDescr($i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i) )); }
         (p1='[' p2=']' { $varDec.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
         )*
         ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDescr( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }

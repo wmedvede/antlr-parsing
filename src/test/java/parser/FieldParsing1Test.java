@@ -66,7 +66,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
             JavaParser parser;
             int i = 0;
             for (String fieldSentence : fieldSentences) {
-                parser = ParserUtil.initParser(fieldSentence, JavaParserBase.ParserMode.PARSE_FIELD);
+                parser = JavaParserFactory.newParser(fieldSentence, JavaParserBase.ParserMode.PARSE_FIELD);
                 parser.fieldDeclaration();
                 assertNotNull(parser.getFieldDescr());
                 assertEqualsFieldDeclaration(new StringBuffer(fieldSentence), expectedFields.get(i), parser.getFieldDescr());

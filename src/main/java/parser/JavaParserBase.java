@@ -16,14 +16,8 @@ public class JavaParserBase extends Parser {
         PARSE_ANNOTATION
     }
 
-    public JavaParserBase(TokenStream input) {
-        super(input);
-        initContext();
-    }
-
     public JavaParserBase(TokenStream input, RecognizerSharedState state) {
         super(input, state);
-        initContext();
     }
 
     protected FileDescr fileDescr = new FileDescr();
@@ -39,6 +33,8 @@ public class JavaParserBase extends Parser {
     protected int classLevel = 0;
 
     protected ParserMode mode = ParserMode.PARSE_CLASS;
+
+    protected StringBuilder sourceBuffer;
 
     public FileDescr getFileDescr() {
         return fileDescr;
@@ -60,12 +56,21 @@ public class JavaParserBase extends Parser {
         this.mode = mode;
     }
 
+    public StringBuilder getSourceBuffer() {
+        return sourceBuffer;
+    }
+
+    public void setSourceBuffer(StringBuilder sourceBuffer) {
+        this.sourceBuffer = sourceBuffer;
+    }
+
     private ClassDescr getClassDescr() {
         return fileDescr.getClassDescr();
     }
 
     protected void initContext() {
         context.push(fileDescr);
+        if (sourceBuffer != null && sourceBuffer.length() > 0) fileDescr.setStop(sourceBuffer.length()-1);
     }
 
     protected void log(String message) {
@@ -267,6 +272,18 @@ public class JavaParserBase extends Parser {
 
     protected int position(Token token) {
         return token != null ? token.getCharPositionInLine() : -1;
+    }
+
+    protected int calcStart(String text, Token token) {
+        return 1;
+    }
+
+    protected int calcStop(String text, Token token) {
+        return 1;
+    }
+
+    protected int calcStop() {
+            return 0;
     }
 
     protected boolean isBacktracking() {

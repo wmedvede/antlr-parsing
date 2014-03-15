@@ -40,25 +40,50 @@ public class ClassDescr extends AnnotationsContainerDescr {
     }
 
     public void addMember(ElementDescriptor member) {
-        members.add(member);
+        //members.add(member);
+        super.getElements2().add(member);
     }
 
     public List<ElementDescriptor> getMembers() {
-        return members;
+        //return members;
+        return super.getElements2();
+    }
+
+    public void addField(FieldDescr fieldDescr) {
+        int index = getElements2().lastIndexOf(ElementType.FIELD);
+        getElements2().add(index +1, fieldDescr);
     }
 
     public List<MethodDescr> getMethods() {
+
+        /*
         List<MethodDescr> methods = new ArrayList<MethodDescr>();
         for (ElementDescriptor member : members) {
             if (ElementType.METHOD == member.getElementType()) methods.add((MethodDescr)member);
         }
         return methods;
+        */
+
+
+        List<MethodDescr> methods = new ArrayList<MethodDescr>();
+        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.METHOD)) {
+            methods.add((MethodDescr)member);
+        }
+        return methods;
+
     }
 
     public List<FieldDescr> getFields() {
+        /*
         List<FieldDescr> fields = new ArrayList<FieldDescr>();
         for (ElementDescriptor member : members) {
             if (ElementType.FIELD == member.getElementType()) fields.add((FieldDescr)member);
+        }
+        return fields;
+        */
+        List<FieldDescr> fields = new ArrayList<FieldDescr>();
+        for (ElementDescriptor member : getElements2().getElementsByType(ElementType.FIELD)) {
+            fields.add((FieldDescr)member);
         }
         return fields;
     }

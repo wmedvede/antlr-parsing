@@ -23,14 +23,19 @@ public class FieldDescr extends AnnotationsContainerDescr implements HasType {
     }
 
     public TypeDescr getType() {
-        return type;
+        return (TypeDescr)getElements2().getElementsByType(ElementType.TYPE);
     }
 
     public void setType(TypeDescr type) {
-        this.type = type;
+        getElements2().add(type);
     }
 
     public List<VariableDeclarationDescr> getVariableDeclarations() {
+
+        List<VariableDeclarationDescr> variableDeclarations = new ArrayList<VariableDeclarationDescr>();
+        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.VARIABLE)) {
+            variableDeclarations.add((VariableDeclarationDescr)member);
+        }
         return variableDeclarations;
     }
 
@@ -39,6 +44,12 @@ public class FieldDescr extends AnnotationsContainerDescr implements HasType {
     }
 
     public void addVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
-        variableDeclarations.add(variableDeclarationDescr);
+        getElements2().add(variableDeclarationDescr);
+        //variableDeclarations.add(variableDeclarationDescr);
     }
+
+    public void setVariableDeclarationsStop(ElementDescriptor stop) {
+        getElements2().add(stop);
+    }
+
 }

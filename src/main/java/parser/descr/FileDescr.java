@@ -4,27 +4,25 @@ public class FileDescr extends ElementDescriptor {
 
     //TODO add PackageDescr, ImportDescr
 
-    private PackageDescr packageDescr;
-
-    private ClassDescr classDescr;
-
     public FileDescr() {
         super(ElementType.FILE);
     }
 
     public ClassDescr getClassDescr() {
-        return classDescr;
+        return (ClassDescr)elements.getFirst(ElementType.CLASS);
     }
 
     public void setClassDescr(ClassDescr classDescr) {
-        this.classDescr = classDescr;
+        elements.removeFirst(ElementType.CLASS);
+        elements.add(classDescr);
     }
 
     public PackageDescr getPackageDescr() {
-        return packageDescr;
+        return (PackageDescr)elements.getFirst(ElementType.PACKAGE);
     }
 
     public void setPackageDescr(PackageDescr packageDescr) {
-        this.packageDescr = packageDescr;
+        //elements.removeFirst(ElementType.PACKAGE);
+        //elements.add(packageDescr);
     }
 }
