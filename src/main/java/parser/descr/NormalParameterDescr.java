@@ -29,7 +29,8 @@ public class NormalParameterDescr extends ParameterDescr implements HasDimension
     }
 
     @Override
-    public void addDimension(DimensionDescr dimensionDescr) {
+    public NormalParameterDescr addDimension(DimensionDescr dimensionDescr) {
         dimensions.add(dimensionDescr);
+        return this;
     }
 }

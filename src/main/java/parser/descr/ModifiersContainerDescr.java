@@ -2,8 +2,6 @@ package parser.descr;
 
 public class ModifiersContainerDescr extends ElementDescriptor implements HasModifiers {
 
-    //private ModifierListDescr modifiers = new ModifierListDescr();
-
     public ModifiersContainerDescr(ElementType elementType) {
         super(elementType);
     }
@@ -24,13 +22,11 @@ public class ModifiersContainerDescr extends ElementDescriptor implements HasMod
     public ModifierListDescr getModifiers() {
         //TODO review
         return (ModifierListDescr)getElements2().getFirst(ElementType.MODIFIER_LIST);
-        //return modifiers;
     }
 
     @Override
     public void setModifiers(ModifierListDescr modifiers) {
         //TODO ensure modifiers list is inserted in order
-        //this.modifiers = modifiers;
         getElements2().add(modifiers);
     }
 
@@ -42,6 +38,5 @@ public class ModifiersContainerDescr extends ElementDescriptor implements HasMod
             getElements2().add(modifierListDescr);
         }
         if (modifierListDescr != null) modifierListDescr.add(modifier);
-        //modifiers.add(modifier);
     }
 }

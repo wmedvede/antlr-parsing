@@ -44,6 +44,12 @@ public class ElementDescrList implements List<ElementDescriptor> {
         return (index >= 0) ? elements.get(index) : null;
     }
 
+    public ElementDescriptor getLast(ElementDescriptor.ElementType type) {
+        int index = lastIndexOf(type);
+        return (index >= 0) ? elements.get(index) : null;
+    }
+
+
     public int indexOf(ElementDescriptor.ElementType type) {
         int index = -1;
         for (ElementDescriptor element : elements) {
@@ -64,7 +70,7 @@ public class ElementDescrList implements List<ElementDescriptor> {
             }
             i++;
         }
-        return index;
+        return index >= elements.size() ? -1 : index;
     }
 
     @Override

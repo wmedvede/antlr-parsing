@@ -1,18 +1,8 @@
 package parser.descr;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class TypeDescr extends ElementDescriptor implements HasClassOrInterfaceType, HasPrimitiveType, HasDimensions {
-
-    private String name;
-
-    private ClassOrInterfaceTypeDescr classOrInterfaceType;
-
-    private PrimitiveTypeDescr primitiveType;
-
-    private List<DimensionDescr> dimensions = new ArrayList<DimensionDescr>();
 
     public TypeDescr() {
         super(ElementType.TYPE);
@@ -26,45 +16,42 @@ public class TypeDescr extends ElementDescriptor implements HasClassOrInterfaceT
         super(ElementType.TYPE, text, start, stop, line, position);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isPrimitiveType() {
-        return primitiveType != null;
+        return getPrimitiveType() != null;
     }
 
     public boolean isClassOrInterfaceType() {
-        return classOrInterfaceType != null;
+        return getClassOrInterfaceType() != null;
     }
 
     public ClassOrInterfaceTypeDescr getClassOrInterfaceType() {
-        return classOrInterfaceType;
+        return (ClassOrInterfaceTypeDescr)getElements2().getFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
     }
 
     public void setClassOrInterfaceType(ClassOrInterfaceTypeDescr classOrInterfaceType) {
-        this.classOrInterfaceType = classOrInterfaceType;
+        getElements2().removeFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
+        getElements2().add(classOrInterfaceType);
     }
 
     public PrimitiveTypeDescr getPrimitiveType() {
-        return primitiveType;
+        return (PrimitiveTypeDescr)getElements2().getFirst(ElementType.PRIMITIVE_TYPE);
     }
 
     public void setPrimitiveType(PrimitiveTypeDescr primitiveType) {
-        this.primitiveType = primitiveType;
+        getElements2().removeFirst(ElementType.PRIMITIVE_TYPE);
+        getElements2().add(primitiveType);
     }
 
     @Override
     public int getDimensionsCount() {
+        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
-    public void addDimension(DimensionDescr dimensionDescr) {
-        dimensions.add(dimensionDescr);
+    public TypeDescr addDimension(DimensionDescr dimensionDescr) {
+        getElements2().add(dimensionDescr);
+        return this;
     }
+
 }

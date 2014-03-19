@@ -4,11 +4,7 @@ package parser.descr;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDescr extends AnnotationsContainerDescr implements HasType {
-
-    private List<VariableDeclarationDescr> variableDeclarations = new ArrayList<VariableDeclarationDescr>();
-
-    private TypeDescr type;
+public class FieldDescr extends ModifiersContainerDescr implements HasType {
 
     public FieldDescr() {
         super(ElementType.FIELD);
@@ -23,15 +19,16 @@ public class FieldDescr extends AnnotationsContainerDescr implements HasType {
     }
 
     public TypeDescr getType() {
-        return (TypeDescr)getElements2().getElementsByType(ElementType.TYPE);
+        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
     }
 
-    public void setType(TypeDescr type) {
+    public FieldDescr setType(TypeDescr type) {
+        getElements2().removeFirst(ElementType.TYPE);
         getElements2().add(type);
+        return this;
     }
 
     public List<VariableDeclarationDescr> getVariableDeclarations() {
-
         List<VariableDeclarationDescr> variableDeclarations = new ArrayList<VariableDeclarationDescr>();
         for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.VARIABLE)) {
             variableDeclarations.add((VariableDeclarationDescr)member);
@@ -39,17 +36,23 @@ public class FieldDescr extends AnnotationsContainerDescr implements HasType {
         return variableDeclarations;
     }
 
-    public void setVariableDeclarations(List<VariableDeclarationDescr> variableDeclarations) {
-        this.variableDeclarations = variableDeclarations;
-    }
-
-    public void addVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
+    public FieldDescr addVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
         getElements2().add(variableDeclarationDescr);
-        //variableDeclarations.add(variableDeclarationDescr);
+        return this;
     }
 
-    public void setVariableDeclarationsStop(ElementDescriptor stop) {
-        getElements2().add(stop);
+    public FieldDescr removeVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
+        getElements2().remove(variableDeclarationDescr);
+        return this;
     }
 
+    public JavaTokenDescr getEndSemiColon() {
+        return (JavaTokenDescr)getElements2().getLast(ElementType.JAVA_SEMI_COLON);
+    }
+
+    public FieldDescr setEndSemiColon(JavaTokenDescr element) {
+        getElements2().removeFirst(ElementType.JAVA_SEMI_COLON);
+        getElements2().add(element);
+        return this;
+    }
 }

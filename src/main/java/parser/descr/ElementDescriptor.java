@@ -28,7 +28,14 @@ public class ElementDescriptor {
         FILE,
         QUALIFIED_NAME,
         PACKAGE,
-        IDENTIFIER
+        IDENTIFIER,
+        DIMENSION,
+        JAVA_SEMI_COLON,
+        JAVA_COMMA,
+        JAVA_EQUALS,
+        JAVA_LBRACKET,
+        JAVA_RBRACKET,
+        JAVA_DOT
     }
 
     private ElementType elementType;

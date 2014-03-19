@@ -349,7 +349,7 @@ packageDeclaration
             log("A PackageDescr is expected");
         }
     }
-    :   p='package' qualifiedName { packageDescr.setPackageToken(new TextTokenElementDescr($p.text, line($p), position($p))); }
+    :   p='package' qualifiedName { packageDescr.setPackageToken(new TextTokenElementDescr($p.text,  start((CommonToken)$p), stop((CommonToken)$p), line($p), position($p))); }
         ';'
     ;
 
@@ -480,12 +480,12 @@ normalClassDeclaration
     :   modifiers c='class' id=IDENTIFIER {
                                         if (classDescr != null) {
                                             classDescr.setName($id.text);
-                                            classDescr.setClassToken(new TextTokenElementDescr($c.text, line($c), position($c)));
+                                            classDescr.setClassToken(new TextTokenElementDescr($c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c)));
                                         }
                                     }
         (typeParameters
         )?
-        ( e='extends' type { if (classDescr != null) classDescr.setExtendsToken(new TextTokenElementDescr($e.text, line($e), position($e))); }
+        ( e='extends' type { if (classDescr != null) classDescr.setExtendsToken(new TextTokenElementDescr($e.text, start((CommonToken)$e), stop((CommonToken)$e), line($e), position($e))); }
         )?
         ('implements' typeList
         )?            
@@ -655,7 +655,12 @@ methodDeclaration
         )
         IDENTIFIER { method.setName($IDENTIFIER.text); }
         formalParameters
-        (p1='[' p2=']'   { method.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']'   {
+                method.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                                            new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
+                                            new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
+        }
+
         )*
         ('throws' qualifiedNameList
         )?            
@@ -676,7 +681,6 @@ fieldDeclaration
         }
     }
     @after {
-        //this can also be done in the finally block for the rule.
         field = popField();
         if (field != null) {
             updateOnAfter(field, $text, (CommonToken)$stop);
@@ -688,25 +692,34 @@ fieldDeclaration
     }
     :   modifiers
         type
-        v1=variableDeclarator       { if (field != null) field.addVariableDeclaration($v1.varDec); }
-        (',' v2=variableDeclarator  { if (field != null) field.addVariableDeclaration($v2.varDec); }
+        v1=variableDeclarator        { if (field != null) field.addVariableDeclaration($v1.varDec); }
+        (c=',' v2=variableDeclarator {
+                                       $v2.varDec.setStartComma( new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c)) );
+                                       if (field != null) field.addVariableDeclaration($v2.varDec);
+                                     }
         )*
-        s=';' { if (field != null) field.setVariableDeclarationsStop(new TextTokenElementDescr($text, start((CommonToken)$s), stop((CommonToken)$s), line($s), position($s))); }
+        s=';' { if (field != null) field.setEndSemiColon(new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $s.text, start((CommonToken)$s), stop((CommonToken)$s), line($s), position($s))); }
     ;
 
 variableDeclarator returns [ VariableDeclarationDescr varDec ]
     @init {
-        $varDec = new VariableDeclarationDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+        if (!isBacktracking()) {
+            $varDec = new VariableDeclarationDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+        }
     }
     @after {
         updateOnAfter($varDec, $text, (CommonToken)$stop);
-        //$varDec.setText(variableInitializer.text);
-        //$varDec.setInitializerExpr(variableInitializer.text);
     }
-    :   i=IDENTIFIER { $varDec.setIdentifier($i.text); $varDec.setIdentifierDescr(new IdentifierDescr($i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i) )); }
-        (p1='[' p2=']' { $varDec.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+    :   i=IDENTIFIER { $varDec.setIdentifier(new IdentifierDescr($i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i) )); }
+        (p1='[' p2=']' { $varDec.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                                                        new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
+                                                        new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
+                       }
         )*
-        ('=' v=variableInitializer { $varDec.setVariableInitializer(new VariableInitializerDescr( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) ); }
+        (e='=' v=variableInitializer {
+                $varDec.setEqualsSign(new JavaTokenDescr(ElementType.JAVA_EQUALS, $e.text, start((CommonToken)$e), stop((CommonToken)$e), line($e), position($e)) );
+                $varDec.setVariableInitializer( new VariableInitializerDescr( $v.text, start(((CommonToken)$v.start)), stop((CommonToken)$v.stop), line((CommonToken)$v.start), position((CommonToken)$v.start), $v.text ) );
+                }
         )?
     ;
 
@@ -769,10 +782,16 @@ type
         }
     }
     :   classOrInterfaceType
-        (p1='[' p2=']' { type.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                                                                new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
+                                                                new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
+        }
         )*
     |   primitiveType
-        (p1='[' p2=']' { type.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { type.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                                                                new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
+                                                                new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
+        }
         )*
     ;
 
@@ -780,7 +799,8 @@ type
 classOrInterfaceType
     @init {
         ClassOrInterfaceTypeDescr classDescr = null;
-        IdentifierWithTypeArgumentsDescr idArguments = null;
+        IdentifierDescr ident = null;
+        IdentifierWithTypeArgumentsDescr identWithArgs = null;
         if (!isBacktracking()) {
             log("Start ClassOrInterfaceType declaration");
             classDescr = new ClassOrInterfaceTypeDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
@@ -800,16 +820,26 @@ classOrInterfaceType
         }
     }
     :   id1=IDENTIFIER  {
-                            idArguments = new IdentifierWithTypeArgumentsDescr($id1.text, -1, line($id1), position($id1), $id1.text);
-                            classDescr.addIdentifierWithTypeArguments(idArguments);
+                            ident = new IdentifierDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1), line($id1), position($id1));
+                            identWithArgs = new IdentifierWithTypeArgumentsDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1), line($id1), position($id1));
+                            identWithArgs.setIdentifier(ident);
+                            classDescr.addIdentifierWithTypeArguments(identWithArgs);
                         }
-        ( {context.push(idArguments);} typeArguments {if (context.size() > 0) context.pop();}
+        ( {context.push(identWithArgs);} typeArguments {if (context.size() > 0) context.pop();}
         )?
-        ('.' id2=IDENTIFIER {
-                            idArguments = new IdentifierWithTypeArgumentsDescr($id2.text, -1, line($id2), position($id2), $id2.text);
-                            classDescr.addIdentifierWithTypeArguments(idArguments);
+        (d='.' id2=IDENTIFIER {
+                            JavaTokenDescr dot = new JavaTokenDescr(ElementType.JAVA_DOT, $d.text, start((CommonToken)$d), stop((CommonToken)$d), line($d), position($d));
+                            ident = new IdentifierDescr($id2.text, start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2));
+                            identWithArgs = new IdentifierWithTypeArgumentsDescr($id2.text, start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2));
+                            identWithArgs.setIdentifier(ident);
+                            classDescr.addIdentifierWithTypeArguments(identWithArgs);
                         }
-            ( {context.push(idArguments);} typeArguments {if (context.size() > 0) context.pop();}
+            ( {context.push(identWithArgs);} t=typeArguments {
+                                                                if (isIdentifierWithTypeArgumentsOnTop()) {
+                                                                    identWithArgs = popIdentifierWithTypeArguments();
+                                                                    identWithArgs.setStop(stop((CommonToken)$t.start));
+                                                                }
+                                                           }
             )?
         )*
     ;
@@ -878,10 +908,10 @@ qualifiedNameList
     ;
 
 formalParameters
-    :   p1='('  { setFormalParamsStart($p1.text, line($p1), position($p1)); }
+    :   p1='('  { setFormalParamsStart($p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)); }
         (formalParameterDecls
         )? 
-        p2= ')' { setFormalParamsStop($p2.text, line($p2), position($p2)); }
+        p2= ')' { setFormalParamsStop($p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2)); }
     ;
 
 formalParameterDecls 
@@ -914,7 +944,10 @@ normalParameterDecl
          }
      }
     :   variableModifiers type IDENTIFIER { param.setName($IDENTIFIER.text); }
-        (p1='[' p2=']' { param.addDimension(new DimensionDescr($p1.text, line($p1), position($p1), $p2.text, line($p2), position($p2))); }
+        (p1='[' p2=']' { param.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                                                               new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
+                                                               new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
+        }
         )*
     ;
 
@@ -938,7 +971,7 @@ ellipsisParameterDecl
      }
 
     :   variableModifiers
-        type  e='...' { ellipsisParam.setEllipsisToken(new TextTokenElementDescr($e.text, line($e), position($e))); }
+        type  e='...' { ellipsisParam.setEllipsisToken(new TextTokenElementDescr($e.text, start((CommonToken)$e), stop((CommonToken)$e), line($e), position($e))); }
         IDENTIFIER { ellipsisParam.setName($IDENTIFIER.text); }
     ;
 
@@ -977,8 +1010,8 @@ qualifiedName
              //TODO warning, by construction current qualifiedname param is expected
          }
      }
-    :   id1=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, line($id1), position($id1)) ); }
-        ('.' id2=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, line($id1), position($id1)) ); }
+    :   id1=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1),line($id1), position($id1)) ); }
+        ('.' id2=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id2.text,  start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2)) ); }
         )*
     ;
 

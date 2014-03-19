@@ -21,7 +21,8 @@ public class TypeArgumentDescr extends ElementDescriptor implements HasType {
         return type;
     }
 
-    public void setType(TypeDescr type) {
+    public TypeArgumentDescr setType(TypeDescr type) {
         this.type = type;
+        return this;
     }
 }

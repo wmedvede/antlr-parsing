@@ -130,6 +130,10 @@ public class JavaParserBase extends Parser {
         return isOnTop(ElementType.PACKAGE);
     }
 
+    protected boolean isIdentifierWithTypeArgumentsOnTop() {
+        return isOnTop(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS);
+    }
+
     protected boolean isOnTop(ElementType elementType) {
         return !context.empty() && context.peek().isElementType(elementType);
     }
@@ -232,6 +236,14 @@ public class JavaParserBase extends Parser {
 
     protected QualifiedNameDescr peekQualifiedName() {
         return isQualifiedNameOnTop() ? (QualifiedNameDescr) context.peek() : null;
+    }
+
+    protected IdentifierWithTypeArgumentsDescr popIdentifierWithTypeArguments() {
+        return isIdentifierWithTypeArgumentsOnTop() ? (IdentifierWithTypeArgumentsDescr) context.pop() : null;
+    }
+
+    protected IdentifierWithTypeArgumentsDescr peekIdentifierWithTypeArguments() {
+        return isIdentifierWithTypeArgumentsOnTop() ? (IdentifierWithTypeArgumentsDescr) context.peek() : null;
     }
 
     protected TypeArgumentDescr peekTypeArgument() {
@@ -366,18 +378,18 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void setFormalParamsStart(String text, int line, int position) {
+    protected void setFormalParamsStart(String text, int start, int stop, int line, int position) {
         if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStart(new TextTokenElementDescr(text, line, position));
+                peekMethod().setParamsStart(new TextTokenElementDescr(text, start, stop, line, position));
             }
         }
     }
 
-    protected void setFormalParamsStop(String text, int line, int position) {
+    protected void setFormalParamsStop(String text, int start, int stop, int line, int position) {
         if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStop(new TextTokenElementDescr(text, line, position));
+                peekMethod().setParamsStop(new TextTokenElementDescr(text, start, stop, line, position));
             }
         }
     }

@@ -20,9 +20,9 @@ public class ParserAssert {
 
     public static void assertEqualsModifiers(StringBuffer buffer, ModifierListDescr modifiers1, ModifierListDescr modifiers2) {
         if (modifiers1 != null && modifiers2 != null) {
-            assertEquals(modifiers1.getElements().size(), modifiers2.getElements().size());
-            for (int i = 0; i < modifiers1.getElements().size(); i++) {
-                assertEqualsModifier(buffer, modifiers1.getElements().get(i), modifiers2.getElements().get(i));
+            assertEquals(modifiers1.getModifiers().size(), modifiers2.getModifiers().size());
+            for (int i = 0; i < modifiers1.getModifiers().size(); i++) {
+                assertEqualsModifier(buffer, modifiers1.getModifiers().get(i), modifiers2.getModifiers().get(i));
             }
         }
         if (modifiers1 == null) assertNull(modifiers2);
@@ -55,7 +55,7 @@ public class ParserAssert {
 
     public static void assertEqualsVariableDeclaration(StringBuffer buffer, VariableDeclarationDescr var1,  VariableDeclarationDescr var2) {
         if (var1 != null && var2 != null) {
-            assertEquals(var1.getIdentifier(), var2.getIdentifier());
+            assertEqualsIdentifier(buffer, var1.getIdentifier(), var2.getIdentifier());
             assertEquals(var1.getDimensionsCount(), var2.getDimensionsCount());
             assertEqualsVariableInitializer(buffer, var1.getVariableInitializer(), var2.getVariableInitializer());
         }
@@ -116,6 +116,14 @@ public class ParserAssert {
         }
         if (param1 == null) assertNull(param2);
         if (param2 == null) assertNull(param1);
+    }
+
+    public static void assertEqualsIdentifier(StringBuffer buffer, IdentifierDescr id1, IdentifierDescr id2) {
+        if (id1 != null && id2 != null) {
+            assertEquals(id1.getIdentifier(), id2.getIdentifier());
+        }
+        if (id1 == null) assertNull(id2);
+        if (id2 == null) assertNull(id1);
     }
 
 }

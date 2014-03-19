@@ -16,7 +16,7 @@ public class JavaFileHandler2Test extends JavaFileHandlerBaseTest {
     String fileContents[] = new String[6];
 
     public JavaFileHandler2Test() throws Exception {
-        super("JavaFileHandler2.java");
+        super("JavaFileHandler2.txt");
     }
 
     private void assertStrings(String a, String b) {
@@ -30,7 +30,14 @@ public class JavaFileHandler2Test extends JavaFileHandlerBaseTest {
         try {
 
 
+
+
             ((JavaFileHandlerImpl)fileHandler).setSourceBufferTMP(fileHandler.getFileDescr(), new StringBuilder(fileHandler.getOriginalContent()));
+
+            String tree1 = ((JavaFileHandlerImpl)fileHandler).printTree(fileHandler.getFileDescr());
+
+
+
             ((JavaFileHandlerImpl)fileHandler).populateUnManagedElements(fileHandler.getFileDescr());
             ((JavaFileHandlerImpl)fileHandler).setSourceBufferTMP(fileHandler.getFileDescr(), new StringBuilder(fileHandler.getOriginalContent()));
 

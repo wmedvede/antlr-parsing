@@ -221,8 +221,8 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         param2.setType(new TypeDescr(null, -1, -1));
         param2.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("java.lang.Integer", -1, -1));
         method.addParameter(param2);
-        method.addDimension(new DimensionDescr("[", -1, -1, "]", -1, -1));
-        method.addDimension(new DimensionDescr("[", -1, -1, "]", -1, -1));
+        method.addDimension(new DimensionDescr("", -1, -1, -1, -1, new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_LBRACKET, "[", -1, -1, -1, -1), new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_RBRACKET, "]", -1, -1, -1, -1)));
+        method.addDimension(new DimensionDescr("", -1, -1, -1, -1, new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_LBRACKET, "[", -1, -1, -1, -1), new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_RBRACKET, "]", -1, -1, -1, -1)));
         expectedMethods.add(method);
 
 

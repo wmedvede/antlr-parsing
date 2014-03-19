@@ -24,8 +24,9 @@ public class ParameterDescr extends AnnotationsContainerDescr implements HasType
     }
 
     @Override
-    public void setType(TypeDescr type) {
+    public ParameterDescr setType(TypeDescr type) {
         this.type = type;
+        return this;
     }
 
     @Override

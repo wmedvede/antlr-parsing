@@ -5,6 +5,6 @@ public interface HasDimensions {
 
     public int getDimensionsCount();
 
-    public void addDimension(DimensionDescr dimensionDescr);
+    public ElementDescriptor addDimension(DimensionDescr dimensionDescr);
 
 }

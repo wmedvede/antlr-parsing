@@ -14,7 +14,7 @@ public class CSVTest {
     @Test
     @Ignore
     public void doTest() throws Exception {
-        // the input source
+        // the input sourceBuffer
         String source =
                 "value1,value2,\"value3.1,\"\",value3.2\"" + "\n" +
                         "\"line\nbreak\",Bbb,end";
@@ -35,7 +35,7 @@ public class CSVTest {
     @Test
     @Ignore
     public void doTest2() throws Exception {
-        // the input source
+        // the input sourceBuffer
         String source =
                 "aaa,bbb,ccc" + "\n" +
                         "\"d,\"\"d\",eee,fff";
@@ -53,7 +53,7 @@ public class CSVTest {
 
         List<List<String>> data = parser.file();
 
-        // display the contents of the CSV source
+        // display the contents of the CSV sourceBuffer
         for(int r = 0; r < data.size(); r++) {
             List<String> row = data.get(r);
             for(int c = 0; c < row.size(); c++) {

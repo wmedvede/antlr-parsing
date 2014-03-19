@@ -5,8 +5,6 @@ import java.util.List;
 
 public class ModifierListDescr extends ElementDescriptor {
 
-    private List<ModifierDescr> elements = new ArrayList<ModifierDescr>();
-
     public ModifierListDescr() {
         super(ElementType.MODIFIER_LIST);
     }
@@ -24,23 +22,14 @@ public class ModifierListDescr extends ElementDescriptor {
     }
 
     public void add(ModifierDescr modifierDescr) {
-        //elements.add(modifierDescr);
         getElements2().add(modifierDescr);
     }
 
-    public List<ModifierDescr> getElements() {
+    public List<ModifierDescr> getModifiers() {
         List<ModifierDescr> modifiers = new ArrayList<ModifierDescr>();
         for (ElementDescriptor modifier :  getElements2().getElementsByType(ElementType.MODIFIER)) {
             modifiers.add((ModifierDescr)modifier);
         }
         return modifiers;
-
-        //return elements;
     }
-
-    /*
-    public void setElements(List<ModifierDescr> elements) {
-        this.elements = elements;
-    }
-    */
 }

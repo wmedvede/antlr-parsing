@@ -49,13 +49,15 @@ public class MethodDescr extends AnnotationsContainerDescr implements HasDimensi
         return dimensions.size();
     }
 
-    public void addDimension(DimensionDescr dimensionDescr) {
+    public MethodDescr addDimension(DimensionDescr dimensionDescr) {
         dimensions.add(dimensionDescr);
+        return this;
     }
 
     @Override
-    public void setType(TypeDescr type) {
+    public MethodDescr setType(TypeDescr type) {
         this.type = type;
+        return this;
     }
 
     @Override

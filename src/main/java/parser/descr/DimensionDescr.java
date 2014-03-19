@@ -1,33 +1,46 @@
 package parser.descr;
 
-
-public class DimensionDescr {
-
-    private TextTokenElementDescr start;
-
-    private TextTokenElementDescr stop;
+public class DimensionDescr extends ElementDescriptor {
 
     public DimensionDescr() {
+        super(ElementType.DIMENSION);
     }
 
-    public DimensionDescr(String startText, int startLine, int startPosition, String stopText, int stopLine, int stopPosition) {
-        start = new TextTokenElementDescr(startText, startLine, startPosition);
-        stop = new TextTokenElementDescr(stopText, stopLine, stopPosition);
+    public DimensionDescr(String text, int start, int line, int position) {
+        this(text, start, -1, line, position);
     }
 
-    public TextTokenElementDescr getStart() {
-        return start;
+    public DimensionDescr(String text, int start, int stop) {
+        this(text, start, stop, -1, -1);
     }
 
-    public void setStart(TextTokenElementDescr start) {
-        this.start = start;
+    public DimensionDescr(String text, int start, int stop, int line, int position) {
+        super(ElementType.DIMENSION, text, start, stop, line, position);
     }
 
-    public TextTokenElementDescr getStop() {
-        return stop;
+    public DimensionDescr(String text, int start, int stop, int line, int position, JavaTokenDescr startBracket, JavaTokenDescr endBracket) {
+        super(ElementType.DIMENSION, text, start, stop, line, position);
+        setStartBracket(startBracket);
+        setEndBracket(endBracket);
     }
 
-    public void setStop(TextTokenElementDescr stop) {
-        this.stop = stop;
+    public JavaTokenDescr getStartBracket() {
+        return (JavaTokenDescr)getElements2().getElementsByType(ElementType.JAVA_LBRACKET);
+    }
+
+    public DimensionDescr setStartBracket(JavaTokenDescr startBracket) {
+        getElements2().removeFirst(ElementType.JAVA_LBRACKET);
+        getElements2().add(startBracket);
+        return this;
+    }
+
+    public JavaTokenDescr getEndBracket() {
+        return (JavaTokenDescr)getElements2().getElementsByType(ElementType.JAVA_RBRACKET);
+    }
+
+    public DimensionDescr setEndBracket(JavaTokenDescr endBracket) {
+        getElements2().removeFirst(ElementType.JAVA_RBRACKET);
+        getElements2().add(endBracket);
+        return this;
     }
 }
