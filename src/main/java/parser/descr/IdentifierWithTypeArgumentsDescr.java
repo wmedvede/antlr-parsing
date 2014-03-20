@@ -1,13 +1,7 @@
 package parser.descr;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class IdentifierWithTypeArgumentsDescr extends ElementDescriptor implements HasTypeArguments {
-
-    private String name;
-
-    private List<TypeArgumentDescr> arguments = new ArrayList<TypeArgumentDescr>();
 
     public IdentifierWithTypeArgumentsDescr() {
         super(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS);
@@ -26,21 +20,14 @@ public class IdentifierWithTypeArgumentsDescr extends ElementDescriptor implemen
     }
 
     @Override
-    public List<TypeArgumentDescr> getArguments() {
-        return arguments;
+    public TypeArgumentListDescr getArguments() {
+        return (TypeArgumentListDescr)getElements2().getFirst(ElementType.TYPE_ARGUMENT_LIST);
     }
 
-    @Override
-    public void addArgument(TypeArgumentDescr typeArgument) {
-        arguments.add(typeArgument);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public IdentifierWithTypeArgumentsDescr setArguments(TypeArgumentListDescr arguments) {
+        getElements2().removeFirst(ElementType.TYPE_ARGUMENT_LIST);
+        getElements2().add(arguments);
+        return this;
     }
 
     public JavaTokenDescr getStartDot() {
@@ -62,7 +49,5 @@ public class IdentifierWithTypeArgumentsDescr extends ElementDescriptor implemen
         getElements2().add(0, identifier);
         return this;
     }
-
-
 
 }

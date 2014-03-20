@@ -13,12 +13,12 @@ public class FileDescr extends ElementDescriptor {
     }
 
     public void setClassDescr(ClassDescr classDescr) {
-        elements.removeFirst(ElementType.CLASS);
-        elements.add(classDescr);
+        getElements2().removeFirst(ElementType.CLASS);
+        getElements2().add(classDescr);
     }
 
     public PackageDescr getPackageDescr() {
-        return (PackageDescr)elements.getFirst(ElementType.PACKAGE);
+        return (PackageDescr)getElements2().getFirst(ElementType.PACKAGE);
     }
 
     public void setPackageDescr(PackageDescr packageDescr) {

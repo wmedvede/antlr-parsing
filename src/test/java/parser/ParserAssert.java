@@ -3,6 +3,8 @@ package parser;
 import parser.descr.*;
 import parser.util.ParserUtil;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -98,19 +100,31 @@ public class ParserAssert {
         if (method1 != null && method2 != null) {
             assertEqualsModifiers(buffer, method1.getModifiers(), method2.getModifiers());
             assertEqualsType(buffer, method1.getType(), method2.getType());
-            assertEquals(method1.getParameters().size(), method2.getParameters().size());
-            for (int i = 0; i < method1.getParameters().size(); i++) {
-                assertEqualsParameter(buffer, method1.getParameters().get(i), method2.getParameters().get(i));
-            }
+            assertEqualsParameterList(buffer, method1.getParamsList(), method2.getParamsList());
             assertEquals(method1.getDimensionsCount(), method2.getDimensionsCount());
         }
         if (method1 == null) assertNull(method2);
         if (method2 == null) assertNotNull(method1);
     }
 
+    public static void assertEqualsParameterList(StringBuffer buffer, ParameterListDescr params1, ParameterListDescr params2) {
+        if (params1 != null && params2 != null)  {
+            List<ParameterDescr> l1 = params1.getParameters();
+            List<ParameterDescr> l2 = params2.getParameters();
+            assertEquals(l1.size(), l2.size());
+
+            for (int i = 0; i < l1.size(); i++) {
+                assertEqualsParameter(buffer, l1.get(i), l2.get(i));
+            }
+        }
+
+        if (params1 == null) assertNull(params2);
+        if (params2 == null) assertNull(params1);
+    }
+
     public static void assertEqualsParameter(StringBuffer buffer, ParameterDescr param1, ParameterDescr param2) {
         if (param1 != null && param2 != null) {
-            assertEquals(param1.getName(), param2.getName());
+            assertEqualsIdentifier(buffer, param1.getIdentifier(), param2.getIdentifier());
             assertEqualsType(buffer, param1.getType(), param2.getType());
             assertEqualsModifiers(buffer, param1.getModifiers(), param2.getModifiers());
         }

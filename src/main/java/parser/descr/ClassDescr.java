@@ -4,11 +4,9 @@ package parser.descr;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassDescr extends AnnotationsContainerDescr {
+public class ClassDescr extends ModifiersContainerDescr {
 
     private String name;
-
-    private List<ElementDescriptor> members = new ArrayList<ElementDescriptor>();
 
     private TypeDescr superClass;
 
@@ -40,13 +38,11 @@ public class ClassDescr extends AnnotationsContainerDescr {
     }
 
     public void addMember(ElementDescriptor member) {
-        //members.add(member);
-        super.getElements2().add(member);
+        getElements2().add(member);
     }
 
     public List<ElementDescriptor> getMembers() {
-        //return members;
-        return super.getElements2();
+        return getElements2();
     }
 
     public void addField(FieldDescr fieldDescr) {

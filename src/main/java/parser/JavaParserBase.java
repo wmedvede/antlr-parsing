@@ -134,6 +134,10 @@ public class JavaParserBase extends Parser {
         return isOnTop(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS);
     }
 
+    protected boolean isTypeArgumentListOnTop() {
+        return isOnTop(ElementType.TYPE_ARGUMENT_LIST);
+    }
+
     protected boolean isOnTop(ElementType elementType) {
         return !context.empty() && context.peek().isElementType(elementType);
     }
@@ -196,6 +200,14 @@ public class JavaParserBase extends Parser {
 
     protected EllipsisParameterDescr peekEllipsisParameter() {
         return isEllipsisParameterOnTop() ? (EllipsisParameterDescr)context.peek() : null;
+    }
+
+    protected TypeArgumentListDescr popTypeArgumentList() {
+        return isTypeArgumentListOnTop() ? (TypeArgumentListDescr)context.pop() : null;
+    }
+
+    protected TypeArgumentListDescr peekTypeArgumentList() {
+        return isTypeArgumentListOnTop() ? (TypeArgumentListDescr)context.peek() : null;
     }
 
     protected ModifierListDescr popModifierList() {
@@ -360,15 +372,6 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void processParameter(ParameterDescr parameterDesc) {
-        if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
-            MethodDescr method = peekMethod();
-            //TODO check if this control is enough
-            if (method != null) {
-                method.addParameter(parameterDesc);
-            }
-        }
-    }
 
     protected void processMethod(MethodDescr methodDescr) {
         if (isDeclaringMainClass()) {
@@ -378,18 +381,26 @@ public class JavaParserBase extends Parser {
         }
     }
 
-    protected void setFormalParamsStart(String text, int start, int stop, int line, int position) {
+    protected void setFormalParamsStart(ElementType type, String text, int start, int stop, int line, int position) {
         if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStart(new TextTokenElementDescr(text, start, stop, line, position));
+                peekMethod().setParamsStartParen(new JavaTokenDescr(type, text, start, stop, line, position));
             }
         }
     }
 
-    protected void setFormalParamsStop(String text, int start, int stop, int line, int position) {
+    protected void setFormalParamsStop(ElementType type, String text, int start, int stop, int line, int position) {
         if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
             if ( isMethodOnTop() ) {
-                peekMethod().setParamsStop(new TextTokenElementDescr(text, start, stop, line, position));
+                peekMethod().setParamsStopParen(new JavaTokenDescr(type, text, start, stop, line, position));
+            }
+        }
+    }
+
+    protected void processParameterList(ParameterListDescr params) {
+        if (isDeclaringMainClass() || mode == ParserMode.PARSE_METHOD) {
+            if ( isMethodOnTop() ) {
+                peekMethod().setParamsList(params);
             }
         }
     }
@@ -418,5 +429,13 @@ public class JavaParserBase extends Parser {
 
     protected void processPackage(PackageDescr packageDescr) {
         fileDescr.setPackageDescr(packageDescr);
+    }
+
+    protected void processTypeArgumentList(TypeArgumentListDescr arguments) {
+        if (isDeclaringMainClass()) {
+            if (isIdentifierWithTypeArgumentsOnTop()) {
+                peekIdentifierWithTypeArguments().setArguments(arguments);
+            }
+        }
     }
 }

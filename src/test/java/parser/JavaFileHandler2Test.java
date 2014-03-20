@@ -16,7 +16,7 @@ public class JavaFileHandler2Test extends JavaFileHandlerBaseTest {
     String fileContents[] = new String[6];
 
     public JavaFileHandler2Test() throws Exception {
-        super("JavaFileHandler2.txt");
+        super("JavaFileHandler2.java");
     }
 
     private void assertStrings(String a, String b) {

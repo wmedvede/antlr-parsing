@@ -33,10 +33,12 @@ public class ModifiersContainerDescr extends ElementDescriptor implements HasMod
     @Override
     public void addModifier(ModifierDescr modifier) {
         ModifierListDescr modifierListDescr = getModifiers();
+        /*
         if (modifierListDescr == null) {
             modifierListDescr = new ModifierListDescr();
             getElements2().add(modifierListDescr);
         }
+        */
         if (modifierListDescr != null) modifierListDescr.add(modifier);
     }
 }

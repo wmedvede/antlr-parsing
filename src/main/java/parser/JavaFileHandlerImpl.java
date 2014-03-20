@@ -130,7 +130,8 @@ public class JavaFileHandlerImpl implements JavaFileHandler {
         //TODO implement overloading, constructors deletion, etc.
         if (fileDescr.getClassDescr() != null) {
             for (MethodDescr method : fileDescr.getClassDescr().getMethods()) {
-                if (name.equals(method.getName())) {
+                IdentifierDescr identifier = method.getIdentifier();
+                if (name.equals(identifier != null ? identifier.getIdentifier() : null)) {
                     deleteElement(method);
                 }
             }

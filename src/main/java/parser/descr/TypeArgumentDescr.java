@@ -3,8 +3,6 @@ package parser.descr;
 
 public class TypeArgumentDescr extends ElementDescriptor implements HasType {
 
-    private TypeDescr type;
-
     public TypeArgumentDescr() {
         super(ElementType.TYPE_ARGUMENT);
     }
@@ -18,11 +16,18 @@ public class TypeArgumentDescr extends ElementDescriptor implements HasType {
     }
 
     public TypeDescr getType() {
-        return type;
+        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
     }
 
     public TypeArgumentDescr setType(TypeDescr type) {
-        this.type = type;
+        getElements2().removeFirst(ElementType.TYPE);
+        getElements2().add(type);
+        return this;
+    }
+
+    public TypeArgumentDescr setStartComma(JavaTokenDescr comma) {
+        getElements2().removeFirst(ElementType.JAVA_COMMA);
+        getElements2().add(0, comma);
         return this;
     }
 }

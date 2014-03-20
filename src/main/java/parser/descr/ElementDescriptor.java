@@ -21,6 +21,7 @@ public class ElementDescriptor {
         TYPE,
         NORMAL_PARAMETER,
         ELLIPSIS_PARAMETER,
+        PARAMETER_LIST,
         TEXT_TOKEN,
         TYPE_ARGUMENT_LIST,
         MODIFIER_LIST,
@@ -35,7 +36,12 @@ public class ElementDescriptor {
         JAVA_EQUALS,
         JAVA_LBRACKET,
         JAVA_RBRACKET,
-        JAVA_DOT
+        JAVA_DOT,
+        JAVA_GT,
+        JAVA_LT,
+        JAVA_LPAREN,
+        JAVA_RPAREN,
+        JAVA_ELLIPSIS
     }
 
     private ElementType elementType;

@@ -7,9 +7,6 @@ import java.util.List;
 public class ClassOrInterfaceTypeDescr extends ElementDescriptor {
 
 
-    List<IdentifierWithTypeArgumentsDescr> identifierWithTypeArguments = new ArrayList<IdentifierWithTypeArgumentsDescr>();
-
-
     public ClassOrInterfaceTypeDescr() {
         super(ElementType.CLASS_OR_INTERFACE_TYPE);
     }
@@ -22,8 +19,16 @@ public class ClassOrInterfaceTypeDescr extends ElementDescriptor {
         this(text, start, stop, -1, -1);
     }
 
-    public void addIdentifierWithTypeArguments(IdentifierWithTypeArgumentsDescr identifierWithTypeArgumentsDescr) {
-        identifierWithTypeArguments.add(identifierWithTypeArgumentsDescr);
+    public void addIdentifierWithTypeArgument(IdentifierWithTypeArgumentsDescr identifierWithTypeArgumentsDescr) {
+        getElements2().add(identifierWithTypeArgumentsDescr);
+    }
+
+    public List<IdentifierWithTypeArgumentsDescr> getIdentifierWithTypeArguments() {
+        List<IdentifierWithTypeArgumentsDescr> identifiers = new ArrayList<IdentifierWithTypeArgumentsDescr>();
+        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS)) {
+            identifiers.add((IdentifierWithTypeArgumentsDescr)member);
+        }
+        return identifiers;
     }
 
     public String getClassName() {

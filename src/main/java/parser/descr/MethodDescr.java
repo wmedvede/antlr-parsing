@@ -1,21 +1,8 @@
 package parser.descr;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MethodDescr extends AnnotationsContainerDescr implements HasDimensions, HasType {
-
-    private String name;
-
-    private List<DimensionDescr> dimensions = new ArrayList<DimensionDescr>();
-
-    private TypeDescr type;
-
-    private List<ParameterDescr> parameters = new ArrayList<ParameterDescr>();
-
-    private TextTokenElementDescr paramsStart;
-
-    private TextTokenElementDescr paramsStop;
+public class MethodDescr extends ModifiersContainerDescr implements HasDimensions, HasType {
 
     public MethodDescr() {
         super(ElementType.METHOD);
@@ -33,63 +20,62 @@ public class MethodDescr extends AnnotationsContainerDescr implements HasDimensi
         super(ElementType.METHOD, text, start, stop, line, position);
     }
 
-    public String getName() {
-        return name;
+    public IdentifierDescr getIdentifier() {
+        return (IdentifierDescr)getElements2().getFirst(ElementType.IDENTIFIER);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public MethodDescr setIdentifier(IdentifierDescr identifier) {
+        getElements2().removeFirst(ElementType.IDENTIFIER);
+        getElements2().add(identifier);
+        return this;
     }
 
-    public void setDimensions(List<DimensionDescr> dimensions) {
-        this.dimensions = dimensions;
-    }
-
+    @Override
     public int getDimensionsCount() {
+        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
+    @Override
     public MethodDescr addDimension(DimensionDescr dimensionDescr) {
-        dimensions.add(dimensionDescr);
+        getElements2().add(dimensionDescr);
         return this;
     }
 
-    @Override
-    public MethodDescr setType(TypeDescr type) {
-        this.type = type;
-        return this;
-    }
-
-    @Override
     public TypeDescr getType() {
-        return type;
+        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
     }
 
-    public List<ParameterDescr> getParameters() {
-        return parameters;
+    public MethodDescr setType(TypeDescr type) {
+        getElements2().removeFirst(ElementType.TYPE);
+        getElements2().add(type);
+        return this;
     }
 
-    public void setParameters(List<ParameterDescr> parameters) {
-        this.parameters = parameters;
+    public ParameterListDescr getParamsList() {
+        return (ParameterListDescr)getElements2().getFirst(ElementType.PARAMETER_LIST);
     }
 
-    public void addParameter(ParameterDescr parameter) {
-        parameters.add(parameter);
+    public void setParamsList(ParameterListDescr params) {
+        getElements2().removeFirst(ElementType.PARAMETER_LIST);
+        getElements2().add(params);
     }
 
-    public TextTokenElementDescr getParamsStart() {
-        return paramsStart;
+    public JavaTokenDescr getParamsStartParen() {
+        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_LPAREN);
     }
 
-    public void setParamsStart(TextTokenElementDescr paramsStart) {
-        this.paramsStart = paramsStart;
+    public void setParamsStartParen(JavaTokenDescr paramsStart) {
+        getElements2().removeFirst(ElementType.JAVA_LPAREN);
+        getElements2().add(paramsStart);
     }
 
-    public TextTokenElementDescr getParamsStop() {
-        return paramsStop;
+    public JavaTokenDescr getParamsStopParen() {
+        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_RPAREN);
     }
 
-    public void setParamsStop(TextTokenElementDescr paramsStop) {
-        this.paramsStop = paramsStop;
+    public void setParamsStopParen(JavaTokenDescr paramsStop) {
+        getElements2().removeFirst(ElementType.JAVA_RPAREN);
+        getElements2().add(paramsStop);
     }
 }

@@ -1,36 +1,35 @@
 package parser.descr;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NormalParameterDescr extends ParameterDescr implements HasDimensions {
-
-    private List<DimensionDescr> dimensions = new ArrayList<DimensionDescr>();
 
     public NormalParameterDescr() {
         super(ElementType.NORMAL_PARAMETER);
     }
 
-    public NormalParameterDescr(String text, int start, int stop, String name) {
-        this(text, start, stop, -1, -1, name);
+    public NormalParameterDescr(String text, int start, int stop) {
+        this(text, start, stop, -1, -1);
     }
 
-    public NormalParameterDescr(String text, int start, int line, int position, String name) {
-        this(text, start, -1, line, position, name);
+    public NormalParameterDescr(String text, int start, int line, int position) {
+        this(text, start, -1, line, position);
     }
 
-    public NormalParameterDescr(String text, int start, int stop, int line, int position, String name) {
-        super(ElementType.NORMAL_PARAMETER, text, start, stop, line, position, name);
+    public NormalParameterDescr(String text, int start, int stop, int line, int position) {
+        super(ElementType.NORMAL_PARAMETER, text, start, stop, line, position);
     }
 
     @Override
     public int getDimensionsCount() {
+        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
     public NormalParameterDescr addDimension(DimensionDescr dimensionDescr) {
-        dimensions.add(dimensionDescr);
+        getElements2().add(dimensionDescr);
         return this;
     }
+
 }

@@ -9,7 +9,7 @@ package parser   ;
  */
 public class JavaFileHandler2 {
 
-         class
+
     private String /***comentario*/     field1  ;
 
     /**
@@ -19,7 +19,7 @@ public class JavaFileHandler2 {
     public String getField1() {
         return field1;
     }
-         extends
+
     public class Inner1 {
 
 
