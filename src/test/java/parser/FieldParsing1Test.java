@@ -105,6 +105,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
 
         //field1
         //public String field1;
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
@@ -117,6 +118,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field2
         //public static String field2 ;
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
@@ -130,6 +132,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field3
         //public static final Integer FIELD3 = new Integer("3")  ;
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "final"));
@@ -146,6 +149,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field4
         //"transient boolean field4;"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "transient"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "boolean"));
@@ -157,6 +161,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field5
         //"protected   List<String>   field5;"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
         fieldDeclaration.setType(new TypeDescr(null, -1,-1));
         fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<String>", -1, -1));
@@ -169,6 +174,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field6
         //"protected   static List<List<String>> field6 = new ArrayList<List<String>>();"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
@@ -184,6 +190,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field7
         //"public    String[]      field7    ;"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
@@ -197,6 +204,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field8
         //public    static    java.lang.String   field8[]  =  new String[] {"value1",  "value2" } ;
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "public"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
@@ -213,6 +221,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field9
         //fieldSentences.add("private    static   String  field9 [][][];");
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "private"));
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "static"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
@@ -229,6 +238,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field10
         //protected List<String>[] field10 = new  List[] {  new ArrayList<String>(), new ArrayList<String>() };
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("List<String>", -1, -1));
@@ -242,6 +252,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field11
         // "protected int field11    =   11   ;"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
@@ -255,6 +266,7 @@ public class FieldParsing1Test extends JavaParserBaseTest {
         //field 12, and 13
         //"protected char field12 = 12,    field13  =  13 ;"
         fieldDeclaration = new FieldDescr();
+        fieldDeclaration.setModifiers(new ModifierListDescr());
         fieldDeclaration.addModifier(new ModifierDescr(null, -1, -1, "protected"));
         fieldDeclaration.setType(new TypeDescr(null, -1, -1));
         fieldDeclaration.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "char"));

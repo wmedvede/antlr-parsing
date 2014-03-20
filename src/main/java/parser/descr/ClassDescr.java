@@ -115,4 +115,16 @@ public class ClassDescr extends ModifiersContainerDescr {
     public void setSuperClass(TypeDescr superClass) {
         this.superClass = superClass;
     }
+
+    public MethodDescr getMethod(String methodIdentifier) {
+        if (methodIdentifier == null) return null;
+
+        List<MethodDescr> methods = getMethods();
+        IdentifierDescr identifier;
+        for (MethodDescr method : methods) {
+            identifier = method.getIdentifier();
+            if (identifier != null && methodIdentifier.equals(identifier.getIdentifier())) return method;
+        }
+        return null;
+    }
 }

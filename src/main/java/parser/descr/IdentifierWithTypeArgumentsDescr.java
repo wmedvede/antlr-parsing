@@ -46,7 +46,7 @@ public class IdentifierWithTypeArgumentsDescr extends ElementDescriptor implemen
 
     public IdentifierWithTypeArgumentsDescr setIdentifier(IdentifierDescr identifier) {
         getElements2().removeFirst(ElementType.IDENTIFIER);
-        getElements2().add(0, identifier);
+        getElements2().add(identifier);
         return this;
     }
 

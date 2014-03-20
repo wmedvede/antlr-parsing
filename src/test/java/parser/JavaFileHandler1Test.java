@@ -1,11 +1,14 @@
 package parser;
 
 import org.junit.Test;
+import parser.descr.ClassDescr;
+import parser.descr.MethodDescr;
 import parser.util.ParserUtil;
 
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
@@ -33,16 +36,26 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
     public void testMethodRemoval() {
         try {
 
-            fileHandler.deleteMethod("getField2", null);
+            ClassDescr classDescr = fileHandler.getFileDescr().getClassDescr();
+            MethodDescr methodDescr = classDescr.getMethod("getField2");
+            assertNotNull(methodDescr);
+            classDescr.getElements2().remove(methodDescr);
+
             assertStrings(fileContents[0], fileHandler.buildResult());
 
-            fileHandler.deleteMethod("setField1", null);
+
+            methodDescr = classDescr.getMethod("setField1");
+            assertNotNull(methodDescr);
+            classDescr.getElements2().remove(methodDescr);
             assertStrings(fileContents[1], fileHandler.buildResult());
 
-
-            fileHandler.deleteMethod("getField1", null);
+            methodDescr = classDescr.getMethod("getField1");
+            assertNotNull(methodDescr);
+            classDescr.getElements2().remove(methodDescr);
             assertStrings(fileContents[2], fileHandler.buildResult());
 
+
+            /*
             fileHandler.deleteField("field12");
             assertStrings(fileContents[3], fileHandler.buildResult());
 
@@ -58,10 +71,11 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             System.out.println(classText);
 
 
-            ((JavaFileHandlerImpl)fileHandler).populateUnManagedElements(fileHandler.getFileDescr());
+            ((JavaFileHandlerImplOLD)fileHandler).populateUnManagedElements(fileHandler.getFileDescr());
 
-            String tree = ((JavaFileHandlerImpl)fileHandler).printTree(fileHandler.getFileDescr());
+            String tree = ((JavaFileHandlerImplOLD)fileHandler).printTree(fileHandler.getFileDescr());
 
+*/
 
 
             int i = 0;

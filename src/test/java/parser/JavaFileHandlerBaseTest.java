@@ -1,9 +1,9 @@
 package parser;
 
 import org.junit.Before;
-import static org.junit.Assert.*;
 
 import parser.util.ParserUtil;
+import static org.junit.Assert.assertEquals;
 
 
 import java.io.InputStream;
@@ -15,7 +15,7 @@ public class JavaFileHandlerBaseTest {
 
     String originalFileContent;
 
-    protected JavaFileHandler fileHandler;
+    protected JavaFileHandlerImpl fileHandler;
 
     public JavaFileHandlerBaseTest(String fileName) {
         this.fileName = fileName;
@@ -34,12 +34,11 @@ public class JavaFileHandlerBaseTest {
 
         //initial tests
         //after reading handler original content should be the same as file content.
-        //assertEquals(originalFileContent, fileHandler.getOriginalContent());
+        assertEquals(originalFileContent, fileHandler.getOriginalContent());
 
         //if we invoke the build method without modifications
         //the generated file should be the same as originalFileContent.
-        //assertEquals(originalFileContent, fileHandler.buildResult());
-
+        assertEquals(originalFileContent, fileHandler.buildResult());
 
     }
 
