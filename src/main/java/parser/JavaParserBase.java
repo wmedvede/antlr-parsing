@@ -421,10 +421,12 @@ public class JavaParserBase extends Parser {
     }
 
     protected void processQualifiedName(QualifiedNameDescr nameDescr) {
+        /**
         if (isPackageOnTop()) {
             PackageDescr packageDescr = peekPackage();
             packageDescr.setQualifiedName(nameDescr);
         }
+        **/
     }
 
     protected void processPackage(PackageDescr packageDescr) {

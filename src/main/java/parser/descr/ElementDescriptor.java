@@ -41,7 +41,8 @@ public class ElementDescriptor {
         JAVA_LT,
         JAVA_LPAREN,
         JAVA_RPAREN,
-        JAVA_ELLIPSIS
+        JAVA_ELLIPSIS,
+        JAVA_PACKAGE
     }
 
     private ElementType elementType;

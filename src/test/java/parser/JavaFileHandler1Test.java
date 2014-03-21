@@ -1,8 +1,7 @@
 package parser;
 
 import org.junit.Test;
-import parser.descr.ClassDescr;
-import parser.descr.MethodDescr;
+import parser.descr.*;
 import parser.util.ParserUtil;
 
 import java.io.InputStream;
@@ -55,30 +54,30 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             assertStrings(fileContents[2], fileHandler.buildResult());
 
 
-            /*
-            fileHandler.deleteField("field12");
-            assertStrings(fileContents[3], fileHandler.buildResult());
-
-            fileHandler.createField("\n\n    public int field100 = 12;");
-            assertStrings(fileContents[4], fileHandler.buildResult());
-
-            fileHandler.createMethod("\n\n    public java.lang.String getAddress() { return null; }");
-            assertStrings(fileContents[5], fileHandler.buildResult());
-
-            //System.out.println(fileHandler.buildResult());
-
-            String classText = originalFileContent.substring(fileHandler.getFileDescr().getClassDescr().getStart(), fileHandler.getFileDescr().getClassDescr().getStop() +1);
-            System.out.println(classText);
+            FieldDescr fieldDescr = classDescr.getField("field12");
+            assertNotNull(fieldDescr);
+            boolean deleted = classDescr.removeField("field12");
+            assertEquals(true, deleted);
+            assertEquals(fileContents[3], fileHandler.buildResult());
 
 
-            ((JavaFileHandlerImplOLD)fileHandler).populateUnManagedElements(fileHandler.getFileDescr());
+            fieldDescr = DescriptorFactoryImpl.getInstance().createFieldDescr("public int field100 = 12;");
+            StringBuilder indentStr = new StringBuilder("\n\n    ");
+            TextTokenElementDescr indent = new TextTokenElementDescr("", 0, indentStr.length()-1, 1, 0);
+            indent.setSourceBuffer(indentStr);
 
-            String tree = ((JavaFileHandlerImplOLD)fileHandler).printTree(fileHandler.getFileDescr());
+            classDescr.addField(fieldDescr);
+            classDescr.getElements2().addMemberBefore(fieldDescr, indent);
+            assertEquals(fileContents[4], fileHandler.buildResult());
 
-*/
+            methodDescr = DescriptorFactoryImpl.getInstance().createMethodDescr("public java.lang.String getAddress() { return null; }");
+            indentStr = new StringBuilder("\n\n    ");
+            indent = new TextTokenElementDescr("", 0, indentStr.length()-1, 1, 0);
+            indent.setSourceBuffer(indentStr);
 
-
-            int i = 0;
+            classDescr.addMethod(methodDescr);
+            classDescr.getElements2().addMemberBefore(methodDescr, indent);
+            assertEquals(fileContents[5], fileHandler.buildResult());
 
             /*
 

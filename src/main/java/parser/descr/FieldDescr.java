@@ -41,9 +41,8 @@ public class FieldDescr extends ModifiersContainerDescr implements HasType {
         return this;
     }
 
-    public FieldDescr removeVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
-        getElements2().remove(variableDeclarationDescr);
-        return this;
+    public boolean removeVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
+        return getElements2().remove(variableDeclarationDescr);
     }
 
     public JavaTokenDescr getEndSemiColon() {
@@ -54,5 +53,17 @@ public class FieldDescr extends ModifiersContainerDescr implements HasType {
         getElements2().removeFirst(ElementType.JAVA_SEMI_COLON);
         getElements2().add(element);
         return this;
+    }
+
+    public VariableDeclarationDescr getVariableDeclaration(String name) {
+        if (name == null) return null;
+        IdentifierDescr identifier;
+        for (VariableDeclarationDescr variable : getVariableDeclarations()) {
+            identifier = variable.getIdentifier();
+            if (identifier != null && name.equals(identifier.getIdentifier())) {
+                return variable;
+            }
+        }
+        return null;
     }
 }

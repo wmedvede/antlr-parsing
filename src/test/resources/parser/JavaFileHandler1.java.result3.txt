@@ -24,7 +24,7 @@ public class JavaFileHandler1 {
 
     private String field8  , field9  ,field10 = "three";
 
-    private java.lang.Boolean field11 = (10 > (15 -4))    ,   field13;
+    private java.lang.Boolean field11 = (10 > (15 -4))    ,  field13;
 
     
 

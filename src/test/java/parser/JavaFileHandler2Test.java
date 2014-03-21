@@ -4,6 +4,7 @@ import org.junit.Test;
 import parser.descr.ClassDescr;
 import parser.descr.DescriptorFactoryImpl;
 import parser.descr.FieldDescr;
+import parser.util.ParserUtil;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,9 +36,9 @@ public class JavaFileHandler2Test extends JavaFileHandlerBaseTest {
 
             FieldDescr field = DescriptorFactoryImpl.getInstance().createFieldDescr("\n\n\tpublic /*eso*/static   int value  = (2+4), otro=1  /**/ ; /**/");
 
-            fileHandler.setSourceBufferTMP(field, field.getSourceBuffer());
-            fileHandler.populateUnManagedElements(0, field);
-            fileHandler.setSourceBufferTMP(field, field.getSourceBuffer());
+            ParserUtil.setSourceBufferTMP(field, field.getSourceBuffer());
+            ParserUtil.populateUnManagedElements(0, field);
+            ParserUtil.setSourceBufferTMP(field, field.getSourceBuffer());
 
             classDescr.addField(field);
             classDescr.addField(field);

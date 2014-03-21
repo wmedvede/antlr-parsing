@@ -2,10 +2,6 @@ package parser.descr;
 
 public class PackageDescr extends ElementDescriptor {
 
-    private QualifiedNameDescr qualifiedName;
-
-    private TextTokenElementDescr packageToken;
-
     public PackageDescr() {
         super(ElementType.PACKAGE);
     }
@@ -23,22 +19,35 @@ public class PackageDescr extends ElementDescriptor {
     }
 
     public QualifiedNameDescr getQualifiedName() {
-        return qualifiedName;
+        return (QualifiedNameDescr)getElements2().getFirst(ElementType.QUALIFIED_NAME);
     }
 
     public void setQualifiedName(QualifiedNameDescr qualifiedName) {
-        this.qualifiedName = qualifiedName;
+        getElements2().removeFirst(ElementType.QUALIFIED_NAME);
+        getElements2().add(qualifiedName);
     }
 
-    public TextTokenElementDescr getPackageToken() {
-        return packageToken;
+    public JavaTokenDescr getPackageToken() {
+        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_PACKAGE);
     }
 
-    public void setPackageToken(TextTokenElementDescr packageToken) {
-        this.packageToken = packageToken;
+    public void setPackageToken(JavaTokenDescr packageToken) {
+        getElements2().removeFirst(ElementType.JAVA_PACKAGE);
+        getElements2().add(packageToken);
     }
 
     public String getPackageName() {
-        return qualifiedName != null ? qualifiedName.getName() : null;
+        return getQualifiedName() != null ? getQualifiedName().getName() : null;
     }
+
+    public JavaTokenDescr getEndSemiColon() {
+        return (JavaTokenDescr)getElements2().getLast(ElementType.JAVA_SEMI_COLON);
+    }
+
+    public PackageDescr setEndSemiColon(JavaTokenDescr element) {
+        getElements2().removeFirst(ElementType.JAVA_SEMI_COLON);
+        getElements2().add(element);
+        return this;
+    }
+
 }

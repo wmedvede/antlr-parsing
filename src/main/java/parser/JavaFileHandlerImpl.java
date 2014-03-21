@@ -35,13 +35,19 @@ public class JavaFileHandlerImpl {
         parser = JavaParserFactory.newParser(source.toString());
         parser.compilationUnit();
         fileDescr = parser.getFileDescr();
-        setSourceBufferTMP(fileDescr, parser.getSourceBuffer());
-        populateUnManagedElements(fileDescr);
+        ParserUtil.setSourceBufferTMP(fileDescr, parser.getSourceBuffer());
+        ParserUtil.populateUnManagedElements(fileDescr);
     }
 
+    public String buildResult() {
+        return ParserUtil.printTree(fileDescr);
+    }
+
+    /*
     public void populateUnManagedElements(ElementDescriptor element) {
         populateUnManagedElements(element.getStart(), element);
     }
+
 
     public void populateUnManagedElements(int startIndex, ElementDescriptor element) {
 
@@ -82,10 +88,9 @@ public class JavaFileHandlerImpl {
         }
     }
 
-    public String buildResult() {
-        return printTree(fileDescr);
-    }
+*/
 
+    /*
     public static String printTree(ElementDescriptor element) {
         StringBuilder result = new StringBuilder();
         if (element.getElements2().size() == 0) {
@@ -105,5 +110,6 @@ public class JavaFileHandlerImpl {
             setSourceBufferTMP(child, source);
         }
     }
+    */
 
 }

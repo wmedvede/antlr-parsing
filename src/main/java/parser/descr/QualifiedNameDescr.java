@@ -24,22 +24,26 @@ public class QualifiedNameDescr extends ElementDescriptor {
         super(ElementType.QUALIFIED_NAME, text, start, stop, line, position);
     }
 
-    public void addElement(TextTokenElementDescr element) {
-        elements.add(element);
+    public void addElement(IdentifierDescr identifierDescr) {
+        getElements2().add(identifierDescr);
     }
 
-    public List<TextTokenElementDescr> getElements() {
-        return elements;
+    public List<IdentifierDescr> getElements() {
+        List<IdentifierDescr> identifiers = new ArrayList<IdentifierDescr>();
+        for (ElementDescriptor identifier : getElements2().getElementsByType(ElementType.IDENTIFIER)) {
+            identifiers.add((IdentifierDescr)identifier);
+        }
+        return identifiers;
     }
 
     public String getName() {
         StringBuilder nameBuilder = new StringBuilder();
         boolean first = true;
-        for (TextTokenElementDescr element : getElements()) {
+        for (IdentifierDescr identifier : getElements()) {
             if (!first) {
                 nameBuilder.append(".");
             }
-            nameBuilder.append(element.getText());
+            nameBuilder.append(identifier.getText());
             first = false;
         }
         return nameBuilder.toString();

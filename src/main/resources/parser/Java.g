@@ -330,27 +330,28 @@ compilationUnit
         )*
     ;
 
-packageDeclaration
+packageDeclaration returns [ PackageDescr packageDec ]
     @init {
-        PackageDescr packageDescr = null;
+        $packageDec = null;
         if (!isBacktracking()) {
             log("Start package declaration.");
-            packageDescr = new PackageDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
-            context.push(packageDescr);
+            $packageDec = new PackageDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push($packageDec);
         }
     }
     @after {
-        packageDescr = popPackage();
-        if (packageDescr != null) {
-            updateOnAfter(packageDescr, $text, (CommonToken)$stop);
-            processPackage(packageDescr);
+        $packageDec = popPackage();
+        if ($packageDec != null) {
+            updateOnAfter($packageDec, $text, (CommonToken)$stop);
+            processPackage($packageDec);
             log("End of package declaration.");
         } else {
             log("A PackageDescr is expected");
         }
     }
-    :   p='package' qualifiedName { packageDescr.setPackageToken(new TextTokenElementDescr($p.text,  start((CommonToken)$p), stop((CommonToken)$p), line($p), position($p))); }
-        ';'
+    :   p='package'      { $packageDec.setPackageToken(new JavaTokenDescr(ElementType.JAVA_PACKAGE, $p.text,  start((CommonToken)$p), stop((CommonToken)$p), line($p), position($p))); }
+        n=qualifiedName  { $packageDec.setQualifiedName($n.qnameDec); }
+        s=';'            { $packageDec.setEndSemiColon(new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $s.text, start((CommonToken)$s), stop((CommonToken)$s), line($s), position($s))); }
     ;
 
 importDeclaration  
@@ -694,7 +695,7 @@ fieldDeclaration
         type
         v1=variableDeclarator        { if (field != null) field.addVariableDeclaration($v1.varDec); }
         (c=',' v2=variableDeclarator {
-                                       JavaTokenDescr comma =  new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c));
+                                       JavaTokenDescr comma =  new JavaTokenDescr(ElementType.JAVA_COMMA, $c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c));
                                        $v2.varDec.setStartComma(comma);
                                        $v2.varDec.setStart(comma.getStart());
                                        if (field != null) field.addVariableDeclaration($v2.varDec);
@@ -1043,26 +1044,26 @@ explicitConstructorInvocation
         arguments ';'
     ;
 
-qualifiedName
+qualifiedName returns [ QualifiedNameDescr qnameDec ]
      @init {
-         QualifiedNameDescr nameDescr = null;
+         $qnameDec = null;
          if (!isBacktracking()) {
              log("Start qualifiedName declaration");
-             nameDescr = new QualifiedNameDescr($text, start((CommonToken)$start), -1, line($start), position($start));
-             context.push(nameDescr);
+             $qnameDec = new QualifiedNameDescr($text, start((CommonToken)$start), -1, line($start), position($start));
+             context.push($qnameDec);
          }
      }
      @after {
-         nameDescr = popQualifiedName();
-         if (nameDescr != null) {
-             updateOnAfter(nameDescr, $text, (CommonToken)$stop);
-             processQualifiedName(nameDescr);
+         $qnameDec = popQualifiedName();
+         if ($qnameDec != null) {
+             updateOnAfter($qnameDec, $text, (CommonToken)$stop);
+             processQualifiedName($qnameDec);
          } else {
              //TODO warning, by construction current qualifiedname param is expected
          }
      }
-    :   id1=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1),line($id1), position($id1)) ); }
-        ('.' id2=IDENTIFIER { nameDescr.addElement( new TextTokenElementDescr($id2.text,  start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2)) ); }
+    :   id1=IDENTIFIER { $qnameDec.addElement( new IdentifierDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1),line($id1), position($id1)) ); }
+        ('.' id2=IDENTIFIER { $qnameDec.addElement( new IdentifierDescr($id2.text,  start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2)) ); }
         )*
     ;
 

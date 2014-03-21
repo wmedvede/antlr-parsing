@@ -50,38 +50,60 @@ public class ClassDescr extends ModifiersContainerDescr {
         getElements2().add(index +1, fieldDescr);
     }
 
+    public void addMethod(MethodDescr methodDescr) {
+        int index = getElements2().lastIndexOf(ElementType.METHOD);
+        getElements2().add(index +1, methodDescr);
+    }
+
     public List<MethodDescr> getMethods() {
-
-        /*
-        List<MethodDescr> methods = new ArrayList<MethodDescr>();
-        for (ElementDescriptor member : members) {
-            if (ElementType.METHOD == member.getElementType()) methods.add((MethodDescr)member);
-        }
-        return methods;
-        */
-
-
         List<MethodDescr> methods = new ArrayList<MethodDescr>();
         for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.METHOD)) {
             methods.add((MethodDescr)member);
         }
         return methods;
-
     }
 
     public List<FieldDescr> getFields() {
-        /*
-        List<FieldDescr> fields = new ArrayList<FieldDescr>();
-        for (ElementDescriptor member : members) {
-            if (ElementType.FIELD == member.getElementType()) fields.add((FieldDescr)member);
-        }
-        return fields;
-        */
         List<FieldDescr> fields = new ArrayList<FieldDescr>();
         for (ElementDescriptor member : getElements2().getElementsByType(ElementType.FIELD)) {
             fields.add((FieldDescr)member);
         }
         return fields;
+    }
+
+    public FieldDescr getField(String name) {
+        if (name == null) return null;
+        List<FieldDescr> fields = getFields();
+        for (FieldDescr field : fields) {
+            if (field.getVariableDeclaration(name) != null) {
+                return field;
+            }
+        }
+        return null;
+    }
+
+    public boolean removeField(FieldDescr field) {
+        return getElements2().remove(field);
+    }
+
+    public boolean removeField(String name) {
+        FieldDescr field = getField(name);
+        boolean result = false;
+        if (field != null) {
+            if (field.getVariableDeclarations().size() <= 1) {
+                result = getElements2().remove(field);
+            } else {
+                VariableDeclarationDescr variable = field.getVariableDeclaration(name);
+                result = variable != null ? field.removeVariableDeclaration(variable) : false;
+                if (result) {
+                    variable = field.getVariableDeclarations().get(0);
+                    if (variable.getStartComma() != null) {
+                        variable.getElements2().remove(variable.getStartComma());
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public TextTokenElementDescr getClassToken() {

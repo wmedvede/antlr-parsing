@@ -18,8 +18,10 @@ public class DescriptorFactoryImpl implements DescriptorFactory {
         JavaParser parser = JavaParserFactory.newParser(source, ParserMode.PARSE_METHOD);
         parser.methodDeclaration();
         MethodDescr methodDescr = parser.getMethodDescr();
-        //TODO the parser should set the source the his children
-        methodDescr.setSourceBuffer(parser.getSourceBuffer());
+        //TODO the parser should set the source for the elements
+        ParserUtil.setSourceBufferTMP(methodDescr, parser.getSourceBuffer());
+        ParserUtil.populateUnManagedElements(methodDescr);
+        ParserUtil.setSourceBufferTMP(methodDescr, parser.getSourceBuffer());
         return methodDescr;
     }
 
@@ -29,7 +31,9 @@ public class DescriptorFactoryImpl implements DescriptorFactory {
         parser.fieldDeclaration();
         FieldDescr fieldDescr = parser.getFieldDescr();
         //TODO the parser should set the source the his children
-        fieldDescr.setSourceBuffer(parser.getSourceBuffer());
+        ParserUtil.setSourceBufferTMP(fieldDescr, parser.getSourceBuffer());
+        ParserUtil.populateUnManagedElements(fieldDescr);
+        ParserUtil.setSourceBufferTMP(fieldDescr, parser.getSourceBuffer());
         return fieldDescr;
     }
 }

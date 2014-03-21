@@ -22,7 +22,7 @@ public class FileDescr extends ElementDescriptor {
     }
 
     public void setPackageDescr(PackageDescr packageDescr) {
-        //elements.removeFirst(ElementType.PACKAGE);
-        //elements.add(packageDescr);
+        getElements2().removeFirst(ElementType.PACKAGE);
+        getElements2().add(packageDescr);
     }
 }
