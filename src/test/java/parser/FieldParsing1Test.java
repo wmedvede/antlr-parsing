@@ -1,6 +1,5 @@
 package parser;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import parser.descr.*;
 import parser.util.ParserUtil;
@@ -8,9 +7,7 @@ import parser.util.ParserUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static parser.ParserAssert.assertEqualsFieldDeclaration;
 
 public class FieldParsing1Test extends JavaParserBaseTest {

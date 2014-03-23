@@ -19,39 +19,39 @@ public class FieldDescr extends ModifiersContainerDescr implements HasType {
     }
 
     public TypeDescr getType() {
-        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
+        return (TypeDescr) getElements().getFirst(ElementType.TYPE);
     }
 
     public FieldDescr setType(TypeDescr type) {
-        getElements2().removeFirst(ElementType.TYPE);
-        getElements2().add(type);
+        getElements().removeFirst(ElementType.TYPE);
+        getElements().add(type);
         return this;
     }
 
     public List<VariableDeclarationDescr> getVariableDeclarations() {
         List<VariableDeclarationDescr> variableDeclarations = new ArrayList<VariableDeclarationDescr>();
-        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.VARIABLE)) {
+        for (ElementDescriptor member :  getElements().getElementsByType(ElementType.VARIABLE)) {
             variableDeclarations.add((VariableDeclarationDescr)member);
         }
         return variableDeclarations;
     }
 
     public FieldDescr addVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
-        getElements2().add(variableDeclarationDescr);
+        getElements().add(variableDeclarationDescr);
         return this;
     }
 
     public boolean removeVariableDeclaration(VariableDeclarationDescr variableDeclarationDescr) {
-        return getElements2().remove(variableDeclarationDescr);
+        return getElements().remove(variableDeclarationDescr);
     }
 
     public JavaTokenDescr getEndSemiColon() {
-        return (JavaTokenDescr)getElements2().getLast(ElementType.JAVA_SEMI_COLON);
+        return (JavaTokenDescr) getElements().getLast(ElementType.JAVA_SEMI_COLON);
     }
 
     public FieldDescr setEndSemiColon(JavaTokenDescr element) {
-        getElements2().removeFirst(ElementType.JAVA_SEMI_COLON);
-        getElements2().add(element);
+        getElements().removeFirst(ElementType.JAVA_SEMI_COLON);
+        getElements().add(element);
         return this;
     }
 

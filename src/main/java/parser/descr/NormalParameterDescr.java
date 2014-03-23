@@ -22,13 +22,13 @@ public class NormalParameterDescr extends ParameterDescr implements HasDimension
 
     @Override
     public int getDimensionsCount() {
-        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
+        List<ElementDescriptor> dimensions = getElements().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
     public NormalParameterDescr addDimension(DimensionDescr dimensionDescr) {
-        getElements2().add(dimensionDescr);
+        getElements().add(dimensionDescr);
         return this;
     }
 

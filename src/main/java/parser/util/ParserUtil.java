@@ -1,10 +1,5 @@
 package parser.util;
 
-import org.antlr.runtime.*;
-import parser.JavaLexer;
-import parser.JavaParser;
-import parser.JavaParserBase;
-import parser.JavaParserBase.ParserMode;
 import parser.descr.ElementDescriptor;
 import parser.descr.TextTokenElementDescr;
 
@@ -48,9 +43,9 @@ public class ParserUtil {
         String text;
         TextTokenElementDescr unmanagedToken;
 
-        if (element.getElements2().size() > 0) {
+        if (element.getElements().size() > 0) {
             List<ElementDescriptor> originalElements = new ArrayList<ElementDescriptor>();
-            originalElements.addAll(element.getElements2());
+            originalElements.addAll(element.getElements());
 
             for (ElementDescriptor child : originalElements) {
                 if (startIndex < child.getStart()) {
@@ -62,7 +57,7 @@ public class ParserUtil {
                     text = unmanagedToken.getSourceBuffer().substring(unmanagedToken.getStart(), unmanagedToken.getStop() +1);
                     unmanagedToken.setText(text);
 
-                    element.getElements2().addMemberBefore(child, unmanagedToken);
+                    element.getElements().addMemberBefore(child, unmanagedToken);
                 }
                 startIndex = child.getStop() + 1;
 
@@ -77,17 +72,17 @@ public class ParserUtil {
 
                 text = unmanagedToken.getSourceBuffer().substring(unmanagedToken.getStart(), unmanagedToken.getStop() +1);
                 unmanagedToken.setText(text);
-                element.getElements2().add(unmanagedToken);
+                element.getElements().add(unmanagedToken);
             }
         }
     }
 
     public static String printTree(ElementDescriptor element) {
         StringBuilder result = new StringBuilder();
-        if (element.getElements2().size() == 0) {
+        if (element.getElements().size() == 0) {
             result.append(element.getSourceBuffer().substring(element.getStart(), element.getStop() +1));
         } else {
-            for (ElementDescriptor child : element.getElements2()) {
+            for (ElementDescriptor child : element.getElements()) {
                 result.append(printTree(child));
             }
         }
@@ -97,7 +92,7 @@ public class ParserUtil {
     //temporal to not touch the parser
     public static void setSourceBufferTMP(ElementDescriptor element, StringBuilder source) {
         element.setSourceBuffer(source);
-        for (ElementDescriptor child : element.getElements2()) {
+        for (ElementDescriptor child : element.getElements()) {
             setSourceBufferTMP(child, source);
         }
     }

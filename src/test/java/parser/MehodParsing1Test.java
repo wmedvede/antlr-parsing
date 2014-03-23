@@ -83,6 +83,12 @@ public class MehodParsing1Test extends JavaParserBaseTest {
 
 
         methodSentences = new ArrayList<String>();
+
+        methodSentences.add("public MethodParsing1() { this(null); }");
+        methodSentences.add("public MethodParsing1(String field1) { this.field1 = field1; }");
+        methodSentences.add("public MethodParsing1(int a, int b) { this(a, b, (byte)1); }");
+        methodSentences.add("public MethodParsing1(int a, int b, byte c) { super(); }");
+
         methodSentences.add("public String getField1() { return field1; }");
         methodSentences.add("public void setField1(String field1) { this.field1 = field1; }");
         methodSentences.add("private int method1() { return -1; }");
@@ -107,6 +113,87 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         ParameterListDescr parmsList;
 
 
+        //public MethodParsing1() { this(null); }
+        method = new MethodDescr(null, -1, -1);
+        method.setModifiers(new ModifierListDescr());
+        method.addModifier(new ModifierDescr(null, -1, -1, "public"));
+        method.setIdentifier(new IdentifierDescr("MethodParsing1", -1, -1, -1, -1));
+        expectedMethods.add(method);
+
+        //public MethodParsing1(String field1) { this.field1 = field1; }
+        method = new MethodDescr(null, -1, -1);
+        method.setModifiers(new ModifierListDescr());
+        method.addModifier(new ModifierDescr(null, -1, -1, "public"));
+        method.setIdentifier(new IdentifierDescr("MethodParsing1", -1, -1, -1, -1));
+
+        param1 = new NormalParameterDescr();
+        param1.setModifiers(new ModifierListDescr());
+        param1.setType(new TypeDescr(null, -1, -1));
+        param1.getType().setClassOrInterfaceType(new ClassOrInterfaceTypeDescr("String", -1, -1));
+        param1.setIdentifier(new IdentifierDescr("field1", -1, -1, -1, -1));
+
+        parmsList = new ParameterListDescr();
+        parmsList.addParameter(param1);
+        method.setParamsList(parmsList);
+        expectedMethods.add(method);
+
+        //public MethodParsing1(int a, int b) { this(a, b, (byte)1); }
+        method = new MethodDescr(null, -1, -1);
+        method.setModifiers(new ModifierListDescr());
+        method.addModifier(new ModifierDescr(null, -1, -1, "public"));
+        method.setIdentifier(new IdentifierDescr("MethodParsing1", -1, -1, -1, -1));
+
+        param1 = new NormalParameterDescr();
+        param1.setModifiers(new ModifierListDescr());
+        param1.setType(new TypeDescr(null, -1, -1));
+        param1.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
+        param1.setIdentifier(new IdentifierDescr("a", -1, -1, -1, -1));
+
+        param2 = new NormalParameterDescr();
+        param2.setModifiers(new ModifierListDescr());
+        param2.setType(new TypeDescr(null, -1, -1));
+        param2.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
+        param2.setIdentifier(new IdentifierDescr("b", -1, -1, -1, -1));
+
+        parmsList = new ParameterListDescr();
+        parmsList.addParameter(param1);
+        parmsList.addParameter(param2);
+        method.setParamsList(parmsList);
+        expectedMethods.add(method);
+
+
+        //public MethodParsing1(int a, int b, byte c) { super(); }
+        method = new MethodDescr(null, -1, -1);
+        method.setModifiers(new ModifierListDescr());
+        method.addModifier(new ModifierDescr(null, -1, -1, "public"));
+        method.setIdentifier(new IdentifierDescr("MethodParsing1", -1, -1, -1, -1));
+
+        param1 = new NormalParameterDescr();
+        param1.setModifiers(new ModifierListDescr());
+        param1.setType(new TypeDescr(null, -1, -1));
+        param1.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
+        param1.setIdentifier(new IdentifierDescr("a", -1, -1, -1, -1));
+
+        param2 = new NormalParameterDescr();
+        param2.setModifiers(new ModifierListDescr());
+        param2.setType(new TypeDescr(null, -1, -1));
+        param2.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "int"));
+        param2.setIdentifier(new IdentifierDescr("b", -1, -1, -1, -1));
+
+        param3 = new NormalParameterDescr();
+        param3.setModifiers(new ModifierListDescr());
+        param3.setType(new TypeDescr(null, -1, -1));
+        param3.getType().setPrimitiveType(new PrimitiveTypeDescr(null, -1, -1, "byte"));
+        param3.setIdentifier(new IdentifierDescr("c", -1, -1, -1, -1));
+
+        parmsList = new ParameterListDescr();
+        parmsList.addParameter(param1);
+        parmsList.addParameter(param2);
+        parmsList.addParameter(param3);
+        method.setParamsList(parmsList);
+        expectedMethods.add(method);
+
+
         //"public String getField1() { return field1; }"
         method = new MethodDescr(null, -1, -1);
         method.setModifiers(new ModifierListDescr());
@@ -120,7 +207,8 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         method = new MethodDescr(null, -1, -1);
         method.setModifiers(new ModifierListDescr());
         method.addModifier(new ModifierDescr(null, -1, -1, "public"));
-        //TODO define void method.setType(null); //returns void
+        method.setType(new TypeDescr());
+        method.getType().setVoidType(new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_VOID, "void", -1, -1, -1, -1));
         method.setIdentifier(new IdentifierDescr("getField1", -1, -1, -1, -1));
         param1 = new NormalParameterDescr();
         param1.setModifiers(new ModifierListDescr());
@@ -146,6 +234,8 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         method = new MethodDescr(null, -1, -1);
         method.setModifiers(new ModifierListDescr());
         method.addModifier(new ModifierDescr(null, -1, -1, "private"));
+        method.setType(new TypeDescr());
+        method.getType().setVoidType(new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_VOID, "void", -1, -1, -1, -1));
         method.setIdentifier(new IdentifierDescr("method2", -1, -1, -1, -1));
         expectedMethods.add(method);
 
@@ -174,7 +264,8 @@ public class MehodParsing1Test extends JavaParserBaseTest {
         method = new MethodDescr(null, -1, -1);
         method.setModifiers(new ModifierListDescr());
         method.addModifier(new ModifierDescr(null, -1, -1, "public"));
-        //TODO define void method.setType(null); //returns void
+        method.setType(new TypeDescr());
+        method.getType().setVoidType(new JavaTokenDescr(ElementDescriptor.ElementType.JAVA_VOID, "void", -1, -1, -1, -1));
         method.setIdentifier(new IdentifierDescr("method5", -1, -1, -1, -1));
         param1 = new NormalParameterDescr();
         param1.setModifiers(new ModifierListDescr());

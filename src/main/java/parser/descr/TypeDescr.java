@@ -24,33 +24,46 @@ public class TypeDescr extends ElementDescriptor implements HasClassOrInterfaceT
         return getClassOrInterfaceType() != null;
     }
 
+    public boolean isVoidType() {
+        return getVoidType() != null;
+    }
+
     public ClassOrInterfaceTypeDescr getClassOrInterfaceType() {
-        return (ClassOrInterfaceTypeDescr)getElements2().getFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
+        return (ClassOrInterfaceTypeDescr) getElements().getFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
     }
 
     public void setClassOrInterfaceType(ClassOrInterfaceTypeDescr classOrInterfaceType) {
-        getElements2().removeFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
-        getElements2().add(classOrInterfaceType);
+        getElements().removeFirst(ElementType.CLASS_OR_INTERFACE_TYPE);
+        getElements().add(classOrInterfaceType);
     }
 
     public PrimitiveTypeDescr getPrimitiveType() {
-        return (PrimitiveTypeDescr)getElements2().getFirst(ElementType.PRIMITIVE_TYPE);
+        return (PrimitiveTypeDescr) getElements().getFirst(ElementType.PRIMITIVE_TYPE);
     }
 
     public void setPrimitiveType(PrimitiveTypeDescr primitiveType) {
-        getElements2().removeFirst(ElementType.PRIMITIVE_TYPE);
-        getElements2().add(primitiveType);
+        getElements().removeFirst(ElementType.PRIMITIVE_TYPE);
+        getElements().add(primitiveType);
+    }
+
+    public void setVoidType(JavaTokenDescr voidToken) {
+        getElements().removeFirst(ElementType.JAVA_VOID);
+        getElements().add(voidToken);
+    }
+
+    public JavaTokenDescr getVoidType() {
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_VOID);
     }
 
     @Override
     public int getDimensionsCount() {
-        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
+        List<ElementDescriptor> dimensions = getElements().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
     public TypeDescr addDimension(DimensionDescr dimensionDescr) {
-        getElements2().add(dimensionDescr);
+        getElements().add(dimensionDescr);
         return this;
     }
 

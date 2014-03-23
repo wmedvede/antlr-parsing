@@ -25,22 +25,22 @@ public class DimensionDescr extends ElementDescriptor {
     }
 
     public JavaTokenDescr getStartBracket() {
-        return (JavaTokenDescr)getElements2().getElementsByType(ElementType.JAVA_LBRACKET);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_LBRACKET);
     }
 
     public DimensionDescr setStartBracket(JavaTokenDescr startBracket) {
-        getElements2().removeFirst(ElementType.JAVA_LBRACKET);
-        getElements2().add(startBracket);
+        getElements().removeFirst(ElementType.JAVA_LBRACKET);
+        getElements().add(startBracket);
         return this;
     }
 
     public JavaTokenDescr getEndBracket() {
-        return (JavaTokenDescr)getElements2().getElementsByType(ElementType.JAVA_RBRACKET);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_RBRACKET);
     }
 
     public DimensionDescr setEndBracket(JavaTokenDescr endBracket) {
-        getElements2().removeFirst(ElementType.JAVA_RBRACKET);
-        getElements2().add(endBracket);
+        getElements().removeFirst(ElementType.JAVA_RBRACKET);
+        getElements().add(endBracket);
         return this;
     }
 }

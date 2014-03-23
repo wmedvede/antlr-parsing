@@ -19,32 +19,32 @@ public class ParameterDescr extends ModifiersContainerDescr implements HasType {
     }
 
     public TypeDescr getType() {
-        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
+        return (TypeDescr) getElements().getFirst(ElementType.TYPE);
     }
 
     public ParameterDescr setType(TypeDescr type) {
-        getElements2().removeFirst(ElementType.TYPE);
-        getElements2().add(type);
+        getElements().removeFirst(ElementType.TYPE);
+        getElements().add(type);
         return this;
     }
 
     public IdentifierDescr getIdentifier() {
-        return (IdentifierDescr)getElements2().getFirst(ElementType.IDENTIFIER);
+        return (IdentifierDescr) getElements().getFirst(ElementType.IDENTIFIER);
     }
 
     public ParameterDescr setIdentifier(IdentifierDescr identifier) {
-        getElements2().removeFirst(ElementType.IDENTIFIER);
-        getElements2().add(identifier);
+        getElements().removeFirst(ElementType.IDENTIFIER);
+        getElements().add(identifier);
         return this;
     }
 
     public JavaTokenDescr getStartComma() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_COMMA);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_COMMA);
     }
 
     public ParameterDescr setStartComma(JavaTokenDescr comma) {
-        getElements2().removeFirst(ElementType.JAVA_COMMA);
-        getElements2().add(0, comma);
+        getElements().removeFirst(ElementType.JAVA_COMMA);
+        getElements().add(0, comma);
         return this;
     }
 

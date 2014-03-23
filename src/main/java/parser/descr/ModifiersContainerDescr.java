@@ -21,24 +21,18 @@ public class ModifiersContainerDescr extends ElementDescriptor implements HasMod
     @Override
     public ModifierListDescr getModifiers() {
         //TODO review
-        return (ModifierListDescr)getElements2().getFirst(ElementType.MODIFIER_LIST);
+        return (ModifierListDescr) getElements().getFirst(ElementType.MODIFIER_LIST);
     }
 
     @Override
     public void setModifiers(ModifierListDescr modifiers) {
         //TODO ensure modifiers list is inserted in order
-        getElements2().add(modifiers);
+        getElements().add(modifiers);
     }
 
     @Override
     public void addModifier(ModifierDescr modifier) {
         ModifierListDescr modifierListDescr = getModifiers();
-        /*
-        if (modifierListDescr == null) {
-            modifierListDescr = new ModifierListDescr();
-            getElements2().add(modifierListDescr);
-        }
-        */
         if (modifierListDescr != null) modifierListDescr.add(modifier);
     }
 }

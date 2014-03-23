@@ -270,9 +270,9 @@ public class JavaFileHandlerImplOLD implements JavaFileHandler {
         String text;
         TextTokenElementDescr unmanagedToken;
 
-        if (element.getElements2().size() > 0) {
+        if (element.getElements().size() > 0) {
             List<ElementDescriptor> originalElements = new ArrayList<ElementDescriptor>();
-            originalElements.addAll(element.getElements2());
+            originalElements.addAll(element.getElements());
 
             for (ElementDescriptor child : originalElements) {
                 if (startIndex < child.getStart()) {
@@ -284,7 +284,7 @@ public class JavaFileHandlerImplOLD implements JavaFileHandler {
                     text = unmanagedToken.getSourceBuffer().substring(unmanagedToken.getStart(), unmanagedToken.getStop() +1);
                     unmanagedToken.setText(text);
 
-                    element.getElements2().addMemberBefore(child, unmanagedToken);
+                    element.getElements().addMemberBefore(child, unmanagedToken);
                 }
                 startIndex = child.getStop() + 1;
 
@@ -299,17 +299,17 @@ public class JavaFileHandlerImplOLD implements JavaFileHandler {
 
                 text = unmanagedToken.getSourceBuffer().substring(unmanagedToken.getStart(), unmanagedToken.getStop() +1);
                 unmanagedToken.setText(text);
-                element.getElements2().add(unmanagedToken);
+                element.getElements().add(unmanagedToken);
             }
         }
     }
 
     public String printTreeOLD(ElementDescriptor element) {
         StringBuilder result = new StringBuilder();
-        if (element.getElements2().size() == 0) {
+        if (element.getElements().size() == 0) {
             result.append(source.substring(element.getStart(), element.getStop() +1));
         } else {
-            for (ElementDescriptor child : element.getElements2()) {
+            for (ElementDescriptor child : element.getElements()) {
                 result.append(printTreeOLD(child));
             }
         }
@@ -318,10 +318,10 @@ public class JavaFileHandlerImplOLD implements JavaFileHandler {
 
     public String printTree(ElementDescriptor element) {
         StringBuilder result = new StringBuilder();
-        if (element.getElements2().size() == 0) {
+        if (element.getElements().size() == 0) {
             result.append(element.getSourceBuffer().substring(element.getStart(), element.getStop() +1));
         } else {
-            for (ElementDescriptor child : element.getElements2()) {
+            for (ElementDescriptor child : element.getElements()) {
                 result.append(printTree(child));
             }
         }
@@ -331,7 +331,7 @@ public class JavaFileHandlerImplOLD implements JavaFileHandler {
     //temporal to not touch the parser
     public void setSourceBufferTMP(ElementDescriptor element, StringBuilder source) {
         element.setSourceBuffer(source);
-        for (ElementDescriptor child : element.getElements2()) {
+        for (ElementDescriptor child : element.getElements()) {
             setSourceBufferTMP(child, source);
         }
     }

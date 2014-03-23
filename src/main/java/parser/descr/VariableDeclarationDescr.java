@@ -17,54 +17,54 @@ public class VariableDeclarationDescr extends ElementDescriptor implements HasDi
     }
 
     public IdentifierDescr getIdentifier() {
-        return (IdentifierDescr)getElements2().getFirst(ElementType.IDENTIFIER);
+        return (IdentifierDescr) getElements().getFirst(ElementType.IDENTIFIER);
     }
 
     public VariableDeclarationDescr setIdentifier(IdentifierDescr identifier) {
-        getElements2().removeFirst(ElementType.IDENTIFIER);
-        getElements2().add(0, identifier);
+        getElements().removeFirst(ElementType.IDENTIFIER);
+        getElements().add(0, identifier);
         return this;
     }
 
     @Override
     public int getDimensionsCount() {
-        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
+        List<ElementDescriptor> dimensions = getElements().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
     public VariableDeclarationDescr addDimension(DimensionDescr dimensionDescr) {
-        getElements2().add(dimensionDescr);
+        getElements().add(dimensionDescr);
         return this;
     }
 
     public VariableInitializerDescr getVariableInitializer() {
-        return (VariableInitializerDescr)getElements2().getFirst(ElementType.VARIABLE_INITIALIZER);
+        return (VariableInitializerDescr) getElements().getFirst(ElementType.VARIABLE_INITIALIZER);
     }
 
     public VariableDeclarationDescr setVariableInitializer(VariableInitializerDescr variableInitializer) {
-        getElements2().removeFirst(ElementType.VARIABLE_INITIALIZER);
-        getElements2().add(variableInitializer);
+        getElements().removeFirst(ElementType.VARIABLE_INITIALIZER);
+        getElements().add(variableInitializer);
         return this;
     }
 
     public JavaTokenDescr getStartComma() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_COMMA);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_COMMA);
     }
 
     public VariableDeclarationDescr setStartComma(JavaTokenDescr comma) {
-        getElements2().removeFirst(ElementType.JAVA_COMMA);
-        getElements2().add(0, comma);
+        getElements().removeFirst(ElementType.JAVA_COMMA);
+        getElements().add(0, comma);
         return this;
     }
 
     public JavaTokenDescr getEqualsSign() {
-        return (JavaTokenDescr)getElements2().getElementsByType(ElementType.JAVA_EQUALS);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_EQUALS);
     }
 
     public VariableDeclarationDescr setEqualsSign(JavaTokenDescr equalsSign) {
-        getElements2().removeFirst(ElementType.JAVA_EQUALS);
-        getElements2().add(equalsSign);
+        getElements().removeFirst(ElementType.JAVA_EQUALS);
+        getElements().add(equalsSign);
         return this;
     }
 }

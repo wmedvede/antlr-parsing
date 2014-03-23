@@ -87,6 +87,8 @@ public class ParserAssert {
             } else if (type1.isPrimitiveType()) {
                 assertEquals(true, type2.isPrimitiveType());
                 assertEqualsPrimitiveType(buffer, type1.getPrimitiveType(), type2.getPrimitiveType());
+            } else if (type1.isVoidType()) {
+                assertEquals(true, type2.isVoidType());
             } else {
                 assertNull(type1);
                 assertNull(type2);

@@ -23,13 +23,13 @@ public class ParameterListDescr extends ElementDescriptor {
     }
 
     public ParameterListDescr addParameter(ParameterDescr param) {
-        getElements2().add(param);
+        getElements().add(param);
         return this;
     }
 
     public List<ParameterDescr> getParameters() {
         List<ParameterDescr> params = new ArrayList<ParameterDescr>();
-        for (ElementDescriptor element : getElements2()) {
+        for (ElementDescriptor element : getElements()) {
             if (ElementType.NORMAL_PARAMETER == element.getElementType() || ElementType.ELLIPSIS_PARAMETER == element.getElementType()) {
                 params.add((ParameterDescr)element);
 

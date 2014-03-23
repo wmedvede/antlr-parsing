@@ -30,6 +30,8 @@ public class JavaParserBase extends Parser {
 
     protected boolean declaringMethodReturnType = false;
 
+    protected boolean declaringSuperClass = false;
+
     protected int classLevel = 0;
 
     protected ParserMode mode = ParserMode.PARSE_CLASS;
@@ -128,6 +130,10 @@ public class JavaParserBase extends Parser {
 
     protected boolean isPackageOnTop() {
         return isOnTop(ElementType.PACKAGE);
+    }
+
+    protected boolean isImportOnTop() {
+        return isOnTop(ElementType.IMPORT);
     }
 
     protected boolean isIdentifierWithTypeArgumentsOnTop() {
@@ -242,6 +248,14 @@ public class JavaParserBase extends Parser {
         return isPackageOnTop() ? (PackageDescr) context.peek() : null;
     }
 
+    protected ImportDescr popImport() {
+        return isImportOnTop() ? (ImportDescr) context.pop() : null;
+    }
+
+    protected ImportDescr peekImport() {
+        return isImportOnTop() ? (ImportDescr) context.peek() : null;
+    }
+
     protected QualifiedNameDescr popQualifiedName() {
         return isQualifiedNameOnTop() ? (QualifiedNameDescr) context.pop() : null;
     }
@@ -335,6 +349,10 @@ public class JavaParserBase extends Parser {
         this.declaringMethodReturnType = declaringMethodReturnType;
     }
 
+    public void setDeclaringSuperClass(boolean declaringSuperClass) {
+        this.declaringSuperClass = declaringSuperClass;
+    }
+
     public boolean isDeclaringMainClass() {
         return classLevel == 1 && mode == ParserMode.PARSE_CLASS;
     }
@@ -358,7 +376,7 @@ public class JavaParserBase extends Parser {
                 peekMethod().setType(type);
             } else if (isParameterOnTop()) {
                 peekParameter().setType(type);
-            } else if (isClassOnTop()) {
+            } else if (isClassOnTop() && declaringSuperClass) {
                 peekClass().setSuperClass(type);
             }
         }
@@ -431,6 +449,10 @@ public class JavaParserBase extends Parser {
 
     protected void processPackage(PackageDescr packageDescr) {
         fileDescr.setPackageDescr(packageDescr);
+    }
+
+    protected void processImport(ImportDescr importDescr) {
+        fileDescr.addImport(importDescr);
     }
 
     protected void processTypeArgumentList(TypeArgumentListDescr arguments) {

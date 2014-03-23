@@ -20,11 +20,11 @@ public class EllipsisParameterDescr extends ParameterDescr {
     }
 
     public JavaTokenDescr getEllipsisToken() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_ELLIPSIS);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_ELLIPSIS);
     }
 
     public void setEllipsisToken(JavaTokenDescr ellipsisToken) {
-        getElements2().removeFirst(ElementType.JAVA_ELLIPSIS);
-        getElements2().add(ellipsisToken);
+        getElements().removeFirst(ElementType.JAVA_ELLIPSIS);
+        getElements().add(ellipsisToken);
     }
 }

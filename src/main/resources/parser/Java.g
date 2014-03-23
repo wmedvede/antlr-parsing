@@ -354,21 +354,41 @@ packageDeclaration returns [ PackageDescr packageDec ]
         s=';'            { $packageDec.setEndSemiColon(new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $s.text, start((CommonToken)$s), stop((CommonToken)$s), line($s), position($s))); }
     ;
 
-importDeclaration  
-    :   'import' 
-        ('static'
+importDeclaration returns [ ImportDescr importDescr ]
+    @init {
+        $importDescr = null;
+        if (!isBacktracking()) {
+            log("Start import declaration.");
+            $importDescr = new ImportDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push($importDescr);
+        }
+    }
+    @after {
+        $importDescr = popImport();
+        if ($importDescr != null) {
+            updateOnAfter($importDescr, $text, (CommonToken)$stop);
+            processImport($importDescr);
+            log("End of import declaration.");
+        } else {
+            log("An ImportDescr is expected");
+        }
+    }
+    :   i1='import'     { $importDescr.setImportToken(new JavaTokenDescr(ElementType.JAVA_IMPORT, $i1.text,  start((CommonToken)$i1), stop((CommonToken)$i1), line($i1), position($i1))); }
+        (s1='static'    { $importDescr.setStaticToken(new JavaTokenDescr(ElementType.JAVA_STATIC, $s1.text,  start((CommonToken)$s1), stop((CommonToken)$s1), line($s1), position($s1))); }
         )?
-        IDENTIFIER '.' '*'
-        ';'       
-    |   'import' 
-        ('static'
+        id1=IDENTIFIER  { $importDescr.addPart(new IdentifierDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1), line($id1), position($id1)));}
+        '.'
+        st1='*'         { $importDescr.setStarToken(new JavaTokenDescr(ElementType.JAVA_STAR, $st1.text,  start((CommonToken)$st1), stop((CommonToken)$st1), line($st1), position($st1))); }
+        sc1=';'         { $importDescr.setEndSemiColon(new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $sc1.text, start((CommonToken)$sc1), stop((CommonToken)$sc1), line($sc1), position($sc1))); }
+    |   i2='import'     { $importDescr.setImportToken(new JavaTokenDescr(ElementType.JAVA_IMPORT, $i2.text,  start((CommonToken)$i2), stop((CommonToken)$i2), line($i2), position($i2))); }
+        (s2='static'    { $importDescr.setStaticToken(new JavaTokenDescr(ElementType.JAVA_STATIC, $s2.text,  start((CommonToken)$s2), stop((CommonToken)$s2), line($s2), position($s2))); }
         )?
-        IDENTIFIER
-        ('.' IDENTIFIER
+        id2=IDENTIFIER      { $importDescr.addPart(new IdentifierDescr($id2.text, start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2))); }
+        ('.' id3=IDENTIFIER { $importDescr.addPart(new IdentifierDescr($id3.text, start((CommonToken)$id3), stop((CommonToken)$id3), line($id3), position($id3))); }
         )+
-        ('.' '*'
+        ('.' st2='*'    { $importDescr.setStarToken(new JavaTokenDescr(ElementType.JAVA_STAR, $st2.text,  start((CommonToken)$st2), stop((CommonToken)$st2), line($st2), position($st2))); }
         )?
-        ';'
+        sc2=';'         { $importDescr.setEndSemiColon(new JavaTokenDescr(ElementType.JAVA_SEMI_COLON, $sc2.text, start((CommonToken)$sc2), stop((CommonToken)$sc2), line($sc2), position($sc2))); }
     ;
 
 qualifiedImportName 
@@ -478,17 +498,15 @@ normalClassDeclaration
         }
     }
 
-    :   modifiers c='class' id=IDENTIFIER {
-                                        if (classDescr != null) {
-                                            classDescr.setName($id.text);
-                                            classDescr.setClassToken(new TextTokenElementDescr($c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c)));
-                                        }
-                                    }
+    :   modifiers c='class'     { if (classDescr != null) classDescr.setClassToken(new JavaTokenDescr(ElementType.JAVA_CLASS, $c.text, start((CommonToken)$c), stop((CommonToken)$c), line($c), position($c))); }
+                  id=IDENTIFIER { if (classDescr != null) classDescr.setIdentifier(new IdentifierDescr($id.text, start((CommonToken)$id), stop((CommonToken)$id), line($id), position($id))); }
         (typeParameters
         )?
-        ( e='extends' type { if (classDescr != null) classDescr.setExtendsToken(new TextTokenElementDescr($e.text, start((CommonToken)$e), stop((CommonToken)$e), line($e), position($e))); }
+        ( e='extends' { if (classDescr != null) classDescr.setExtendsToken(new JavaTokenDescr(ElementType.JAVA_EXTENDS, $e.text, start((CommonToken)$e), stop((CommonToken)$e), line($e), position($e))); }
+          { setDeclaringSuperClass(true); } type { setDeclaringSuperClass(false); }
         )?
-        ('implements' typeList
+        ( i='implements' { if (classDescr != null) classDescr.setImplementsToken(new JavaTokenDescr(ElementType.JAVA_IMPLEMENTS, $i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i))); }
+          typeList
         )?            
         classBody
     ;
@@ -615,21 +633,21 @@ memberDecl
     ;
 
 
-methodDeclaration
+methodDeclaration returns [ MethodDescr method ]
     @init {
-        MethodDescr method = null;
+        $method = null;
         if (!isBacktracking()) {
             log("Start method declaration.");
             setDeclaringMethodReturnType(false);
-            method = new MethodDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
-            context.push(method);
+            $method = new MethodDescr($text, start((CommonToken)$start), -1, line((CommonToken)$start), position((CommonToken)$start));
+            context.push($method);
         }
     }
     @after {
-        method = popMethod();
-        if (method != null) {
-            updateOnAfter(method, $text, (CommonToken)$stop);
-            processMethod(method);
+        $method = popMethod();
+        if ($method != null) {
+            updateOnAfter($method, $text, (CommonToken)$stop);
+            processMethod($method);
             log("End of method declaration. : " );
         }
     }
@@ -652,12 +670,17 @@ methodDeclaration
         (typeParameters
         )?
         ( { setDeclaringMethodReturnType(true); } type { setDeclaringMethodReturnType(false); }
-        |   'void'
+        |   v='void'  {
+                        JavaTokenDescr voidType = new JavaTokenDescr(ElementType.JAVA_VOID, $v.text, start((CommonToken)$v), stop((CommonToken)$v), line($v), position($v));
+                        TypeDescr type = new TypeDescr($v.text, voidType.getStart(), voidType.getStop(), voidType.getLine(), voidType.getPosition());
+                        type.setVoidType(voidType);
+                        $method.setType(type);
+                      }
         )
-        i=IDENTIFIER { method.setIdentifier( new IdentifierDescr($i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i)) ); }
+        i=IDENTIFIER { $method.setIdentifier( new IdentifierDescr($i.text, start((CommonToken)$i), stop((CommonToken)$i), line($i), position($i)) ); }
         formalParameters
         (p1='[' p2=']'   {
-                method.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
+                $method.addDimension(new DimensionDescr("", start((CommonToken)$p1), stop((CommonToken)$p2), line($p1), position($p1),
                                             new JavaTokenDescr(ElementType.JAVA_LBRACKET, $p1.text, start((CommonToken)$p1), stop((CommonToken)$p1), line($p1), position($p1)),
                                             new JavaTokenDescr(ElementType.JAVA_RBRACKET, $p2.text, start((CommonToken)$p2), stop((CommonToken)$p2), line($p2), position($p2))));
         }
@@ -1062,8 +1085,8 @@ qualifiedName returns [ QualifiedNameDescr qnameDec ]
              //TODO warning, by construction current qualifiedname param is expected
          }
      }
-    :   id1=IDENTIFIER { $qnameDec.addElement( new IdentifierDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1),line($id1), position($id1)) ); }
-        ('.' id2=IDENTIFIER { $qnameDec.addElement( new IdentifierDescr($id2.text,  start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2)) ); }
+    :   id1=IDENTIFIER { $qnameDec.addPart( new IdentifierDescr($id1.text, start((CommonToken)$id1), stop((CommonToken)$id1),line($id1), position($id1)) ); }
+        ('.' id2=IDENTIFIER { $qnameDec.addPart( new IdentifierDescr($id2.text,  start((CommonToken)$id2), stop((CommonToken)$id2), line($id2), position($id2)) ); }
         )*
     ;
 

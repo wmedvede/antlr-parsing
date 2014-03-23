@@ -21,61 +21,65 @@ public class MethodDescr extends ModifiersContainerDescr implements HasDimension
     }
 
     public IdentifierDescr getIdentifier() {
-        return (IdentifierDescr)getElements2().getFirst(ElementType.IDENTIFIER);
+        return (IdentifierDescr) getElements().getFirst(ElementType.IDENTIFIER);
     }
 
     public MethodDescr setIdentifier(IdentifierDescr identifier) {
-        getElements2().removeFirst(ElementType.IDENTIFIER);
-        getElements2().add(identifier);
+        getElements().removeFirst(ElementType.IDENTIFIER);
+        getElements().add(identifier);
         return this;
+    }
+
+    public boolean isConstructor() {
+        return getType() == null;
     }
 
     @Override
     public int getDimensionsCount() {
-        List<ElementDescriptor> dimensions = getElements2().getElementsByType(ElementType.DIMENSION);
+        List<ElementDescriptor> dimensions = getElements().getElementsByType(ElementType.DIMENSION);
         return dimensions.size();
     }
 
     @Override
     public MethodDescr addDimension(DimensionDescr dimensionDescr) {
-        getElements2().add(dimensionDescr);
+        getElements().add(dimensionDescr);
         return this;
     }
 
     public TypeDescr getType() {
-        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
+        return (TypeDescr) getElements().getFirst(ElementType.TYPE);
     }
 
     public MethodDescr setType(TypeDescr type) {
-        getElements2().removeFirst(ElementType.TYPE);
-        getElements2().add(type);
+        getElements().removeFirst(ElementType.TYPE);
+        getElements().add(type);
         return this;
     }
 
     public ParameterListDescr getParamsList() {
-        return (ParameterListDescr)getElements2().getFirst(ElementType.PARAMETER_LIST);
+        return (ParameterListDescr) getElements().getFirst(ElementType.PARAMETER_LIST);
     }
 
     public void setParamsList(ParameterListDescr params) {
-        getElements2().removeFirst(ElementType.PARAMETER_LIST);
-        getElements2().add(params);
+        getElements().removeFirst(ElementType.PARAMETER_LIST);
+        getElements().add(params);
     }
 
     public JavaTokenDescr getParamsStartParen() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_LPAREN);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_LPAREN);
     }
 
     public void setParamsStartParen(JavaTokenDescr paramsStart) {
-        getElements2().removeFirst(ElementType.JAVA_LPAREN);
-        getElements2().add(paramsStart);
+        getElements().removeFirst(ElementType.JAVA_LPAREN);
+        getElements().add(paramsStart);
     }
 
     public JavaTokenDescr getParamsStopParen() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_RPAREN);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_RPAREN);
     }
 
     public void setParamsStopParen(JavaTokenDescr paramsStop) {
-        getElements2().removeFirst(ElementType.JAVA_RPAREN);
-        getElements2().add(paramsStop);
+        getElements().removeFirst(ElementType.JAVA_RPAREN);
+        getElements().add(paramsStop);
     }
 }

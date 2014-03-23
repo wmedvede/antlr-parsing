@@ -6,17 +6,8 @@ import java.util.List;
 
 public class ClassDescr extends ModifiersContainerDescr {
 
-    private String name;
-
-    private TypeDescr superClass;
-
-    private TextTokenElementDescr classToken;
-
-    private TextTokenElementDescr extendsToken;
-
     /*
     //TODO add:
-    //Super class
     //List of implemented interfaces
     //Type annotations.
     */
@@ -37,35 +28,61 @@ public class ClassDescr extends ModifiersContainerDescr {
         super(ElementType.CLASS, text, start, stop, line, position);
     }
 
+    public String getName() {
+        return getIdentifier() != null ? getIdentifier().getIdentifier() : null;
+    }
+
+    public IdentifierDescr getIdentifier() {
+        return (IdentifierDescr) getElements().getFirst(ElementType.IDENTIFIER);
+    }
+
+    public ClassDescr setIdentifier(IdentifierDescr identifier) {
+        getElements().removeFirst(ElementType.IDENTIFIER);
+        getElements().add(identifier);
+        return this;
+    }
+
     public void addMember(ElementDescriptor member) {
-        getElements2().add(member);
+        getElements().add(member);
     }
 
     public List<ElementDescriptor> getMembers() {
-        return getElements2();
+        return getElements();
     }
 
     public void addField(FieldDescr fieldDescr) {
-        int index = getElements2().lastIndexOf(ElementType.FIELD);
-        getElements2().add(index +1, fieldDescr);
+        int index = getElements().lastIndexOf(ElementType.FIELD);
+        getElements().add(index +1, fieldDescr);
     }
 
     public void addMethod(MethodDescr methodDescr) {
-        int index = getElements2().lastIndexOf(ElementType.METHOD);
-        getElements2().add(index +1, methodDescr);
+        int index = getElements().lastIndexOf(ElementType.METHOD);
+        getElements().add(index +1, methodDescr);
     }
 
     public List<MethodDescr> getMethods() {
         List<MethodDescr> methods = new ArrayList<MethodDescr>();
-        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.METHOD)) {
+        for (ElementDescriptor member :  getElements().getElementsByType(ElementType.METHOD)) {
             methods.add((MethodDescr)member);
         }
         return methods;
     }
 
+    public MethodDescr getMethod(String methodIdentifier) {
+        if (methodIdentifier == null) return null;
+
+        List<MethodDescr> methods = getMethods();
+        IdentifierDescr identifier;
+        for (MethodDescr method : methods) {
+            identifier = method.getIdentifier();
+            if (identifier != null && methodIdentifier.equals(identifier.getIdentifier())) return method;
+        }
+        return null;
+    }
+
     public List<FieldDescr> getFields() {
         List<FieldDescr> fields = new ArrayList<FieldDescr>();
-        for (ElementDescriptor member : getElements2().getElementsByType(ElementType.FIELD)) {
+        for (ElementDescriptor member : getElements().getElementsByType(ElementType.FIELD)) {
             fields.add((FieldDescr)member);
         }
         return fields;
@@ -83,7 +100,7 @@ public class ClassDescr extends ModifiersContainerDescr {
     }
 
     public boolean removeField(FieldDescr field) {
-        return getElements2().remove(field);
+        return getElements().remove(field);
     }
 
     public boolean removeField(String name) {
@@ -91,14 +108,14 @@ public class ClassDescr extends ModifiersContainerDescr {
         boolean result = false;
         if (field != null) {
             if (field.getVariableDeclarations().size() <= 1) {
-                result = getElements2().remove(field);
+                result = getElements().remove(field);
             } else {
                 VariableDeclarationDescr variable = field.getVariableDeclaration(name);
                 result = variable != null ? field.removeVariableDeclaration(variable) : false;
                 if (result) {
                     variable = field.getVariableDeclarations().get(0);
                     if (variable.getStartComma() != null) {
-                        variable.getElements2().remove(variable.getStartComma());
+                        variable.getElements().remove(variable.getStartComma());
                     }
                 }
             }
@@ -106,47 +123,40 @@ public class ClassDescr extends ModifiersContainerDescr {
         return result;
     }
 
-    public TextTokenElementDescr getClassToken() {
-        return classToken;
+    public JavaTokenDescr getClassToken() {
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_CLASS);
     }
 
-    public void setClassToken(TextTokenElementDescr classToken) {
-        this.classToken = classToken;
+    public void setClassToken(JavaTokenDescr classToken) {
+        getElements().removeFirst(ElementType.JAVA_CLASS);
+        getElements().add(classToken);
     }
 
-    public TextTokenElementDescr getExtendsToken() {
-        return extendsToken;
+    public JavaTokenDescr getExtendsToken() {
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_EXTENDS);
     }
 
-    public void setExtendsToken(TextTokenElementDescr extendsToken) {
-        this.extendsToken = extendsToken;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setExtendsToken(JavaTokenDescr extendsToken) {
+        getElements().removeFirst(ElementType.JAVA_EXTENDS);
+        getElements().add(extendsToken);
     }
 
     public TypeDescr getSuperClass() {
-        return superClass;
+        return (TypeDescr) getElements().getFirst(ElementType.TYPE);
     }
 
     public void setSuperClass(TypeDescr superClass) {
-        this.superClass = superClass;
+        getElements().removeFirst(ElementType.TYPE);
+        getElements().add(superClass);
     }
 
-    public MethodDescr getMethod(String methodIdentifier) {
-        if (methodIdentifier == null) return null;
-
-        List<MethodDescr> methods = getMethods();
-        IdentifierDescr identifier;
-        for (MethodDescr method : methods) {
-            identifier = method.getIdentifier();
-            if (identifier != null && methodIdentifier.equals(identifier.getIdentifier())) return method;
-        }
-        return null;
+    public JavaTokenDescr getImplementsToken() {
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_IMPLEMENTS);
     }
+
+    public void setImplementsToken(JavaTokenDescr implementsToken) {
+        getElements().removeFirst(ElementType.JAVA_IMPLEMENTS);
+        getElements().add(implementsToken);
+    }
+
 }

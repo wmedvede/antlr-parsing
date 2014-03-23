@@ -7,6 +7,14 @@ import java.util.List;
 
 public class MethodParsing1 {
 
+    public MethodParsing1() { this(null); }
+
+    public MethodParsing1(String field1) { this.field1 = field1; }
+
+    public MethodParsing1(int a, int b) { this(a, b, (byte)1); }
+
+    public MethodParsing1(int a, int b, byte c) { super(); }
+
     public class MethodParsing1Inner1 {
 
         //buy now we are skipping inner clases

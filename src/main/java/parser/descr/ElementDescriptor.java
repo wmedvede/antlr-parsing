@@ -29,6 +29,7 @@ public class ElementDescriptor {
         FILE,
         QUALIFIED_NAME,
         PACKAGE,
+        IMPORT,
         IDENTIFIER,
         DIMENSION,
         JAVA_SEMI_COLON,
@@ -42,7 +43,14 @@ public class ElementDescriptor {
         JAVA_LPAREN,
         JAVA_RPAREN,
         JAVA_ELLIPSIS,
-        JAVA_PACKAGE
+        JAVA_PACKAGE,
+        JAVA_VOID,
+        JAVA_IMPORT,
+        JAVA_STATIC,
+        JAVA_STAR,
+        JAVA_CLASS,
+        JAVA_EXTENDS,
+        JAVA_IMPLEMENTS
     }
 
     private ElementType elementType;
@@ -141,7 +149,7 @@ public class ElementDescriptor {
         return this.elementType == elementType;
     }
 
-    public ElementDescrList getElements2() {
+    public ElementDescrList getElements() {
         return elements;
     }
 

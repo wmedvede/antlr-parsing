@@ -20,27 +20,27 @@ public class TypeArgumentListDescr extends ElementDescriptor {
     }
 
     public JavaTokenDescr getLTStart() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_LT);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_LT);
     }
 
     public TypeArgumentListDescr setLTStart(JavaTokenDescr start) {
-        getElements2().removeFirst(ElementType.JAVA_LT);
-        getElements2().add(0, start);
+        getElements().removeFirst(ElementType.JAVA_LT);
+        getElements().add(0, start);
         return this;
     }
 
     public JavaTokenDescr getGTStop() {
-        return (JavaTokenDescr)getElements2().getFirst(ElementType.JAVA_GT);
+        return (JavaTokenDescr) getElements().getFirst(ElementType.JAVA_GT);
     }
 
     public TypeArgumentListDescr setGTStop(JavaTokenDescr stop) {
-        getElements2().removeFirst(ElementType.JAVA_GT);
-        getElements2().add(stop);
+        getElements().removeFirst(ElementType.JAVA_GT);
+        getElements().add(stop);
         return this;
     }
 
     public void addArgument(TypeArgumentDescr argument) {
-        getElements2().add(argument);
+        getElements().add(argument);
     }
 
 }

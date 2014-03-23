@@ -16,18 +16,18 @@ public class TypeArgumentDescr extends ElementDescriptor implements HasType {
     }
 
     public TypeDescr getType() {
-        return (TypeDescr)getElements2().getFirst(ElementType.TYPE);
+        return (TypeDescr) getElements().getFirst(ElementType.TYPE);
     }
 
     public TypeArgumentDescr setType(TypeDescr type) {
-        getElements2().removeFirst(ElementType.TYPE);
-        getElements2().add(type);
+        getElements().removeFirst(ElementType.TYPE);
+        getElements().add(type);
         return this;
     }
 
     public TypeArgumentDescr setStartComma(JavaTokenDescr comma) {
-        getElements2().removeFirst(ElementType.JAVA_COMMA);
-        getElements2().add(0, comma);
+        getElements().removeFirst(ElementType.JAVA_COMMA);
+        getElements().add(0, comma);
         return this;
     }
 }

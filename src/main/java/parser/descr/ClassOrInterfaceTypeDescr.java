@@ -20,12 +20,12 @@ public class ClassOrInterfaceTypeDescr extends ElementDescriptor {
     }
 
     public void addIdentifierWithTypeArgument(IdentifierWithTypeArgumentsDescr identifierWithTypeArgumentsDescr) {
-        getElements2().add(identifierWithTypeArgumentsDescr);
+        getElements().add(identifierWithTypeArgumentsDescr);
     }
 
     public List<IdentifierWithTypeArgumentsDescr> getIdentifierWithTypeArguments() {
         List<IdentifierWithTypeArgumentsDescr> identifiers = new ArrayList<IdentifierWithTypeArgumentsDescr>();
-        for (ElementDescriptor member :  getElements2().getElementsByType(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS)) {
+        for (ElementDescriptor member :  getElements().getElementsByType(ElementType.IDENTIFIER_WITH_TYPE_ARGUMENTS)) {
             identifiers.add((IdentifierWithTypeArgumentsDescr)member);
         }
         return identifiers;

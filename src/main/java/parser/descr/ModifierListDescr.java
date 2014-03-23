@@ -22,12 +22,12 @@ public class ModifierListDescr extends ElementDescriptor {
     }
 
     public void add(ModifierDescr modifierDescr) {
-        getElements2().add(modifierDescr);
+        getElements().add(modifierDescr);
     }
 
     public List<ModifierDescr> getModifiers() {
         List<ModifierDescr> modifiers = new ArrayList<ModifierDescr>();
-        for (ElementDescriptor modifier :  getElements2().getElementsByType(ElementType.MODIFIER)) {
+        for (ElementDescriptor modifier :  getElements().getElementsByType(ElementType.MODIFIER)) {
             modifiers.add((ModifierDescr)modifier);
         }
         return modifiers;

@@ -1,28 +1,42 @@
 package parser.descr;
 
-public class FileDescr extends ElementDescriptor {
+import java.util.ArrayList;
+import java.util.List;
 
-    //TODO add PackageDescr, ImportDescr
+public class FileDescr extends ElementDescriptor {
 
     public FileDescr() {
         super(ElementType.FILE);
     }
 
-    public ClassDescr getClassDescr() {
-        return (ClassDescr)elements.getFirst(ElementType.CLASS);
-    }
-
-    public void setClassDescr(ClassDescr classDescr) {
-        getElements2().removeFirst(ElementType.CLASS);
-        getElements2().add(classDescr);
-    }
-
     public PackageDescr getPackageDescr() {
-        return (PackageDescr)getElements2().getFirst(ElementType.PACKAGE);
+        return (PackageDescr) getElements().getFirst(ElementType.PACKAGE);
     }
 
     public void setPackageDescr(PackageDescr packageDescr) {
-        getElements2().removeFirst(ElementType.PACKAGE);
-        getElements2().add(packageDescr);
+        getElements().removeFirst(ElementType.PACKAGE);
+        getElements().add(packageDescr);
     }
+
+    public void addImport(ImportDescr importDescr) {
+        getElements().add(importDescr);
+    }
+
+    public List<ImportDescr> getImports() {
+        List<ImportDescr> imports = new ArrayList<ImportDescr>();
+        for (ElementDescriptor member :  getElements().getElementsByType(ElementType.IMPORT)) {
+            imports.add((ImportDescr)member);
+        }
+        return imports;
+    }
+
+    public ClassDescr getClassDescr() {
+        return (ClassDescr) getElements().getFirst(ElementType.CLASS);
+    }
+
+    public void setClassDescr(ClassDescr classDescr) {
+        getElements().removeFirst(ElementType.CLASS);
+        getElements().add(classDescr);
+    }
+
 }

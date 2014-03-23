@@ -4,9 +4,11 @@ package parser.descr;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO next version should be improved dot chars are not being stored '.'.
+ *
+ */
 public class QualifiedNameDescr extends ElementDescriptor {
-
-    private List<TextTokenElementDescr> elements = new ArrayList<TextTokenElementDescr>();
 
     public QualifiedNameDescr() {
         super(ElementType.QUALIFIED_NAME);
@@ -24,13 +26,13 @@ public class QualifiedNameDescr extends ElementDescriptor {
         super(ElementType.QUALIFIED_NAME, text, start, stop, line, position);
     }
 
-    public void addElement(IdentifierDescr identifierDescr) {
-        getElements2().add(identifierDescr);
+    public void addPart(IdentifierDescr identifierDescr) {
+        getElements().add(identifierDescr);
     }
 
-    public List<IdentifierDescr> getElements() {
+    public List<IdentifierDescr> getParts() {
         List<IdentifierDescr> identifiers = new ArrayList<IdentifierDescr>();
-        for (ElementDescriptor identifier : getElements2().getElementsByType(ElementType.IDENTIFIER)) {
+        for (ElementDescriptor identifier : getElements().getElementsByType(ElementType.IDENTIFIER)) {
             identifiers.add((IdentifierDescr)identifier);
         }
         return identifiers;
@@ -39,11 +41,11 @@ public class QualifiedNameDescr extends ElementDescriptor {
     public String getName() {
         StringBuilder nameBuilder = new StringBuilder();
         boolean first = true;
-        for (IdentifierDescr identifier : getElements()) {
+        for (IdentifierDescr identifier : getParts()) {
             if (!first) {
                 nameBuilder.append(".");
             }
-            nameBuilder.append(identifier.getText());
+            nameBuilder.append(identifier.getIdentifier());
             first = false;
         }
         return nameBuilder.toString();

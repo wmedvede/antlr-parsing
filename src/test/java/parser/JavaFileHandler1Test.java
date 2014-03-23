@@ -38,19 +38,19 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             ClassDescr classDescr = fileHandler.getFileDescr().getClassDescr();
             MethodDescr methodDescr = classDescr.getMethod("getField2");
             assertNotNull(methodDescr);
-            classDescr.getElements2().remove(methodDescr);
+            classDescr.getElements().remove(methodDescr);
 
             assertStrings(fileContents[0], fileHandler.buildResult());
 
 
             methodDescr = classDescr.getMethod("setField1");
             assertNotNull(methodDescr);
-            classDescr.getElements2().remove(methodDescr);
+            classDescr.getElements().remove(methodDescr);
             assertStrings(fileContents[1], fileHandler.buildResult());
 
             methodDescr = classDescr.getMethod("getField1");
             assertNotNull(methodDescr);
-            classDescr.getElements2().remove(methodDescr);
+            classDescr.getElements().remove(methodDescr);
             assertStrings(fileContents[2], fileHandler.buildResult());
 
 
@@ -67,7 +67,7 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             indent.setSourceBuffer(indentStr);
 
             classDescr.addField(fieldDescr);
-            classDescr.getElements2().addMemberBefore(fieldDescr, indent);
+            classDescr.getElements().addMemberBefore(fieldDescr, indent);
             assertEquals(fileContents[4], fileHandler.buildResult());
 
             methodDescr = DescriptorFactoryImpl.getInstance().createMethodDescr("public java.lang.String getAddress() { return null; }");
@@ -76,7 +76,7 @@ public class JavaFileHandler1Test extends JavaFileHandlerBaseTest {
             indent.setSourceBuffer(indentStr);
 
             classDescr.addMethod(methodDescr);
-            classDescr.getElements2().addMemberBefore(methodDescr, indent);
+            classDescr.getElements().addMemberBefore(methodDescr, indent);
             assertEquals(fileContents[5], fileHandler.buildResult());
 
             /*

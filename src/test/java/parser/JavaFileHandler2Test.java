@@ -47,8 +47,8 @@ public class JavaFileHandler2Test extends JavaFileHandlerBaseTest {
             result = fileHandler.buildResult();
             System.out.println(result);
 
-            classDescr.getElements2().remove(field);
-            classDescr.getElements2().remove(field);
+            classDescr.getElements().remove(field);
+            classDescr.getElements().remove(field);
 
             result = fileHandler.buildResult();
             System.out.println(result);
