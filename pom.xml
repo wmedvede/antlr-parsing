@@ -92,22 +92,11 @@
                                             </fileset>
                                         </move>
 
-                                        <!--delete>
+                                        <delete>
                                             <fileset dir=".">
                                                 <include name="*.tokens"/>
                                             </fileset>
-                                            <fileset dir="src/main/resources/org/drools/compiler/lang">
-                                                <include name="*.tokens"/>
-                                                <include name="DRL__.g"/>
-                                                <include name="dsl/DSLMap__.g"/>
-                                                <include name="__Test__.java"/>
-                                                <include name="classes"/>
-                                            </fileset>
-                                            <fileset dir="src/main/resources/org/drools/compiler/semantics/java/parser">
-                                                <include name="**/*.tokens"/>
-                                                <include name="Java__.g"/>
-                                            </fileset>
-                                        </delete-->
+                                        </delete>
                                     </tasks>
                                 </configuration>
                                 <goals>
